@@ -1,0 +1,247 @@
+%! TEX root = ../main.tex
+
+\titre{Boucles \texttt{for} et \texttt{while}}
+
+\commentaire{\NIB{REMARQUES GENERALES :}
+
+	\nipuce toujours commencer par expliquer en français ce que vous allez faire en Python.\\
+
+	\nipuce {\bf Toujours tester sur des exemples !}}
+
+\exo
+
+\begin{enonce}
+
+	Il y a deux types de boucles : la boucle FOR et la boucle WHILE.
+
+	La première peut s'utiliser de deux manières :
+	\begin{itemize}
+		\item soit en explorant les {\bf valeurs} d'un objet {\em itérable} (chaîne de caractères, liste, tuple, range, tableau Numpy) : \texttt{for element in maliste :}
+		\item soit en explorant les indices de cet objet : \texttt{for indice in range(len(machaine)) :}
+	\end{itemize}
+
+	Dans cet exercice nous voyons différents problèmes où il peut être utile ou nécessaire d'utiliser telle ou telle forme de boucle.\\
+
+	\quessques Que fait la fonction suivante ?
+
+	\begin{verbatim}
+def mystere(parametre) :
+    x = parametre[0]
+    for y in parametre[1:] :
+        if y < x :
+            x = y
+    return x
+\end{verbatim}
+
+	\ssques Faire une fonction \texttt{indice\_minimum(maliste)} qui renvoie l'indice de l'élément (ou d'un des éléments) de valeur mnimale dans \texttt{maliste}  (ou suppose sans le vérifier que \texttt{maliste} est formée de nombres).
+
+	\ques Un nombre entier est un {\em palindrome} s'il se lit de la même manière dans les deux sens. Exemples : 2332 ou 56765.
+
+	Un entier $p$ est dit   {\em triangulaire} lorsqu'il existe un entier $n$ tel que $p=1+2+3+\cdots+(n-1)+n$.
+
+	\ssques On veut faire  une fonction \texttt{est\_triangulaire(n)} qui prend un entier $n$ et qui renvoie \texttt{True} si $n$ est triangulaire et \texttt{False} sinon. Complétez-la (y compris les commentaires):
+
+	\begin{verbatim}
+def est_triangulaire(n) :
+    k = 1 # Cette variable ............
+    S = 1 # Cette variable ........
+    while ..........
+        ...........
+        ...........
+    return .........
+\end{verbatim}
+
+
+	\ssques Faire une fonction \texttt{est\_palindrome(n)} qui prend un entier $n$ et qui renvoie \texttt{True} si $n$ est un palindrome et \texttt{False} sinon.
+
+	\indic On pourra penser au transtypage \texttt{int --> str}.
+
+
+
+	\ssques Faire un script qui donne les 10 premiers entiers qui sont à la fois palindromes et triangulaires.
+
+
+	\quessques Faire une fonction \texttt{liste\_des\_mots(maphrase)} qui renvoie la liste des mots du \texttt{str} \texttt{maphrase} (deux mots étant séparés par un ou des espaces)
+
+	Exemple : \texttt{liste\_des\_mots('o bladi,      o blada')} doit renvoyer
+	\texttt{['o', 'bladi,', 'o', 'blada']}.
+
+	\pagebreak
+
+	\ssques Faire une fonction \texttt{mot\_y\_es\_tu(maphrase,monmot)} qui renvoie \texttt{True} si monmot est un mot de \texttt{maphrase} (séparé du mot précédent et du mot suivant par un ou des espaces, donc) et \texttt{False} sinon.
+
+	\ssques Faire une fonction \texttt{mot\_y\_es\_tu\_II(maphrase,monmot)} qui renvoie la liste (éventuellement vide) des indices des occurrences de \texttt{monmot} dans \texttt{maphrase}.
+
+
+	\ques Faire une fonction \texttt{dichotomie(f,a,b,epsilon)} qui donne une approximation d'UNE solution de l'équation $f(x) = 0$ sur l'intervalle [a,b] (ou [b,a], peu importe l'ordre). Cette approximation sera donnée à epsilon près.
+
+	Donner un exemple d'application.
+
+	\ques Les {\em diviseurs propres} d'un entier $n$ sont les entiers $k$ tels que $1\leq j< n$ et $k$ divise $n$.
+
+	Les nombres parfaits sont les nombres  égaux à la somme de leurs diviseurs propres. Par exemple $6 =1+2+3.$
+
+	\ssques Faire une fonction \texttt{diviseurs\_propres(n)} qui renvoie la liste des diviseurs propres de $n$, sans doublons.
+
+	On pourra varier les plaisirs en faisant deux versions : l'une  utilisant une boucle \texttt{for} et l'autre une boucle \texttt{while}. Laquelle préférez-vous ?
+
+	\ssques Faire un script qui détermine la liste des 4 premiers \guill{nombres parfaits}.
+
+	\ques En fin de compte, quand utiliser chaque type de boucles ?
+
+\end{enonce}
+
+\begin{correction}
+
+
+	\commentaire{On va donner deux version : l'une contient une fonction générale de résolution approchée d'équations par dichotomie, qu'on applique à notre problème, et l'autre est directement appliquée au problème.}\\
+
+	\nipuce  \ul{Version 1 contenant une fonction générale} :
+
+
+	Commençons par  faire une version où l'on fait à part une fonction générale qui donne une approximation d'UNE solution de l'équation f(x) = 0 sur l'intervalle [a,b] (ou [b,a], peu importe l'ordre). Cette approximation sera donnée à epsilon près. Notez comme on peut donner une fonction 'f()' en paramètre. Cette fonction sera définie ailleurs, au moment où l'on a besoin d'appliquer notre fonction dichotomie - voir exemple en commentaire après la fonction dichotomie()
+
+	Pour éviter les erreurs, on va vérifier que f(a) et f(b) sont bien de signes contraires et que epsilon est >0 : on veut éviter qu'une fausse manipulation produise une boucle infinie (epsilon <= 0) ou une solution fausse (si f(a) et f(b) ont même signe). Dans l'un de ces deux cas, on ne renvoie rien et on affiche un message d'erreur.
+
+	\NIB{IMPORTANT} : Notons que si on veut demande d'implémenter l'algorithme de dichotomie au concours, sauf demande explicite, vous n'avez pas besoin de faire cette vérification. Gagnez du temps en indiquant en commentaire "on pourrait commencer par vérifier que... mais ce n'est pas demandé"
+
+	\begin{verbatim}
+def dichotomie(f,a,b,epsilon) :
+
+    # On commence par vérifier que f(a) et f(b) sont de signes différents
+    # (ou que l'un au moins  est nul)
+
+    # La ligne commentée suivante sert si on veut faire apparaître les étapes de la dichotomie (dans ce cas, il faut la décommenter !).
+    # print("a = ",a," et b = ",b, ", et donc |b-a| = ", abs(b-a),".\n On a f(a) = ", f(a), " , f(b) = ", f(b) ," et f(a+b/2) =", f((a+b)/2),"\n" )
+
+    if (f(a)*f(b) <= 0) and (epsilon >0) :
+        while abs(b-a) >= 2*epsilon :
+
+            # On va remplacer a ou b par (a+b)/ 2
+            # Si f(a) et f(a+b/2) sont strictement de même signe
+            # alors notre fonction admet au moins un zéro entre
+            # a+b/2 et b, donc on remplace a par a+b/2,
+            # sinon c'est b qu'on remplace
+
+            if f((a+b) /2)*f(a) >  0 :
+                a = (a+b)/2
+            else :
+                b = (a+b)/2
+
+            # La ligne commentée suivante sert si on veut faire apparaître les étapes de la dichomie (dans ce cas, il faut la décommenter !).
+            # print("a = ",a," et b = ",b, ", et donc |b-a| = ", abs(b-a),".\n On a f(a) = ", f(a), " , f(b) = ", f(b) ," et f(a+b/2) =", f((a+b)/2),"\n" )
+
+        return (a+b)/2
+    else :
+        print("f(a) et f(b) ont le même signe ou epsilon <= 0")
+\end{verbatim}
+
+
+	\nipuce Avant de passer à l'application à notre problème, voici un exemple simple d'utilisation : On résout l'équation $1-x^2=0$ sur $[0,3]$ à 0.01 près :
+
+	\begin{verbatim}
+def fonk(x) :
+    return 1-x**2
+
+print(dichotomie(fonk,0,3,0.01)) # on attend 1 à 0.01 près
+\end{verbatim}
+
+	\nipuce  Application à l'exercice :
+	\begin{verbatim}
+from math import cos,pi
+
+def u_n(n,epsilon) :
+
+    def f_n(x) :
+        return cos(x) - x/n
+
+    # On définit la fonction f_n() à l'intérieur de la fonction u_n() pour pouvoir utiliser le paramètre n. Sinon on devrait créer uen fonction f_n(n,x) et ça ne collerait pas avec la façon dont est codée la fonction dichotomie (la fonction "f" ne prend qu'un paramètre)
+
+    # On peut bien entendu éviter cette fonction définie dans une fonction en réécrivant la fonction dichotomie spécialement pour ce problème (voir plus bas).
+
+    return dichotomie(f_n, 0, pi/2, epsilon)
+
+# Maintenant on calcule u_n pour une série de valeurs :
+
+N_début= 180
+N_fin= 200
+
+eps = 0.0001
+
+
+for n in range (N_début,N_fin+1) :
+    u = u_n(n,eps)
+    print ("u_" +str(n),"=",u)
+    #print("cosinus :",cos(u), "  x/n :",u/n)
+    #print('---')
+    print("approximation par le DA à 3 termes",pi/2-pi/(2*n)+pi/(2*n**2))
+    print('---------------')
+\end{verbatim}
+
+
+
+	\nipuce  \ul{Version 2 , écrite spécifiquement pour ce problème} :
+
+	\begin{verbatim}
+from math import cos,pi
+
+def f_n(n,x) :
+    return cos(x) - x/n
+
+def u_n_v2(n,epsilon) :
+    a = 0
+    b = pi/2
+
+    while abs(b-a) >= 2*epsilon :
+
+        if f_n(n,(a+b) /2)*f_n(n,a) >  0 :
+            a = (a+b)/2
+
+        else :
+            b = (a+b)/2
+
+    return (a+b)/2
+
+# Maintenant on calcule u_n pour une série de valeurs :
+
+N_début= 180
+N_fin= 200
+
+eps = 0.0001
+
+
+for n in range (N_début,N_fin+1) :
+    u = u_n_v2(n,eps)
+    print ("u_" +str(n),"=",u)
+    #print("cosinus :",cos(u), "  x/n :",u/n)
+    #print('---')
+    print("approximation par le DA à 3 termes",pi/2-pi/(2*n)+pi/(2*n**2))
+    print('---------------')
+\end{verbatim}
+\end{correction}
+
+\exo
+
+\begin{enonce}
+	[Utiliser \texttt{break} ou \texttt{return} pour quitter une boucle]
+	Quand on ne sait pas par avance quand la boucle doit s'arrêter, on peut décider de faire une boucle WHILE, mais on a la possibilité, souvent plus simple de faire une boucle FOR qu'on interrompt avec un \texttt{break}. Plus élégamment, dans une fonction, il faut se souvenir que le mot clé \texttt{return} interrompt immédiatement la fonction (et donc la ou les boucles dans lesquelles il se trouve).
+
+	\ques Lire le paragraphe 2.7 du cours de Python.
+
+
+
+	\ques Faire une fonction qui prend une liste de nombre en entrée et qui renvoie \texttt{True} s'il y a au moins un zéro parmi eux et False sinon.
+	\ssques Avec une boucle \texttt{while}.
+	\ssques Avec une boucle \texttt{for} et un break.
+	\ssques Avec une boucle \texttt{for} et un ou des return bien placés
+
+	\ques Idem pour  une fonction qui prend une liste de nombres en entrée et qui renvoie \texttt{True} s'ils sont tous nuls et False sinon.
+
+
+
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}

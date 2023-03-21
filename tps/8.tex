@@ -1,0 +1,159 @@
+%! TEX root = ../main.tex
+
+\titre{Algorithmes de tri}
+
+
+Il existe déjà des fonctions optimisées pour trier des listes. On va les présenter rapidement, comprendre leurs particularités, puis on s'attaquera à en coder nous-mêmes. C'est un très bon exercice d'algorithmique, qui soulève notamment les questions d'optimisation dont on a déjà parlé les fois précédentes. \\
+
+%\commentbox{Avant de vous faire travailler, commençons par expliquer le concept d'algorthme \guill{en place}.}
+
+%  Un algorithme (cas typique un algorithme de tri de listes) est dit \guill{en place} lorsqu'il ne renvoie pas de résultat, mais modifie  la liste donnée en paramètre.
+
+\exo
+\textit{Les fonctions et méthodes de tri déjà existantes dans python}\\
+
+\nipuce \ul{La méthode \texttt{sort()}} : Elle implémente un algorithme de tri \guill{en place}\\
+\NIB{Algorithme en place ?} Un algorithme (cas typique un algorithme de tri de listes) est dit \guill{en place} lorsqu'il ne renvoie pas de résultat, mais *modifie* la liste donnée en paramètre. \\
+\NIB{Méthode ou fonction ?} Une méthode \texttt{ma\_methode()} *est attachée* à un objet par l'opérateur \guill{.}. Par exemple : la méthode \texttt{append} ! Syntaxe : \texttt{mon\_objet.ma\_methode(parametres\_de\_la\_methode)}. \\
+Une fonction \texttt{ma\_fonction()} s'applique comme une fonction mathématique. Syntaxe : \texttt{ma\_fonction(ses\_parametres)}.
+
+\begin{Verbatim}[tabsize=4]
+	>>> maliste = [3,4,1,5]
+
+	>>> maliste.sort()
+
+	>>> maliste
+		[1, 3, 4, 5]
+\end{Verbatim}
+
+Comme cet algorithme est \guill{en place}, cette méthode ne \guill{renvoie} rien :
+\begin{Verbatim}[tabsize=4]
+	>>> maliste = [3,4,1,5]
+
+	>>> a = maliste.sort()
+
+	>>> print(a)
+	None
+\end{Verbatim}
+
+\nipuce  Par contre, la fonction \texttt{sorted()} n'est pas \guill{en place} : elle ne modifie pas la liste donnée, mais crée et renvoie une nouvelle liste :
+
+\begin{Verbatim}[tabsize=4]
+	>>> maliste = [3,4,1,5]
+	>>> a = sorted(maliste)
+	>>> a
+		[1, 3, 4, 5]
+	>>> maliste
+		[3, 4, 1, 5]
+\end{Verbatim}
+
+\ques Faites des tests par vous-mêmes, en faisant attention à si vous créez une nouvelle liste ou modifiez l'existante !
+
+\newpage
+\exo
+\textit{Tri à bulles}\\
+C'est l'algorithme de tri le plus simple :
+\begin{enumerate}
+	\item [--] Parcourir les éléments du tableau de gauche à droite. \\
+
+	      Dès que l'on rencontre deux éléments consécutifs qui ne sont pas dans le bon ordre, on échange leur position.
+	      C'est à dire :\\
+	      \texttt{SI tableau[i] > tableau[i+1]}\\
+	      \texttt{ALORS : échanger tableau[i] et tableau[i+1]}
+
+	\item[--] Recommencer tant que l'on a changé quelque chose.
+\end{enumerate}
+
+Le principe illustré ci-dessus conduit à l'algorithme général suivant pour le tri d'un tableau unidimensionnel (une liste) :
+\begin{Verbatim}[tabsize=4]
+	Algorithme du Tri à bulle (Paramètre  : un tableau T)
+        N = longueur(T)
+        Changement = VRAI
+        TANT QUE Changement est VRAI :
+            Changement = FAUX
+            POUR  i variant de 0 à N-2
+                SI T[i] > T[i+1]
+                ALORS échanger T[i] et T[i+1]
+                ALORS Changement = VRAI
+            FIN POUR
+            N = N-1
+        FIN TANT QUE
+\end{Verbatim}
+
+\ques Etudiez cet algorithme en pseudo-code. A quoi sert la variable \texttt{Changement} ? Pourquoi i varie entre 0 et N-2 ? Pourquoi N devient N-2 à chaque étape du tant que ? (Ce dernier point est plus délicat : c'est une histoire d'optimisation. Demandez-vous s'il le dernier élément est bien positionné quand on vient de parcourir toute la liste, que faut-il en déduire ?) \\
+Cet algorithme est-il en place ?
+
+\quessques Écrire en Python une fonction \texttt{tri\_Bulle(liste)} prenant en paramètre une liste \texttt{liste}, et qui trie \texttt{liste} dans le sens croissant par un tri à bulle.
+\NIB{Astuce :} vous pouvez placer des \texttt{print} stratégiques pour visualiser ce que fait l'algorithme étape par étape. Par exemple, regardez quels élément sont déplacés, que devient la liste au fur et à mesure.
+\ssques Modifier la fonction pour que le tri se fasse dans l'ordre décroissant.
+
+\exo
+\textit{Tri par insertion} \\
+Le principe : on constitue (imaginairement) 2 tas : \\
+\begin{enumerate}
+	\item[--] l'un dans la main droite, contenant toutes les cartes avant tri,
+	\item[--] l'autre dans la main gauche, contenant les cartes déjà triées,
+\end{enumerate}
+Initialement la main gauche est vide. \\
+
+Chaque étape consiste à : \\
+\begin{enumerate}
+	\item[--] prendre la première carte du tas non trié
+	\item[--] L'insérer progressivement à sa bonne place dans le tas trié, en la faisant descendre d'une position tant que sa valeur reste inférieure à celle de la carte située en dessous-d'elle.
+\end{enumerate}
+Après chaque étape le tas non trié contient une carte de moins, le tas trié une carte de plus.\\
+A la fin du tri la main droite est vide. La main gauche contient toutes les cartes, triées. \\
+
+\newpage
+En pseudo-code, l'algorithme de Tri par insertion s'écrit :
+\begin{Verbatim}[tabsize=4]
+	Algorithme de Tri par insertion (Paramètre : un tableau T)
+	N = longueur(T)
+	# Balayage du tableau du 2ème jusqu'au dernier élément :
+	POUR i variant de 1 à N-1:
+	x = T[i] 	# C'est l'élément à insérer
+	k = i 	# k est son indice
+	# Insertion dans la partie triée :
+	TANT QUE k > 0 et T[k-1] > x:
+	# Décalage d'un cran sur la gauche :
+	T[k] = T[k-1]
+	k = k-1
+	T[k] = x
+\end{Verbatim}
+
+\ques Etudiez ce pseudo-code. Comprenez-vous l'étape du décalage vers la gauche ? Pourquoi i varie de 1 à N-1 ?
+
+\ques Ecrire en Python une fonction \texttt{tri\_Insertion(liste)} prenant en paramètre une liste \texttt{liste}, et qui trie \texttt{liste} dans le sens croissant par un tri par insertion.
+\NIB{Bonus :} Modifier l'algorithme pour que le tri se fasse dans l'ordre décroissant.
+
+\exo
+\textit{Tri par sélection}
+
+Pour un tableau de $N$ éléments, il consiste à :
+\begin{enumerate}
+	\item[--] Sélectionner la valeur maximale dans le tableau
+	\item[--] Le déplacer en dernière position du tableau.
+	\item[--] Recommencer avec le tableau des $N-1$ premiers éléments, et ainsi de suite.
+\end{enumerate}
+
+
+\ques Ecrire une fonction \texttt{indiceMax(liste,i)} prenant en paramètre une liste numérique \texttt{T} et un entier \texttt{i} et qui retourne l'indice du plus grand élément de \texttt{liste} d'indice au plus \texttt{i}.
+\ques L'utiliser pour écrire une fonction \texttt{tri\_selection()} qui applique l'algorithme de tri par sélection.
+
+\exo
+\textit{Tri comptage}
+
+Lorsque on est en présence d'une liste, où la valeur des éléments est connue a priori, et en petit nombre, l'ordonner peut s'exécuter plus rapidement par un tri comptage. Le principe est le suivant :\\
+Considérons une liste ne contenant que des 0 et des 1. On la parcourt à l'aide d'une boucle for, pour stocker dans deux variables \texttt{nb0} et \texttt{nb1}, le nombre de 0 et de 1 de la liste. On crée ensuite une nouvelle liste constituée de \texttt{nb0} zéros suivies de \texttt{nb1} uns ; que l'on renvoie.
+\ques Ecrire une fonction \texttt{triComptage(L)} prenant en argument une liste \texttt{L} constituée de zéros et de uns,  et qui renvoie la liste ordonnée contenant les mêmes éléments.\\
+On pourra l'essayer avec la liste créée de la façon suivante :
+\begin{minted}{python}
+ from random import randint
+ n = 20
+ L = []
+ for k in range(n):
+ 	L.append(randint(0,1))
+ # ce qui est équivalent à :
+ L = [randint(0,1) for k in range(n)]
+ # (en utilisant la syntaxe par compréhension)
+ \end{minted}

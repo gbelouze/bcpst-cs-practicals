@@ -1,0 +1,153 @@
+%! TEX root = ../main.tex
+
+\titre{Dichotomie}
+
+Dans ce TP, on s'intéresse à différentes applications de la technique de \emph{dichotomie}. Cette technique est utile pour rechercher un élément dans un espace de recherche (par exemple une liste). Le principe de la recherche dichotomique est de couper l'espace de recherche en deux, successivement jusqu'à trouver l'élément. C'est une technique beaucoup plus efficace que de parcourir l'ensemble des éléments de l'espace, un à un.
+
+\begin{example}
+	Dans 'Le Juste Prix', les candidat.es finalistes ont 30 secondes pour deviner à l'euro près la valeur d'une vitrine de cadeaux (et remportent les cadeaux s'iels y arrivent). La vitrine a une valeur maximale de 50.000 euros. Pour ce faire, le/la candidat propose une estimation, et l'animateur lui répond "c'est plus" ou "c'est moins".\\
+	La technique optimale consiste à proposer successivement le milieu des bornes du prix. Ainsi:
+	\begin{itemize}
+		\item On commence par proposer 25.000€
+		\item Si c'est plus, on propose 37500€, si c'est moins 12500€
+		\item Et on continue comme ça
+	\end{itemize}
+	Dans le pire des cas, il faudra 16 essais pour trouver le juste prix.
+	\commentaire{Pourquoi 16 ? Et si la valeur maximum de la vitrine est 1.000.000€, combien d'essais faudra-t-il au maximum ?}
+\end{example}
+
+\exo
+\begin{enonce} [ Recherche dichotomique dans une liste triée ]
+	Dans cet exercice on se pose la question d'écrire un algorithme pour déterminer si un élément appartient à une liste.
+	\quessques Écrire une fonction \texttt{find\_naive(l, x)} qui prend en argument une liste \texttt{l1} et un élément \texttt{x} et détermine si \texttt{x} apparaît dans \texttt{L}. La fonction doit renvoyer \texttt{True} ou \texttt{False} en fonction.
+	\ssques Tester votre fonction sur quelques exemples.
+	\ssques Si \texttt{L} est de taille 10, combien d'éléments est-ce que \texttt{find\_naive} devra regarder dans le pire des cas ? Et si \texttt{L} est de taille 1000 ?
+
+	Dans le cas général, on ne peut pas vraiment faire mieux que de regarder un à un tous les éléments. Mais si \texttt{t} est triée (dans l'ordre croissant), on peut aller beaucoup plus rapidement! En effet si je sais que \texttt{x} est plus grand qu'un élément \texttt{e} de la liste, alors il ne peut pas être à gauche de \texttt{e}. S'il est plus petit, \texttt{x} ne peut pas être à droite de \texttt{e}.
+
+	\begin{example}
+		Recherche de \texttt{4} dans le tableau suivant:
+		\begin{center}
+			\begin{tabular}{cccccccccc}
+				\cline{1-9}
+				\multicolumn{1}{|>{\centering}p{1.1cm}|}{1} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{2} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{3}
+				                                            & \multicolumn{1}{|>{\centering}p{1.1cm}|}{4} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{Maroon}5} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{6} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{7} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{8} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{9}
+				\\
+				\cline{1-9}
+				\multicolumn{1}{c}
+				{\tt{bottom}}
+				                                            & \multicolumn{3}{c}{}
+				                                            & \multicolumn{1}{c}
+				{\tt{mid}}
+				                                            & \multicolumn{4}{c}{\null}
+				                                            & \multicolumn{1}{c}
+				{\tt{top}}                                                                                                                                                                                                                                                                                                                                        \\
+				\multicolumn{1}{c}
+				{}
+				                                            & \multicolumn{3}{c}{}
+				                                            & \multicolumn{1}{c}
+				{$\mathbf{>e}$}
+				                                            & \multicolumn{4}{c}{\null}
+				                                            & \multicolumn{1}{c}
+				{}                                                                                                                                                                                                                                                                                                                                                \\
+				\multicolumn{3}{c}{}
+				                                            & \multicolumn{3}{c}{Dichotomie à gauche}     & \multicolumn{4}{c}{}                                                                                                                                                                                                                                  \\
+			\end{tabular}
+			\begin{tabular}{cccccccccc}
+				\cline{1-9}
+				\multicolumn{1}{|>{\centering}p{1.1cm}|}{1} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{2} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{Maroon}3}
+				                                            & \multicolumn{1}{|>{\centering}p{1.1cm}|}{4} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}5}   & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}6} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}7} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}8} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}9} & \multicolumn{1}{c}{\hphantom{top}}
+				\\
+				\cline{1-9}
+				\multicolumn{1}{c}
+				{\tt{bottom}}
+				                                            & \multicolumn{1}{c}{}
+				                                            & \multicolumn{1}{c}{\tt{mid}}
+				                                            & \multicolumn{1}{c}
+				{}
+				                                            & \multicolumn{1}{c}{\tt{top}}
+				                                            & \multicolumn{5}{c}
+				{}                                                                                                                                                                                                                                                                                                                                                                                                                                                     \\
+				\multicolumn{1}{c}
+				{}
+				                                            & \multicolumn{1}{c}
+				{}
+				                                            & \multicolumn{1}{c}{$\mathbf{<e}$}
+				                                            & \multicolumn{3}{c}{Dichotomie à droite}
+				                                            & \multicolumn{4}{c}
+				{}
+			\end{tabular}
+			\begin{tabular}{cccccccccc}
+				%\multicolumn{9}{c}{Dichotomie à droite}\\
+				\cline{1-9}
+                \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}1} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}2}   & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}3}
+				                                                            & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{Maroon}4} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}5} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}6} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}7} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}8} & \multicolumn{1}{|>{\centering}p{1.1cm}|}{\cellcolor{gray}9} & \multicolumn{1}{c}{\hphantom{top}}
+				\\
+				\cline{1-9}
+				\multicolumn{1}{c}
+				{}
+				                                                            & \multicolumn{1}{c}
+				{}
+                                                                            & \multicolumn{2}{r}{\tt{bottom}/\tt{mid}}
+				                                                            & \multicolumn{1}{c}{\tt{top}}
+				                                                            & \multicolumn{5}{c}
+				{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \\
+				\multicolumn{1}{c}
+				{}
+				                                                            & \multicolumn{2}{c}
+				{}
+				                                                            & \multicolumn{1}{c}{$\mathbf{=e}$}
+				                                                            & \multicolumn{5}{c}
+				{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \\
+			\end{tabular}
+		\end{center}
+	\end{example}
+
+	\quessques Compléter la fonction \texttt{find\_dichotomique(l, x)} qui prend en argument une liste \texttt{L} \emph{triée} et un élément \texttt{x} et détermine si \texttt{x} apparaît dans \texttt{L}.
+	\inputminted{python}{minted/9/find_dichotomique.py}
+	\ssques Tester votre fonction sur quelques exemples (vérifier qu'elle fonctionne avec la liste vide)
+	\ssques Si \texttt{L} est de taille 10, combien d'éléments est-ce que \texttt{find\_dichotomique} devra regarder dans le pire des cas ? Et si \texttt{L} est de taille 1000 ?
+	\ssques Que se passe-t-il si \texttt{L} n'est pas triée ?
+	\ssques Modifier la fonction pour prendre en argument une liste triée dans l'ordre décroissant.
+
+	\ques On va mettre en évidence la différence de performance de \texttt{find\_dichotomique} versus \texttt{find\_naive}.
+	\ssques Utiliser le code suivant pour mesurer le temps de calcul des fonctions.
+	\inputminted{python}{minted/9/dichotomie_performance.py}
+	\ssques Tester sur des listes de taille $ 10^6 $. Que remarquez-vous ?
+\end{enonce}
+
+\begin{correction}
+	\quessques \texttt{find\_naive} parcourt simplement tous les éléments de la liste et s'arrête si \texttt{x} est trouvé.
+	\inputminted{python}{minted/9/find_naive_correction.py}
+	\quessques On complète la fonction en pensant au fait que \texttt{bottom} est le plus petit indice potentiel de \texttt{x}, inclus, et \texttt{top} est le plus grand indice potentiel de \texttt{x}, exclus.
+	\inputminted{python}{minted/9/find_dichotomique_correction.py}
+	\ssques On teste à la fois pour des éléments présents dans la liste et pour des éléments absents. Attention, on ne peut que tester avec une liste triée sinon ça n'a aucun sens.
+	\ssques À chaque fois qu'on regarde un élément, on coupe la taille de recherche à peu près en deux. Pour le réduire à 0 ou 1 élément, il faut couper l'espace en deux à peu près $ \log_2(n) $ fois si la liste \texttt{L} est de taille $ n $. On a $ \log_2(10) \approx 3.3$ et $ \log_2(1000) \approx 10.0 $.
+	\ssques Si \texttt{L} n'est pas triée, et si \texttt{find\_dichotomique(l, x)} renvoie \texttt{False}, il est possible que \texttt{x} soit quand même présent dans la liste.
+	\ssques Il suffit d'inverser le sens des comparaisons
+	\inputminted{python}{minted/9/find_dichotomique_decrease_correction.py}
+
+	\quessques Si \texttt{time} n'a pas la précision suffisante (i.e le script affiche un temps de calcul de $ 0 $ secondes), prendre des fonctions de plus grande taille.
+	\ssques On remarque que plus la liste est grande, plus \texttt{find\_dichotomique} est avantageux en rapidité par rapport à \texttt{find\_naive} (le ratio des temps d'exécution est de plus en plus petit). C'est normal : si $ n $ est la taille de \texttt{L}, \texttt{find\_dichotomique} observe à peu près $ \log_2(n) $ éléments, alors que \texttt{find\_naive} observe à peu près $ n $ éléments, donc leur temps d'exécution est à peu près proportionnel à $ \log_2(n) $ et $ n $, respectivement. Or on sait que $ \log_2(n) / n \underset{n \rightarrow \infty}{\rightarrow} \infty $, ce qui explique notre observation.
+
+\end{correction}
+
+\exo
+\begin{enonce}[Recherche dichotomique d'un zéro d'une fonction]
+	Dans cet exercice, on utilise la dichotomie pour trouver un point d'annulation d'une fonction \emph{continue}. On rappel le théorème des valeurs intermédiaires:
+	\begin{theorem}
+		Soit $ f: [a,b] \rightarrow \R $ continue. Si $ f(a) \cdot f(b) \leq 0 $, alors il existe $ c \in [a, b] $ tel que $ f(c) = 0 $.
+	\end{theorem}
+	Supposez qu'on vous fournisse une fonction continue $ f $ et $ a < b $ tels que $ f(a)<0$ et $ f(b) > 0 $. On sait qu'il existe quelque part entre $ a $ et $ b $ un zéro de $ f $. Peut-on trouver un intervalle plus petit contenant un zéro de $ f $ ? Oui par une méthode dichotomique ! On regarde le signe de $ f(\frac{a+b}{2}) $.
+	\begin{itemize}
+		\item S'il est négatif, alors il existe un zéro de $ f $ entre $ \frac{a+b}{2} $ et $ b $
+		\item S'il est positif, alors il existe un zéro de $ f $ entre $ a $ et $ \frac{a+b}{2} $
+	\end{itemize}
+	On a réduit la taille de l'intervalle par 2 !
+
+	\quessques Compléter le code suivant qui calcule un intervalle contenante un zéro de la fonction $ x \mapsto \sin(x) $.
+	\inputminted{python}{minted/9/find_zero.py}
+	\ssques Quel est la taille de l'intervalle renvoyé par \texttt{find\_zero(a, b, n\_iteration)}, en fonction de \texttt{a}, \texttt{b} et \texttt{n\_iteration}
+	\ssques Comment utiliser le code précèdent pour obtenir une approximation de $ \pi $ au millième près ?
+	\ques Modifier la fonction  \texttt{find\_zero} pour qu'elle fonctionne également dans le cas où $ \sin(a) > 0 $ et $ \sin(b) < 0$.
+\end{enonce}

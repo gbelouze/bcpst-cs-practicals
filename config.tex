@@ -1,0 +1,86 @@
+\author{ Gabriel Belouze }
+
+\usepackage{enonce}
+\usepackage{tp}
+\bcpstUn
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{upgreek}
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usepackage{subfig}
+\usepackage{ifthen}
+
+\usepackage[outputdir=.build]{minted}
+\usemintedstyle{autumn}
+\setminted{tabsize=4}
+
+\newtheorem{exercise}{Exercice}[section]
+\theoremstyle{definition}
+\newtheorem*{remarque}{Remarque}
+
+\newcommand{\myTitle}{ TPs d'informatique en BCPST }
+\newcommand{\myName}{ Gabriel Belouze }
+\title{\myTitle}
+\author{\myName}
+\date{}
+
+\excludecomment{correction} % comment this to have corrections
+
+
+\renewcommand{\chaptername}{TP}
+
+%%  COLORSCHEME
+\RequirePackage{xcolor}
+\definecolor{halfgray}{gray}{0.55} % chapter numbers will be semi transparent .5 .55 .6 .0
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{Maroon}{cmyk}{0, 0.87, 0.68, 0.32}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\definecolor{Black}{cmyk}{0, 0, 0, 0}
+
+%%	HYPERREFERENCES
+
+\PassOptionsToPackage{pdftex,hyperfootnotes=false,pdfpagelabels}{hyperref}
+\usepackage{hyperref}  % backref linktocpage pagebackref
+\pdfcompresslevel=9
+\pdfadjustspacing=1
+
+\hypersetup{
+% Uncomment the line below to remove all links (to references, figures, tables, etc), useful for b/w printouts
+%draft,
+colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+% Uncomment the line below if you want to have black links (e.g. for printing black and white)
+%colorlinks=false, linktocpage=false, pdfborder={0 0 0}, pdfstartpage=3, pdfstartview=FitV,
+breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%
+plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
+hypertexnames=true, pdfhighlight=/O,%nesting=true,%frenchlinks,%
+urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen, %pagecolor=RoyalBlue,%
+    %urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,%
+%------------------------------------------------
+% PDF file meta-information
+pdftitle={\myTitle},
+pdfauthor={\myName}, 
+pdfsubject={},
+pdfkeywords={},
+pdfcreator={pdfLaTeX},
+pdfproducer={LaTeX with hyperref}
+%------------------------------------------------
+}
+
+
+% Generate only a singletp
+\newboolean{fulltp}
+\newcommand{\whenfulltp}[1]{\ifthenelse{\boolean{fulltp}}{#1}{}}
+\newcommand{\whennotfulltp}[1]{\ifthenelse{\boolean{fulltp}}{}{#1}}

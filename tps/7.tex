@@ -1,0 +1,61 @@
+%! TEX root = ../main.tex
+
+\titre{Dictionnaires}
+
+%\commentaire{\textit{Un nouveau type de variable : les dictionnaires}\\
+Ce sont des structures de données (\texttt{dict}) modifiables et non séquentielles ; un élément n'est pas repéré à l'aide d'un indice mais à l'aide d'un nom (sa \texttt{clef}). Un élément est constitué d'un \texttt{champ} : la donnée d'une clé et d'une valeur.
+\begin{enumerate}
+	\item La clé est un nombre, une chaîne de caractère (ou un t-uplet, mais ce n'est pas un type de variable qu'on a vu jusque là).
+	\item La valeur peut être de type quelconque.
+\end{enumerate}
+Le nom de dictionnaire ne vient pas de nulle part : cela fonctionne comme un dictionnaire papier, où on range une défintion (un champs) en la repérant grâce à un certain mot (la clef).\\
+Le type \texttt{dict} permet la définition de conteneurs dont les valeurs sont repérées non plus par des indices mais par des clés. \\
+
+Visuellement, un dictionnaire est délimité par des acolades : \texttt{\{\}}, et les clefs sont reliées aux champs grâce à deux points : \texttt{:}.\\
+
+Comment définir un dictionnaire ?\\
+Un exemple :
+\begin{minted}{python}
+dict_test = {'clef1':12.5, 'clef2':'deuxieme champs', 3:'champs3'}
+\end{minted}
+On peut aussi le faire en plusieurs etapes :
+\begin{minted}{python}
+dict_test2 = {}
+dict_test2['clef1'] = 12.5
+dict_test2['clef2'] = 'deuxieme champs'
+dict_test2[3] = 'champs3'
+\end{minted}
+
+On peut ensuite accéder aux champs contenus dans un dictionnaire en appelant les clefs : \mintinline{python}{dict_test['clef1']} renvoie 12.5.
+%}
+
+\exo
+\textit{Entrainement}
+\quessques Créez un dictionnaire \texttt{age} contenant les âges de trois personnes différentes, en les repérant par leur prénom, puis un dictionnaire \texttt{taille} contenant leur taille.
+\ssques Les valeurs (champs) d'un dictionnaire peuvent aussi être des dictionnaires ! Faites un dictionnaire \texttt{informations} contenant les deux dictionnaires précédents, repérés par une chaîne de caractère chacun.
+\ssques Faites un nouveau dictionnaire \texttt{ville\_naissance} contenant, pour les mêmes personnes, leur ville de naissance. Ajoutez ce dictionnaire à \texttt{informations}.
+
+\ques \textit{Opérations sur les dictionnaires}
+\ssques Que renvoie la commande suivante ?
+\begin{minted}{python}
+for x in age :
+    print(x)
+\end{minted}
+Que comprenez-vous sur cette manière de parcourir un dictionnaire ?
+\ssques Parcourez chaque dictionnaire contenu dans \texttt{informations} (à l'aide d'une boucle bien sûr), et enlevez une personne des dictionnaires que vous avez faits jusque-là. La fonction \texttt{del} permet d'enlever une clef (et le champ associé) dans un dictionnaire.
+
+\newpage
+\ques \textit{Méthodes applicables aux dictionnaires}
+Testez les méthodes suivantes sur les dictionnaires dont vous disposez : \\
+- \mintinline{python}{D.keys()} (pour un dictionnaire \mintinline{python}{D})\\
+- \mintinline{python}{D.values()} \\
+- \mintinline{python}{D.items()} \\
+- \mintinline{python}{D.copy()} \\
+Que comprenez-vous sur ces méthodes, que font-elles ?
+
+\exo
+\textit{Cryptage de César à l'aide de dictionnaires}
+\ques  Définir une variable \mintinline{python}{alphabet = "abcdefghijklmnopqrstuvwxyz"}.
+\ques Ecrire un script qui définit un dictionnaire ayant pour clefs les lettre de l'alphabet et pour valeurs leur position dans l'alphabet. Utilisez bien sûr la variable \texttt{alphabet} !
+\ques Ecrire une fonction \texttt{cesar(n)} prenant en argument un entier \texttt{n} et qui renvoie un dictionnaire comme en 2, mais dont les valeurs sont décalées de l'entier \texttt{n} modulo 26.
+\ques Ecrire une fonction \texttt{cryptage(texte,n)} prenant en argument un texte sous forme d'une chaine de caractère et un entier \texttt{n} et qui le crypte selon le chiffrement de César avec décalage de \texttt{n}.

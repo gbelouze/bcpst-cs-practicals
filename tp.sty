@@ -1,0 +1,683 @@
+%\documentclass[11pt,a4paper]{article}  % Version 28 Octobre 2005 
+
+
+%\addtolength{\hoffset}{-0.3cm}
+%\addtolength{\textwidth}{0.6cm}
+
+%\addtolength{\voffset}{-1cm}
+%\addtolength{\textheight}{2cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   La base   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% Les packages à charger en standard.
+
+\usepackage[french]{babel} % typo francaise
+\usepackage[utf8]{inputenc} % accents 8 bits dans le fichier
+\usepackage[T1]{fontenc}
+\DeclareUnicodeCharacter{B0}{\textdegree}
+\usepackage{multicol} % plusieurs colonnes
+\usepackage{wrapfig} % dessins dans le texte
+
+%%%%% Les packages pour les maths.
+
+\usepackage{amsmath} % les symboles les plus fréquents
+\usepackage{amssymb} % des symboles
+\usepackage{amsfonts} % des fontes, eg pour \mathbb
+\usepackage{bbm}
+
+%%%%% Les packages pour les dessins.
+
+\usepackage{array}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{epsfig}
+\usepackage{graphicx}
+%\usepackage[xcas]{tablor}
+
+\usepackage{color}
+\usepackage{ulem}
+
+%\usepackage{version}  % une version alternative de 'comment'
+
+\usepackage{ifthen}
+
+\usepackage{hyperref}
+
+%Usage :
+
+%\href{http://ctan.org/pkg/hyperref}{hyperref CTAN} % site internet
+
+%\href{mailto:monemail@latex.com}{monemail@latex.com} % un email 
+
+%\href{run:D:/Documents/exo.pdf}{ici mon poster}  % fichier sur PC 
+
+
+\usepackage{todonotes}
+% \todo{This will be a note typeset in the margin}
+% \todo[inline]{Note dans le texte}
+%\missingfigure{une figure manque}
+%\listoftodos  % Liste de tous les todos du document
+
+\usepackage{comment}
+
+\normalem
+\newcommand{\mathgras}[1]{\ensuremath{%
+        {\mbox{\mathversion{bold}\ensuremath{#1}}}%
+        }}
+
+%%%%% On ne veut pas que les lettres majuscules soient inclinées dans les
+%%%%% formules mathématiques.
+
+%\mathcode`A="7041 \mathcode`B="7042 \mathcode`C="7043 \mathcode`D="7044
+%\mathcode`E="7045 \mathcode`F="7046 \mathcode`G="7047 \mathcode`H="7048
+%\mathcode`I="7049 \mathcode`J="704A \mathcode`K="704B \mathcode`L="704C
+%\mathcode`M="704D \mathcode`N="704E \mathcode`O="704F \mathcode`P="7050
+%\mathcode`Q="7051 \mathcode`R="7052 \mathcode`S="7053 \mathcode`T="7054
+%\mathcode`U="7055 \mathcode`V="7056 \mathcode`W="7057 \mathcode`X="7058
+%\mathcode`Y="7059 \mathcode`Z="705A
+
+\DeclareUnicodeCharacter{00B0}{\degres}
+
+
+\setlength{\columnseprule}{1pt}
+
+\newcommand{\parallele}{\mathbin{\!/\mkern-5mu/\!}}
+
+\newcommand{\Sum}[2]{\ensuremath{\sum\limits}_{#1}^{#2}}
+% Exemple : on a $\Sum{k=1}{n} \f{1}{k} = \ln n + \gamma + \pto{1}$.
+\newcommand{\PI}[2]{\ensuremath{%
+\mathop{\mbox{\Large\ensuremath{\Pi}}}\limits}_{#1}^{#2}}
+% Exemple : on a $\PI{k=1}{n} k = k\,!$.
+% Un jour il faudra changer tous les \mathop en
+% \DeclareMathOperator...
+\newcommand{\Prod}[2]{\PI{#1}{#2}}
+\newcommand{\limt}{\ensuremath{\lim\limits}}
+
+% Pour barrer ou rayer : \sout{ce qu'il faut barrer}
+
+\newcommand{\abs}[1]{\ensuremath{\left| #1 \right|}}
+\newcommand{\norme}[1]{\ensuremath{\left\| #1 \right\|}}
+\newcommand{\pa}[1]{\ensuremath{\left( #1 \right)}}
+\newcommand{\scal}[2]{\langle#1 , #2\rangle}
+\newcommand{\scalDot}{\pa{\cdot | \cdot}}
+\newcommand{\pac}[1]{\ensuremath{\left[ #1 \right]}}
+\newcommand{\pacof}[1]{\ensuremath{\left] #1 \right]}}
+\newcommand{\pacfo}[1]{\ensuremath{\left[ #1 \right[}}
+\newcommand{\pacoo}[1]{\ensuremath{\left] #1 \right[}}
+\newcommand{\paa}[1]{\ensuremath{\left\{ #1 \right\}}}
+\newcommand{\pae}[1]{\left \lfloor #1 \right\rfloor}
+\newcommand{\dfdx}[2]{\ds{\f {\mathrm{d}#1}{\mathrm{d}#2}}}
+\newcommand{\partielle}[2]{\ds{\f {\partial#1}{\partial#2}}}
+\newcommand{\ddx}[1]{\ds{\f {\mathrm{d}}{\mathrm{d}x}\pa{#1}}}
+\newcommand{\ddy}[1]{\ds{\f {\mathrm{d}}{\mathrm{d}y}\pa{#1}}}
+\newcommand{\ddt}[1]{\ds{\f {\mathrm{d}}{\mathrm{d}t}\pa{#1}}}
+\newcommand{\paf}[2]{\ensuremath{\left(\df{#1}{#2}\right)}}
+\newcommand{\vect}{\ensuremath{\mathrm{Vect}}}
+\newcommand{\diag}{\ensuremath{\mathrm{Diag}}}
+\newcommand{\Id}{\ensuremath{\mathrm{Id}}}
+\newcommand{\id}{\ensuremath{\mathrm{Id}}}
+\newcommand{\card}{\ensuremath{\mathrm{Card}}}
+
+\newcommand{\Int}[2]{\ds{\int_{#1}^{#2}}}
+\def \dint{\ds\int}
+\def\dd{\, \mathrm{d}}
+\def\dx{\, \mathrm{d}x}
+\def\du{\, \mathrm{d}u}
+\def\dr{\, \mathrm{d}r}
+\def\dtheta{\, \mathrm{d}\theta}
+\def\dt{\, \mathrm{d}t}
+\def\dy{\, \mathrm{d}y}
+\def\dz{\, \mathrm{d}z}
+
+\def \SCE {Sytème Complet d'Evénements}
+
+\def \FPT {Formule des probabilités totales}
+
+\def\unestar{$(*)$ }
+\def\deuxstar{$(**)$ }
+
+\newcommand{\cbox}[1]{
+\centers{\fbox{#1}}
+}
+
+\newcommand{\cadre}[1]
+{\begin{center}
+\fbox{\begin{minipage}{0.85\textwidth}
+#1
+\end{minipage} 
+}
+\end{center}
+}
+
+\newcommand{\reference}[1]{{\bf \ref{#1}}}
+
+\newenvironment{accolade}[1][c]%
+{\ensuremath{\left \{ \hskip -1.5 mm \begin{array}{#1@{\quad}l}}}%
+{\end{array}\right.}
+
+\newsavebox{\savethm}
+\newenvironment{inframe}
+{\begin{lrbox}{\savethm}\begin{minipage}{\textwidth}}
+{\end{minipage}\end{lrbox}\noindent\fbox{\usebox{\savethm}}}
+
+
+\newenvironment{ingray}[1][.7]
+{\definecolor{mygray}{gray}{#1}\begin{lrbox}{\savethm}\begin{minipage}{\linewidth}}
+{\end{minipage}\end{lrbox}\noindent\colorbox{mygray}{\usebox{\savethm}}}
+
+\definecolor{violet}{rgb}{0.5,0,0.5}
+\definecolor{grisComment}{gray}{0.7}
+
+\newcommand{\commentbox}[1]{\colorbox{grisComment}{#1}}
+
+\newlength{\leftlength}
+\newlength{\rightlength}
+\newcommand{\leftcentersright}[3]{%
+        \settowidth{\leftlength}{#1}%
+        \settowidth{\rightlength}{#3}%
+        \medskip
+                % On place #1 et on recule de sa longueur
+        \noindent#1\hskip-\leftlength%
+                % On centre #2
+        \hfill#2\hfill
+                % On va au bout de la ligne, on recule de la longueur de #4 et
+                % on place #3
+        \mbox{}\hskip-\rightlength#3%
+        \medskip
+        }
+        
+\newenvironment{matrice}[1]
+{\left(\begin{array}{#1}}{\end{array}\right)}
+                
+% Mettre un commentaire à gauche et centrer le deuxième argument obligatoire
+% Exemple : \leftcenters{par suite}{$x_0 = 7$}
+\newcommand{\leftcenters}[2]{\leftcentersright{#1}{#2}{}}
+
+
+% Centrer et mettre à droite le deuxième argument obligatoire
+% Exemple : \centersright{$x_0 = 7$}{\deux}.
+\newcommand{\centersright}[2]{\leftcentersright{}{#1}{#2}}
+                
+% Centrer seulement
+% Exemple : \centers{Coucou !}
+\newcommand{\centers}[1]{\leftcentersright{}{#1}{}}
+
+% Mettre un commentaire à gauche et encadrer le texte centré
+% Exemple : \leftencadre{Finalement :}{$x_0=7$}
+\newcommand{\leftencadre}[2]{\leftcentersright{#1}{\fbox{#2}}{}}
+
+% Encadrer le texte centré et mettre un commentaire à droite
+\newcommand{\encadreright}[2]{\leftcentersright{}{\fbox{#1}}{#2}}
+
+% Encadrer le texte centré
+\newcommand{\encadre}[1]{\leftcentersright{}{\fbox{#1}}{}}
+
+% Comme \leftcentersright mais on encadre le texte centré
+\newcommand{\leftencadreright}[3]{\leftcentersright{#1}{\fbox{#2}}{#3}}
+
+
+
+\newenvironment{verticalCentering}
+{\hspace{0pt}
+\vfill
+}
+{\vfill
+\hspace{0pt}
+}
+
+
+
+
+
+\newcommand{\sk}{\smallskip}
+\newcommand{\mk}{\medskip}
+\newcommand{\bk}{\bigskip}
+
+\newcommand{\dblsub}[2]{\hspace{-1mm}_{{\tiny\begin{array}{l}#1\\#2\\\end{array}}}}
+
+\newcommand{\vards}{variables aléatoires réelles discrètes }
+\newcommand{\vard}{variable aléatoire réelle discrète }
+\newcommand{\DSE}{\textrm{développement en série entière }}
+\newcommand{\DSEble}{\textrm{développable en série entière }}
+
+%\newtheorem{theo}{Théorème}[section]
+%\newtheorem{lemme}[theo]{Lemme}
+%\newtheorem{coro}[theo]{Corollaire}
+%\newtheorem{cor}[theo]{Corollaire}
+%\newtheorem{prop}[theo]{Propriété}
+%\newtheorem{props}[theo]{Propriétés}
+%\newtheorem{defprop}[theo]{Définition-Propriété}
+%\newtheorem{rem}[theo]{Remarque}
+%\newtheorem{rems}[theo]{Remarques}
+%\newtheorem{comment}[theo]{Commentaire}
+%\newtheorem{comments}[theo]{Commentaires}
+%\newtheorem{prob}{Problème}
+%\newtheorem{defi}[theo]{Définition}
+%\newtheorem{notat}[theo]{Notation}
+%\newtheorem{exemple}[theo]{Exemple}
+%\newtheorem{exemples}[theo]{Exemples}
+%\newtheorem{rappels}[theo]{Rappels}
+%\newtheorem{convention}[theo]{Convention}
+
+\newcommand{\guill}[1]{\og{}#1\fg{}}
+\newcommand{\cg}[1]{\centers{\guill{#1}}}
+
+
+
+
+\newcommand{\finRem}{\NI \hrulefill\fbox{Fin Rem}}
+
+\newcommand{\finAttention}{\NI \hrulefill\fbox{Fin Attention}}
+
+\newcommand{\finEx}{\NI \hrulefill\fbox{Fin Ex}}
+
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+
+
+\newcommand{\pto}[1]{\ensuremath{\text{o}\left ( #1 \right )}}
+
+\renewcommand{\arcsin}{\mathrm{Arcsin\,}}
+\renewcommand{\arccos}{\mathrm{Arccos\,}}
+\renewcommand{\arctan}{\mathrm{Arctan\,}}
+
+\newcommand{\argch}{\mathrm{Argch\,}}
+
+
+
+
+%\renewcommand{\frac}{\dfrac}
+%%%  Les flèches 
+
+\newcommand{\UCC}{\mathcal{U}}
+
+\def\donc{~~\text{donc}~~}
+\def\et{~~\text{et}~~}
+\def\si{~~\text{si}~~}
+\def\alors{~~\text{alors}~~}
+\def\car{~~\text{car}~~}
+\def\sinon{~~\text{sinon}}
+\def\avec{~~\text{avec}~}
+\def\ou{~~\text{ou}~~}
+\def\tq{~~\text{tel que}~~}
+\def\tqs{~~\text{tels que}~~}
+
+\def \argsh{\mathrm{argsh}}
+
+\def\SCC{\mathcal{S}}
+\def\TCC{\mathcal{T}}
+\def\CCC{\mathcal{C}}
+\def\OCC{\mathcal{O}}
+\def\NCC{\mathcal{N}}
+\def\RCC{\mathcal{R}}
+\def\ECC{\mathcal{E}}
+\def\DCC{\mathcal{D}}
+\def\LCC{\mathcal{L}}
+\def\ACC{\mathcal{A}}
+\def\ZCC{\mathcal{Z}}
+\def\GCC{\mathcal{G}}
+\def\gCC{\mathcal{g}}
+\def\BCC{\mathcal{B}}
+
+\def\HCC{\mathcal{H}}
+
+\def\VCC{\mathcal{V}}
+
+\def\ECC{\mathcal{E}}
+
+\def\PCC{\mathcal{P}}
+
+\def\QCC{\mathcal{Q}}
+
+\def\FCC{\mathcal{F}}
+
+\def \vect{\mathrm{Vect}}
+
+\def \ker{\mathrm{Ker\,}}
+
+\def \rg{\mathrm{rg}}
+
+\def \mat{\mathrm{Mat}}
+
+\def \E{\mathrm{E}}
+
+\def \V{\mathrm{V}}
+
+\def \cov{\mathrm{Cov}}
+
+\def\MCC{\mathcal{M}}
+
+\def\sev{sous-espace vectoriel }
+\def\sevs{sous-espaces vectoriels }
+
+
+\newcommand{\ssi}{si et seulement si }
+\newcommand{\dssi}{\textrm{ si et seulement si }}
+
+\newcommand{\ssil}{si et seulement s'il }
+\newcommand{\cad}{c.à.d }
+\newcommand{\dcad}{\textrm{ c.à.d }}
+
+\newcommand{\TVI}{théorème des valeurs intermédiaires}
+
+
+\newcommand{\resp}{{\em resp. } }
+
+\def\contradiction{\fbox{CONTRADICTION !}\ }
+
+\def\itemb{\item[\puce]}
+
+\newcommand{\vide}{\emptyset}
+
+\newcommand{\sun}[1][u]{(#1_n)}
+\newcommand{\suk}[1][u]{(#1_k)}
+%\newcommand{\sune}[1][u]{(#1_n)_{n\geq 1}}
+%\newcommand{\sune}[1][u]{(#1_k)_{k\geq 1}}
+
+
+\newcommand{\dblint}{\int\!\!\!\int}
+\newcommand{\triplint}{\int\!\!\!\int\!\!\!\int}
+
+ \def\lmt{\longmapsto}
+\def\Llra{\Longleftrightarrow}
+\def\lra{\longrightarrow}
+\def\lla{\longleftarrow}
+\def\Lra{\Longrightarrow}
+\def\Lla{\Longleftarrow}
+\def\ra{\rightarrow}
+\def\hra{\hookrightarrow}
+\newcommand*{\lhra}{\ensuremath{\lhook\joinrel\relbar\joinrel\rightarrow}}
+
+\newcommand{\fction}[5]{#1 : 
+\left\{ \begin{array}{r@\ c@\ l} #2 &   \longrightarrow   & #3    \\
+  #4 & \longmapsto         & #5 \\
+  \end{array} \right.}
+
+%\newcommand{\dint}[3]{\ds{\int_{#1}^{#2}#3}}
+\newcommand{\dlim}{\ds\lim}
+\newcommand{\dsum}{\ds\sum}
+\newcommand{\dprod}{\ds\prod}
+%\newcommand{\dfrac}[2]{\ds{\frac{#1}{#2}}}
+
+
+\def\f{\frac}
+\newcommand{\df}[2]{\ds{\frac{#1}{#2}}}
+
+\def\ch{\mathrm{ch}}
+\def\sh{\mathrm{sh}}
+\def\th{\mathrm{th}}
+
+\def\codim{\mathrm{codim\, }}
+\def\im{\mathrm{Im\, }}
+\def\spectre{\mathrm{sp\, }}
+\def\re{\mathrm{Re\, }}
+\def\tr{\mathrm{Tr\, }}
+\newenvironment{syst}[1]
+{\left\{\begin{array}{#1}}
+{\end{array}\right.}
+
+% accolade sous un texte : \underbrace{texte}_{commentaire}
+
+\newcommand{\deuxcas}[4]
+{\left\{\begin{array}{ll} #1&\textrm{#2}\\ #3&\textrm{#4}
+\end{array}\right.
+}
+
+\newcommand{\troiscas}[6]
+{\left\{\begin{array}{ll} #1&\textrm{#2}\\ #3&\textrm{#4}\\ #5&\textrm{#6}
+\end{array}\right.
+}
+
+\newcommand{\quatrecas}[8]
+{\left\{\begin{array}{ll} #1&\textrm{#2}\\ #3&\textrm{#4}\\ #5&\textrm{#6}\\ #7&\textrm{#8}
+\end{array}\right.
+}
+
+
+\newcommand{\fonction}[4]{\left|\begin{array}{rcl}#1 &
+      \longrightarrow & #2 \\ #3 & \longmapsto & #4 \end{array}\right.}
+
+\newenvironment{multicolsSL}[1]
+{\setlength{\columnseprule}{0pt}\begin{multicols}{#1}}
+{\end{multicols}\setlength{\columnseprule}{1pt}}
+
+
+%\newcommand{\appli}[4]{\begin{syst}{rcl}#1&\lra&#2\\#3&\lmt&#4\end{syst}}
+
+\def\ds{\displaystyle}
+
+\newcommand{\dispencadre}[1]{$$\fbox{$#1$}$$}
+
+\def\NI{\noindent}
+\def\NB{\noindent{\bf NB : }}
+\def\rappel{\NI {\bf Rappel :} }
+
+%\def\attention{\NI {\bf Attention ! }}
+
+\newcommand{\NIB}[1]{\NI {\bf #1}}
+
+
+\def\enumQues{
+\renewcommand{\labelenumi}{{\bf \arabic{enumi}.}}
+\renewcommand{\labelenumii}{{\alph{enumii})}}
+\renewcommand{\labelenumiii}{{$(\roman {enumiii})$}}
+}
+
+\def\enumGeni{\renewcommand\labelenumi{\em (\roman{enumi})}}
+\def\enumGenii{\renewcommand\labelenumii{\em (\roman{enumii})}}
+
+
+
+\newenvironment{etudeParCas}
+{\renewcommand{\labelenumi}{{\bf \arabic{enumi})}~~}
+\renewcommand{\labelenumii}{{\bf \arabic{enumi}.\arabic{enumii})~~}}
+\renewcommand{\labelenumiii}{{\bf \arabic{enumi}.\arabic{enumii}.\arabic{enumiii})~}}
+\renewcommand{\labelenumiv}{{\bf \arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv})~}}
+\begin{enumerate}
+}
+{\end{enumerate}\renewcommand\labelenumi{\em (\roman{enumi})}
+\renewcommand\labelenumii{\em (\alph{enumii})}
+}
+
+
+\def\puce{$\bullet$ }
+\def\pupuce{$\cdot$ }
+\def\nipuce{\NI $\bullet$ }
+\def\nitiret{\NI --  }
+
+\def\tendvers{\ds\mathop{\longrightarrow}}
+\newcommand{\tvg}[2]{\underset{#1\to #2}{\longrightarrow}}
+\def\equivaut{\ds\mathop{\sim}}
+
+\newcommand{\limite}[2]{\displaystyle{\lim_{#1}#2}}
+
+%\newcommand{\kparmin}[2]{\left(\begin{array}{c}#1\\#2 \end{array}\right)}
+
+\def\init{\noindent \underline{\em Initialisation} : }
+\def\hr{\noindent \underline{\em Hérédité} : }
+\def\parHR{ \mathrm{(par~HR)}}
+\def\ccl{\ul{\em Conclusion} : }
+\def\nccl{\noindent\underline{\em Conclusion} : }
+\def\ncclRecType{\nccl On a montré $(P_0)$ et que pour tout entier $n$, $(P_n)$ implique $(P_{n+1})$, donc pour tout entier $n$, $(P_n)$ est vraie.}
+\def\cclg{\noindent \underline{\bf Conclusion générale} : }
+\def\analyse{\noindent \fbox{\bf Analyse} : }
+
+\newcommand{\cclrec}[1][0]{\NI\ul{\em Conclusion :} On a montré que la proposition est vraie pour $n=#1$ et qu'elle est héréditaire. Le principe de récurrence permet donc de dire qu'elle est vraie pour tout entier supérieur ou égal à $#1$.}
+
+\def\synthese{\noindent \fbox{\bf Synthèse} : }
+\def\cclAnal{\noindent \ul{{\em Conclusion de l'analyse}} : }
+\def\cclSynth{\noindent \underline{\em Conclusion de la synthèse} : }
+
+
+
+\newcommand{\Cnkv}[2]{C^{#2}_{#1}}
+\def\Cnk{\binom}
+\def\dbinom{\ds\binom}
+\newcommand{\Ank}[2]{A^{#2}_{#1}}
+
+\newcommand{\espProba}{$(\Omega,\mathcal{T},P)$}
+
+\newcommand{\intn}[2]{\ensuremath{%
+        \left[\!\left[ \, #1 \,;\, #2 \,\right]\!\right]}}
+% Pour les intervalles d'entiers.
+% Exemple : $\forall k \in \intn{0}{n-1} \quad |u_k| < 1$.
+
+\newcommand{\intoo}[2]{\ensuremath{\left ] \, #1 \,; #2 \, \right [ }}
+\newcommand{\intof}[2]{\ensuremath{\left ] \, #1 \,; #2 \, \right ] }}
+\newcommand{\intfo}[2]{\ensuremath{\left [ \, #1 \,; #2 \, \right [ }}
+\newcommand{\intff}[2]{\ensuremath{\left [ \, #1 \,; #2 \, \right ] }}
+
+\newcommand{\DL}[2]{\ensuremath{DL_#1(#2)}}
+
+
+\newenvironment{determinant}%
+{\begin{vmatrix}}%
+{\end{vmatrix}}
+
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\ora}[1]{\overrightarrow{#1}}
+\newcommand{\bi}[1]{\textbf{\textit{#1}}}
+
+\newcommand{\grad}{\ora{\textrm{grad}}}
+\newcommand{\spec}{{\textrm{Sp}}}
+
+\def\Sgoth{\mathfrak{S}}
+\newcommand{\ZZ}[1][\ensuremath{n}]{\ensuremath{\mathbb{Z}/#1\mathbb{Z}}}
+% $\ZZ$ donne Z/nZ. $\ZZ[2]$ donne Z/2Z.
+\newcommand{\Sn}[1][\ensuremath{n}]{\ensuremath{\mathfrak{S}_#1}}
+\def\SG{\mathfrak{S}}
+\newcommand{\An}[1][\ensuremath{n}]{\ensuremath{\mathfrak{A}_#1}}
+% $\Sn$ donne Sn $\Sn[2]$ donne S_2.
+\newcommand{\inv}[1][\ensuremath{}]{\ensuremath{#1^{-1}}}
+\newcommand{\transpose}[1][\ensuremath{}]{\ensuremath{^{t}\!#1}}
+% $\Sn$ donne Sn $\Sn[2]$ donne S_2.
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\zpz}{\ensuremath{\ZZ[p]}}
+\newcommand{\znz}{\ensuremath{\ZZ[n]}}
+\newcommand{\Nstar}{\ensuremath{\mathbb{N}^{*}}}
+\newcommand{\Zstar}{\ensuremath{\mathbb{Z}^{*}}}
+\newcommand{\Rstar}{\ensuremath{\mathbb{R}^{*}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\U}{\ensuremath{\mathbb{U}}}
+\newcommand{\Rb}{\ensuremath{\overline{\R}}}
+\newcommand{\Rp}{\ensuremath{\mathbb{R}^+}}
+\newcommand{\Rm}{\ensuremath{\mathbb{R}^-}}
+\newcommand{\K}{\ensuremath{\mathbb{K}}}
+\renewcommand{\L}{\ensuremath{\mathbb{L}}}
+\newcommand{\M}{\ensuremath{\mathbb{M}}}
+
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Qstar}{\ensuremath{\mathbb{Q}^{*}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\Qbar}{\ensuremath{\overline{\Q}}}
+
+\newcommand{\MnpK}[2]{M_{#1,#2}(\K)}
+\newcommand{\MnpR}[2]{M_{#1,#2}(\R)}
+\newcommand{\MnpC}[2]{M_{#1,#2}(\C)}
+\newcommand{\MnK}[1][n]{M_{#1}(\K)}
+\newcommand{\MnR}[1][n]{M_{#1}(\R)}
+\newcommand{\MnC}[1][n]{M_{#1}(\C)}
+
+%\newcommand{\MnC}[1]{M_{#1}(\C)}
+
+\newcommand{\col}{\begin{pmatrix}}
+\newcommand{\loc}{\end{pmatrix}}
+
+
+\newcommand{\hH}{\ensuremath{\mathbb{H}}}
+
+\newcommand{\B}{$\bullet$ }
+
+
+
+\newcommand{\PP}{\ensuremath{\mathcal{P}}}
+
+\newcommand{\indic}{{\em Indication : }}
+
+\newcommand{\facultatif}{{\em (Facultatif !) }}
+
+\newcommand{\commentaire}[1]{ %\setlength{\textwidth}{\columnwidth}
+
+\begin{ingray}  #1 \end{ingray}
+}
+
+\newcommand{\Rplus}{\ensuremath{\mathbb{R}_{+}}}
+\newcommand{\Rmoins}{\ensuremath{\mathbb{R}_{-}}}
+\newcommand{\Rplusstar}{\ensuremath{\mathbb{R}_{+}^*}}
+\newcommand{\Rmoinsstar}{\ensuremath{\mathbb{R}_{-}^*}}
+
+\def\cita{\begin{quote}}
+\def\atic{\end{quote}}
+
+
+\def\citag{\begin{quote}\guill}
+
+\def\gatic{ \end{quote}}
+
+
+\newcommand{\CM}{Culture{\em MATH} }
+
+\newcommand{\annee}{2022-2023}
+
+\newcommand{\lienColloscope}{Lien vers le colloscope : \href{https://docs.google.com/spreadsheets/d/1rAjwUqTvrBxDH4fs-X45AoNs626U0gY_2wAiDyGYGnQ/edit?usp=sharing}{\bi{Cliquer ici}}\\}
+
+
+%\newcommand{\lienColloscope}{Lien vers le colloscope : \href{https://docs.google.com/spreadsheets/d/1rAjwUqTvrBxDH4fs-X45AoNs626U0gY_2wAiDyGYGnQ/edit#gid=9742446}{\bi{Cliquer ici}}\\ }
+
+\newcommand{\bcpst}{\newcommand{\lycee}{Lycée Fénelon}
+\newcommand{\classe}{BCPST 2}
+}
+
+\newcommand{\bcpstUn}{\newcommand{\lycee}{Lycée Fénelon}
+\newcommand{\classe}{BCPST 1}
+}
+
+
+\newcommand{\psl}{\newcommand{\lycee}{CPES Sciences}
+\newcommand{\classe}{2ième année}
+}
+
+\newcommand{\cpesUn}{\newcommand{\lycee}{CPES Sciences}
+\newcommand{\classe}{Première année}
+}
+
+\newcommand{\cpesDeux}{\newcommand{\lycee}{CPES Sciences}
+\newcommand{\classe}{Deuxième année}
+}
+
+\def\finDemo{\NI\hrulefill~~$\Box$}
+
+\def\cqfd{\fbox{CQFD.}}
+
+\def \coeur{$(\heartsuit)$ }
+\def \pique{$(\spadesuit)$ }
+
+\def\legende{\commentaire{\NIB{Symboles usuellement utilisés :}\\
+
+\pique : directement exigible au programme (je ne le mets presque jamais en maths... mais en info c'est bon à savoir)
+
+\coeur : je vous conseille de savoir faire cette question
+
+rien : c'est le corps du travail 
+
+\unestar : plus avancé, ou redondant avec des choses déjà vues
+
+\deuxstar : pour les élèves à la fois les plus intéressés et qui ont du temps
+\\
+
+\NIB{Attention !} L'{\bf énoncé} d'une question \guill{étoilée} peut être utile pour les questions suivantes et pourtant non-étoilées (c'est la {\em résolution} des questions étoilées qui porte une étoile, pas la lecture de leur énoncé !) 
+}}
+
+\newcommand{\ligne}{\noindent\hrulefill}

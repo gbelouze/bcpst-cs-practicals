@@ -1,0 +1,250 @@
+\usepackage{beamerarticle}
+
+\usepackage[french]{babel} % typo francaise
+\usepackage[utf8]{inputenc} % accents 8 bits dans le fichier
+\usepackage[T1]{fontenc}
+\DeclareUnicodeCharacter{B0}{\textdegree}
+\usepackage{comment}
+
+%%%%%%%% Anciennes commande pour la transition
+
+\newcommand {\entete}[2]{{ \classe\hfill {\Large \bf Feuille d'exercices n°#1}\hfill \annee}
+
+	\medskip
+
+	\lycee\hfill{\bf \large #2}\hfill{Informatique}
+
+
+
+	\noindent \hrulefill
+}
+
+
+\newcounter{tpCtr}
+\newcounter{examCtr}
+
+%%%%%%% Gestion des exercices
+\newcounter{feuilleCtr}
+\newcounter{exoCtr}
+\newcounter{quesCtr}[exoCtr]
+\newcounter{ssQuesCtr}[quesCtr]
+
+\renewcommand{\theexoCtr}{{\bf \arabic{exoCtr}}}
+\renewcommand{\thequesCtr}{{\bf \arabic{quesCtr}}}
+\renewcommand{\thessQuesCtr}{\thequesCtr{\bf.\alph{ssQuesCtr}}}
+
+\newcommand{\exo}{\refstepcounter{exoCtr}}
+
+\newenvironment{enonce}[1][]{
+	\bigskip
+
+	\noindent {{\bf Exercice \theexoCtr} ~~~} {\em #1}
+
+	\smallskip
+	\setcounter{quesCtr}{0}
+	\setcounter{ssQuesCtr}{0}
+}
+{}
+
+\newenvironment{correction}{
+	\bigskip
+
+	\noindent {{\bf Correction de l'exercice \theexoCtr} ~~~}
+
+	\smallskip
+	\setcounter{quesCtr}{0}
+	\setcounter{ssQuesCtr}{0}
+}
+{}
+
+\newcommand{\ques}
+{
+
+	\medskip
+	\refstepcounter{quesCtr}
+
+	{\noindent \bf\arabic{quesCtr}.}~
+}
+
+\newcommand{\quessques}
+{
+
+	\medskip
+	\refstepcounter{quesCtr}
+	\refstepcounter{ssQuesCtr}
+	{\noindent \bf\arabic{quesCtr}.}~~\alph{ssQuesCtr})~
+}
+
+\newcommand{\ssques}
+{
+
+	\medskip
+	\refstepcounter{ssQuesCtr}
+	\alph{ssQuesCtr})~
+}
+
+
+
+\newcommand {\titre}[1]{\thispagestyle{empty}
+	\setcounter{exoCtr}{0}
+	\setcounter{quesCtr}{0}
+	\setcounter{ssQuesCtr}{0}
+	\stepcounter{tpCtr}
+	\stepcounter{chapter}
+
+	%\fancyhead[C]{}
+	\fancyhead[R]{}
+	\fancyhead[L]{Feuille d'exercices n°\arabic{tpCtr}}
+	\fancyfoot[C]{\empty}
+	\fancyfoot[R]{\empty}
+
+	\NI\leftcentersright{\NI\classe}{{\bf\Large Feuille d'Exercices n°\arabic{tpCtr}}}{\annee}
+
+	\vspace{-2mm}
+
+	\NI\leftcentersright{\NI\lycee}{{\bf \large #1}}{Informatique}
+
+	\vspace{-3mm}
+
+	\noindent \hrulefill
+}
+
+
+\newcommand {\exam}[2]{\thispagestyle{empty}
+	\setcounter{exoCtr}{0}
+	\setcounter{quesCtr}{0}
+	\setcounter{ssQuesCtr}{0}
+	\stepcounter{examCtr}
+	\stepcounter{chapter}
+
+	\fancyhead[R]{#2}
+	\fancyhead[L]{Devoir d'informatique}
+	\fancyfoot[C]{}
+	\fancyfoot[R]{}
+
+	\NI\leftcentersright{\NI\classe}{{\bf\Large Devoir d'infomatique}}{#2}
+
+	\vspace{-2mm}
+
+	\NI\leftcentersright{\NI\lycee}{{\bf \large #1}}{Informatique}
+
+	\vspace{-3mm}
+
+	\noindent \hrulefill
+}
+
+\newcommand {\correctionExam}[2]{
+	\setcounter{exoCtr}{0}
+	\setcounter{quesCtr}{0}
+	\setcounter{ssQuesCtr}{0}
+	\stepcounter{chapter}
+
+	\fancyhead[R]{#2}
+	\fancyhead[L]{Corrigé du devoir d'informatique}
+	\fancyfoot[C]{}
+	\fancyfoot[R]{}
+
+	\NI\leftcentersright{\NI\classe}{{\bf\Large Corrigé du devoir d'infomatique}}{#2}
+
+	\vspace{-2mm}
+
+	\NI\leftcentersright{\NI\lycee}{{\bf \large #1}}{Informatique}
+
+	\vspace{-3mm}
+
+	\noindent \hrulefill
+}
+
+
+\newcommand {\exocolles}[1]{
+
+	\end{multicols}
+
+	\pagebreak
+
+	{ \NI\classe\hfill {\Large Exercices en vrac}\hfill \annee}
+
+	\medskip
+
+	\NI\lycee\hfill{\bf \large #1}\hfill{Mathématiques}
+
+
+
+	\noindent \hrulefill
+	\begin{multicols}{2}
+		}
+
+
+
+		\renewcommand\labelenumi{\em (\roman{enumi})}
+
+		%\renewcommand{\thesection}{\textbf{ {\Roman{section}}}}
+		%\renewcommand{\thesubsection}{\textbf{ {\arabic{subsection})}}}
+		%\renewcommand{\thesubsubsection}{\textbf{ {\alph{subsubsection})}}}
+
+
+		\usepackage[a4paper,noheadfoot]{geometry}
+		\usepackage{nopageno}
+
+		\setlength{\columnseprule}{0.5pt}
+		%\geometry{margin={1.5cm,1cm}}
+		\geometry{top=0.3cm, bottom=1.8cm, left=1.5cm, right=1.5cm}
+		\headsep=3mm
+
+		\newcommand{\finpage}{\end{multicols}\pagebreak\begin{multicols}{2}}
+
+
+
+		%%%%%%   commandes pour afficher ou pas des petits morceaux
+
+		\newcommand{\noBeamer}[1]{#1}
+
+		\newcommand{\noPoly}[1]{} % ne garde l'argument que dans le beamer et dans mon cours
+
+		\newcommand{\noExos}[1]{}
+
+		\newcommand{\onlyPoly}[1]{}
+		\newcommand{\onlyExos}[1]{#1}
+		\newcommand{\onlyCorrections}[1]{}
+		\newcommand{\onlyBeamer}[1]{}
+		\newcommand{\onlyMonCours}[1]{}
+
+		\newcommand{\exclureSolutions}{}
+
+
+		\newcommand{\fin}{\end{multicols}\end{document}} %\newcommand{\finColonneExos}{\columnbreak}
+
+\newcommand{\finCours}{}
+
+%\newcommand{\finColonnePoly}{}
+%\newcommand{\finpagePoly}{}
+
+
+
+\newcommand{\enleveCorrections}{}
+
+\def\obb{}
+
+\newcommand{\feuilledExos}[2]{\refstepcounter{feuilleCtr}
+
+	\bigskip
+
+	\noindent\hrulefill{\textbf{\fbox{Autres exercices}}} \hrulefill
+}
+
+\newcommand{\intertitre}[1]{
+
+	\medskip\noindent\hrulefill{ \bf#1 }\hrulefill \medskip}
+
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{20pt}
+\renewcommand\headrulewidth{0.5pt}
+
+\makeatletter
+\renewcommand{\@chapapp}{TP}
+\makeatother
+
+

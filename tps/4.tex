@@ -1,0 +1,111 @@
+%! TEX root = ../main.tex
+
+\titre{Boucles imbriquées}
+
+On a vu précedemment comment faire des itérations simples, avec les boucles \textit{for} et les boucles \textit{while}. On a également rencontré quelques petits exemples de boucles imbriquées : c'est ce qu'on va explorer un peu plus avec ce TP.
+
+\exo
+\ques Ecrire un programme qui affiche les tables de multiplication de 0 à 10. \\
+\NIB{Bonus :} Et si on veut seulement certaines tables de multiplication, comment pourrait-on modifier ce programme ? Ecrire une fonction \texttt{multiplication(liste\_de\_nombres)} qui affiche la table de multiplication de chaque nombre contenu dans la liste \texttt{liste\_de\_nombres}.
+
+\ques \textit{Menu du jour}
+
+Ecrire un programme qui compose un menu du jour pour chaque jour de la semaine, de manière aléatoire : faire une liste d'entrées, une liste de plats, une liste de desserts et tirer, pour chaque jour, une entrée un plat et un dessert. Ce programme affichera les menus sous la forme : "Le menu du \textit{<jour>} est : \textit{<entrée>, <plat>, <dessert>.}"\\
+
+Exemple :
+\begin{minted}{python}
+entrees = ["salade","soupe à l'oignon","restes de la veille"]
+\end{minted}
+
+\NIB{Indication :} vous pourrez importer la fonction \texttt{choice} du module \texttt{random} pour choisir au hasard un élément de chaque liste. Rappel de la syntaxe pour l'importation : \texttt{from random import choice}. Si vous ne savez pas comment utiliser cette fonction, utilisez \texttt{help} !
+
+Il est aussi possible d'importer tout le module \texttt{random} avec \texttt{import random}, auquel cas, la fonction dont on a besoin s'appelera \texttt{random.choice}, et non pas juste \texttt{choice}, ce qui permet d'indiquer d'où vient cette fonction.
+
+\exo
+
+\ques \textit{Tableaux en deux dimensions}\\
+	Un tableau en deux dimensions peut être vu comme une liste de listes : une liste contenant la liste des lignes, chaque ligne étant représentée par une liste contenant ses coefficients : \[
+		T = \begin{bmatrix}
+			[ligne 1] \\
+			[ligne 2] \\
+			[ligne 3] \\
+		\end{bmatrix}
+	\]
+	Pour créer une tel tableau, on peut donc créer une liste de listes, par exemple :
+
+	\begin{minted}{python}
+        tablo = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    \end{minted}
+
+	qui représente le tableau \[
+		\begin{bmatrix}
+			1 & 2 & 3 \\
+			4 & 5 & 6 \\
+			7 & 8 & 9
+		\end{bmatrix}
+	\]
+
+
+	Strictement parlant, un tableau en python est de type \texttt{array}, un type d'objet qu'on approfondira plus tard. Ici, je parlerai donc de tableau même lorsque l'objet considéré est de type \texttt{list}. \\
+	Si on veut transformer une liste de listes en \texttt{array}, il suffit d'importer le module \texttt{numpy} avec \texttt{import numpy as np}, puis de \textit{transtyper} la liste dont on dispose, c'est-à-dire \textit{changer son type} (comme avec les fonctions \texttt{int} ou \texttt{str} qu'on a déjà rencontrées), en utilisant la fonction \texttt{np.array} :
+
+	\texttt{tableau\_de\_type\_array = np.array(liste\_de\_liste)}
+
+\ssques Créer un tableau \texttt{test} de format 3x3, contenant des variables numériques de votre choix.
+
+\ssques Ecrire une fonction \texttt{montrer\_coef(tableau)} qui affiche tous les coefficients de \texttt{tableau} un par un, en suivant l'ordre de lecture (c'est-à-dire ligne par ligne). \\
+Testez cette fonction sur le tableau \texttt{test}.
+
+\ssques Ecrire une fonction \texttt{max\_2D(tableau)} qui prend en entrée un tableau à deux dimensions et renvoie son maximum. \\
+Testez cette fonction sur le tableau \texttt{test}.
+
+\quessques Ecrire une fonction \texttt{plus\_proche\_voisin(liste,k)} qui prend en entrée une liste de nombres et un nombre k, et renvoie le coefficient de la liste le plus proche de k.
+
+\ssques Ecrire une fonction \texttt{deux\_valeurs\_plus\_proches(liste)} qui prend en entrée une liste de nombres et renvoie les deux valeurs les plus proches de cette liste.
+
+
+\exo
+
+Le triangle de Pascal est un tableau triangulaire composé comme suit :
+
+- la première ligne, d'indice n=0, est composée d'un seul 1
+
+
+- pour construire les coefficients de chaque ligne suivante, on additionne le coefficient au-dessus avec celui au-dessus à gauche, en considérant les espaces vides comme des 0. Chaque ligne a donc un coefficient de plus que celle d'avant, et commence et se termine par un 1.
+
+Les premières lignes du triangles sont donc \[
+    \begin{matrix}
+        1                      \\
+        1 & 1                  \\
+        1 & 2 & 1              \\
+        1 & 3 & 3      & 1     \\
+        1 & 4 & 6      & 4 & 1 \\
+          &   & \cdots         \\
+    \end{matrix}
+\]
+
+Ecrire une fonction \texttt{triangle\_pascal(n)} qui prend en entrée un entier n supérieur ou égal à 2 et affiche successivement les lignes du triangle de Pascal jusqu'à la ligne d'indice n. Vous pourrez pour cela utiliser deux listes de nombres, tel que lorsqu'on calcule les coefficients de la ligne \texttt{k}, on ait une liste contenant la ligne \texttt{k-1} et l'autre contenant la ligne \texttt{k}. \\
+
+
+\NIB{Bonus :} Comment pourrait-on optimiser cette fonction ? \\
+Piste : chaque ligne est symétrique.\\
+
+
+\commentaire{
+Il pourra être utile de se souvenir de la méthode de création de liste \textit{par compréhension}, de la forme [\textit{expression} \texttt{for} \textit{element} \texttt{in} \textit{ensemble}], par exemple : \\
+\texttt{liste1 = [i**2 for i in range(10)]} ou \texttt{liste2 = [x - 1 for x in liste1]}
+
+Pour ajouter un élément à une liste déjà existante, vous connaissez deux méthodes : \\
+- la concaténation :\texttt{liste1 += [10]} \\
+- la méthode \texttt{append} : liste1.append(11)
+}
+
+
+\commentaire{\textit{Point culture générale} \\
+	Le triangle de Pascal permet notamment de connaître les coefficients du développement de $(a+b)^n$, par exemple pour la ligne \texttt{n=4}:
+	\begin{equation*}
+		(a+b)^4 = a^4 + 4*a^3b + 6*a^2b^2 + 4*ab^3 + b^4
+	\end{equation*}
+	Les coefficients de la ligne d'indice 4 du triangle de Pascal sont ainsi :\\
+	\texttt{1 4 6 4 1}
+}

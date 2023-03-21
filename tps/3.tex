@@ -1,0 +1,266 @@
+%! TEX root = ../main.tex
+
+\titre{Lecture et écriture d'un fichier texte}
+
+Python permet de lire et d'écrire dans des fichiers (texte, par exemple). Cette fonctionnalité peut être utilisée pour séparer le code en lui-même des données qu'il utilise (par exemple, un fichier de configuration, des données expérimentales, un niveau dans un jeu,etc.) ou qu'il crée (par exemple, un résultat de simulation, une sauvegarde d'un jeu, etc.).
+
+\commentaire  {Avant tout, il est bon de comprendre que Python considère à tout instant que tout fichier que vous voulez manipuler (lire, écrire) est dans ce qu'on appelle le \bi{répertoire courant} ou {\em Current Working Directory (CWD)}. Ce concept peut être vu dans le poly \bi{Annexe I} plus en détails. Ce dossier a une valeur par défaut (que vous n'avez pas forcément choisie !) c'est le dossier dans votre ordinateur où Python va chercher les fichiers que vous voulez lire, et où il va stocker les fichier que vous allez écrire. Il est donc capital de pouvoir choisir ce dossier ! \\
+
+Le programme d'informatique en BCPST précise que vous devez savoir déterminer et changer votre CWD. Voici la procédure, \bi{puis nous verrons comment Pyzo nous évite de recourir à cette syntaxe compliquée} :\\
+
+\nipuce \ul{Pour savoir quel est le répertoire courant} :\\
+
+
+\texttt{import os }
+
+\texttt{print('Le répertoire courant est :', os.getcwd())}\\
+
+
+
+\nipuce \ul{Pour changer le répertoire courant} :
+
+\texttt{os.chdir('''D:/Nouveau\_Repertoire\_Courant/''')}
+\\
+
+\nipuce \bi{Mais dans Pyzo on peut éviter ces complications} (qui sont néanmoins au programme, bien que marginales\dots). En effet le menu \texttt{Exécuter} (ou \texttt{Run} contient plusieurs commandes utiles :
+\begin{itemize}
+	\item \texttt{Exécuter Fichier} (ou \texttt{Execute File}) -- raccourci Ctrl-E (ou Cmd-E sur mac) : exécute tout le fichier.
+	\item \texttt{Exécuter Sélection} (ou \texttt{Execute selection}) -- raccourci alt-ENTER : exécute seulement la sélection.
+	\item Celle qui nous intéresse ici : \texttt{Exécuter Fichier comme un script} (ou \texttt{Run File as script}) -- raccourci -Maj-Ctrl-E (ou Maj-Cmd-E sur mac) : exécute tout le fichier {\bf MAIS COMMENCE par faire en sorte que le CWD soit choisi comme étant le dossier qui contient le fichier Python exécuté}. \\
+
+	      Ainsi  commencez par créer (et sauvegardez, même s'il n'y a rien dedans) le fichier que vous allez utiliser dans ce TP dans un dossier précis (par exemple nommé \guill{TP3}), et mettez tout  fichier que vous souhaitez lire dans le même dossier. \guill{Exécute ce fichier comme un script}, et désormais votre CWD sera le dossier contenant ce fichier python (donc le dossier nommé {\em TP3} si vous avez suivi\dots)
+
+\end{itemize}
+}
+
+\exo
+
+\begin{enonce}
+	[Premiers pas]
+
+	Tester les instructions suivantes dans un script en s'assurant de comprendre chaque étape.
+
+	\ques	Création de fichier.\\
+
+	Ecrire :
+	\begin{verbatim}nom_du_fichier = "fichier_test.txt"\end{verbatim}
+
+	Pour créer un fichier, il faut d'abord l'ouvrir, avec l'option \begin{texttt}"w"\end{texttt}, pour \begin{texttt}"write"\end{texttt} :\\
+
+	\begin{verbatim}ce_fichier = open(nom_du_fichier, 'w')\end{verbatim}
+
+
+	Pour écrire dans le fichier :
+
+	\begin{verbatim}ligne_1 = 'Fichier écrit un jour froid de février 2013'
+ligne_2 = 'La fonction write ne peut prendre que du texte en argument'
+ce_fichier.write(ligne_1)
+ce_fichier.write(ligne_2)
+\end{verbatim}
+
+	On peut aussi y stocker des variables numériques, mais..
+
+	\begin{verbatim}
+ligne_4 = 43
+ce_fichier.write(ligne_4)
+\end{verbatim}
+
+
+	\dots cette dernière instruction renvoie une erreur : il faut convertir les nombres en texte avant de les écrire dans le fichier.
+
+	\begin{verbatim}
+ce_fichier.write(str(ligne_4))
+\end{verbatim}
+
+	Ne pas oublier de fermer le fichier une fois qu'on a terminé !
+	\\
+
+	\NIB{Conseil :} dès que vous utilisez \begin{texttt}"open"\end{texttt}, écrire l'instruction \begin{texttt}"close"\end{texttt} correspondante. Sinon le fichier restera ouvert en prenant une part de mémoire vive de l'ordinateur et ne pourra pas être modifié par d'autres programmes.
+
+	\begin{verbatim}ce_fichier.close()\end{verbatim}
+
+	Un nouveau fichier a maintenant été créé : le retrouver sur le disque et l'ouvrir (avec le bloc-notes ou pyzo par exemple).  On remarque que ça n'est pas exactement ce qu'on voulait...
+	\ques 	Caractère de fin de ligne.\\
+
+	Un caractère spécial est interprété comme une fin de ligne en informatique : \begin{verbatim} \n\end{verbatim} Il sert à indiquer au programme l'endroit exact où on veut passer à la ligne.
+
+	\begin{verbatim}
+ce_fichier = open(nom_du_fichier, 'w')
+ce_fichier.write(ligne_1 + '\n')
+\end{verbatim}
+
+
+	On peut écrire plusieurs lignes à la fois (et donc passer une liste en argument au lieu d'une chaîne de caractères):
+
+
+	\begin{verbatim}
+ce_fichier.writelines([ligne_2 + "\n", str(ligne_3)+"\n"])
+ce_fichier.close()
+\end{verbatim}
+
+	\ques 	Paramètre de la fonction open : \texttt{w, a, r}.\\
+
+	Vérifier que l'on a écrasé le fichier précédent. C'est dû à l'argument de la fonction open : "w"  pour "write"). Pour ajouter du contenu au lieu d'écraser le contenu existant : utiliser "a" pour "append".
+
+	\begin{verbatim}
+ce_fichier = open(nom_du_fichier, 'a')
+ligne_4 = "Voilà une nouvelle ligne\n"
+ce_fichier.write(ligne_4)
+ce_fichier.close()
+\end{verbatim}
+
+	Vérifier que les lignes déjà présentes du fichier n'ont pas été modifiées.
+	\pagebreak
+	\ques Lecture d'un fichier. \\
+
+	Pour lire le fichier, on utilise la même fonction mais avec un argument différent (l'argument \begin{texttt}'r'\end{texttt}, comme\dots ? ).
+
+	\begin{verbatim}
+ce_fichier = open(nom_du_fichier, 'r') 
+lu = ce_fichier.readline()
+lu2 = ce_fichier.readline()
+ce_fichier.close()
+print ('La première ligne lue est :', lu)
+print ('La deuxième ligne lue est :', lu2)
+
+\end{verbatim}
+
+
+	\NIB{Astuces :} \begin{enumerate}
+		\item On peut aussi utiliser la méthode \begin{texttt}readlines()\end{texttt} pour lire toutes les lignes du fichier d'un coup. Attention cependant, si le fichier est très gros cela peut causer un ralentissement du système puisque python mettra la totalité du contenu du fichier en mémoire vive.
+		\item Un autre moyen couramment utilisé pour lire les lignes d'un fichier est :
+		      \begin{verbatim}ce_fichier = open(nom_du_fichier)
+for line in ce_fichier:
+	print(line)
+ce_fichier.close()
+\end{verbatim}
+	\end{enumerate}
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+
+
+\exo
+
+\begin{enonce}
+	[Lecture $++$]
+
+	\ques Créer une fonction \begin{texttt}lire(nom\_fichier)\end{texttt} renvoyant la liste des lignes présentes dans un fichier à partir du nom du fichier pour seul argument. La tester sur notre fichier précédemment utilisé (donc créé par python) et sur un fichier que vous aurez créé à partir du bloc-notes.\\
+
+	\NIB{Bonus :} Ajouter un deuxième argument à la fonction : le nombre de lignes maximum à lire dans le fichier.
+
+	\ques Créer une fonction \begin{texttt}compte\_lettre(nom\_fichier)\end{texttt} qui renvoie le nombre total de \begin{texttt}"e"\end{texttt} dans un fichier.
+	\\
+
+	\NIB{Astuce :} les méthodes \begin{texttt}mot.lower()\end{texttt} et \begin{texttt}mot.upper()\end{texttt} modifient la casse d'une chaîne de caractères. Cela peut être utile si on veut prendre en compte les e majuscules.
+	\\
+
+	\NIB{Bonus :}  l'idéal est que la lettre à compter (ici, e) soit un argument.
+
+	\ques Ajouter des \begin{texttt}"\#"\end{texttt} au début de certaines lignes de notre fichier texte (en le modifiant directement à l'aide du bloc-notes).
+
+	Créer une fonction \begin{texttt}lire\_non\_commente(nom\_fichier)\end{texttt} qui renvoie sous forme de liste toutes les lignes du fichier ne commençant pas par un \begin{texttt}"\#".\end{texttt}
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+\pagebreak
+\exo
+
+\begin{enonce}
+	[Ecriture]
+
+	\ques Créer une fonction \begin{texttt}ecrire(nom\_fichier, contenu)\end{texttt} où contenu est une liste de chaînes de caractères. Cette fonction écrira chaque \begin{texttt}"ligne"\end{texttt} de \begin{texttt}"contenu"\end{texttt} dans le fichier \begin{texttt}"nom\_fichier"\end{texttt}.
+
+	Tester cette fonction sur la liste \texttt{contenu} de votre choix. Par exemple :\\
+
+	\begin{verbatim}
+contenu = ["The grass was greener","The light was brighter", "The taste was sweeter", "..."]
+
+\end{verbatim}
+
+	\NIB{Astuce :} ne pas oublier le caractère de fin de ligne !
+
+	\ques Créer une fonction \begin{texttt}ajoute\_num(nouveau\_fichier, vieux\_fichier)\end{texttt} qui copie le contenu d'un fichier existant dans un nouveau fichier en ajoutant au début de chaque ligne : \begin{texttt}'ligne'\end{texttt} et le numéro de la ligne. \\
+
+	\NIB{Bonus :} ne pas copier les lignes du fichier existant qui commencent par un \begin{texttt}"\#"\end{texttt}.\\
+
+	Exemple du nouveau fichier obtenu :\\
+
+	\begin{verbatim}
+ligne 1 : The grass was greener
+ligne 2 : The light was brighter
+ligne 3 : The taste was sweeter
+ligne 4 : ...
+\end{verbatim}
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+\exo
+
+\begin{enonce}
+	[Fichier de configuration]
+
+	\ques Créer un fichier texte \begin{texttt}config.txt\end{texttt} avec le contenu suivant :\\
+
+	\begin{verbatim}# Fichier de configuration pour affichage de polynôme
+a = 2
+b = 1 
+c = 10
+bornes = [-10,10]
+
+\end{verbatim}
+
+	\ques Créer un script ou une fonction qui lit ce fichier dans python et crée les variables correspondantes (a, b, c, bornes) en leur affectant les valeurs données dans le fichier.\\
+
+	\NIB {Astuce :} pour trouver l'indice d'un caractère particulier dans une chaîne : \begin{texttt}chaine.find(caractere)\end{texttt}
+	pour séparer une chaîne de caractère en une liste de plusieurs éléments séparés par un caractère particulier : \begin{texttt}chaine.split(separateur)\end{texttt}
+
+	\ques Créer une fonction \begin{texttt}voir\_polynome(nom\_fichier)\end{texttt} qui appelle la fonction de l'exercice 7 du TP3 en utilisant les valeurs extraites du fichier comme coefficients du polynôme. On affichera donc la fonction $x \lmt 2x^2 + x -10$.\\
+
+	\NIB{Astuce :} une fonction que l'on a créée nous-même peut être importée comme toute autre fonction en faisant appel au fichier (module) dans lequel elle a été définie : \begin{verbatim}from TP_3_ex_7 import voir_poly\end{verbatim}
+
+	\ques Modifier les valeurs directement dans le fichier texte et vérifier que l'affichage de la fonction (et le calcul des racines) est modifié en conséquence.
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+\pagebreak
+\exo
+
+\begin{enonce}
+	[Stockage de résultat]
+
+	\quessques Comme dans le TP2 (oui, c'est vieux), afficher à l'écran la date et l'heure actuelles.
+	Indice : utiliser la fonction \texttt{datetime.now()} du module \texttt{datetime}.
+
+	\ssques Créer une fonction \begin{texttt}save\_time(nom\_fichier)\end{texttt} qui prend en argument un nom de fichier (par exemple, \begin{texttt}"resultat.txt"\end{texttt}) et y écrit une ligne avec la date et l'heure d'exécution de la fonction.
+	Si le fichier n'existe pas, il faudra le créer ; dans le cas contraire, on ne veut pas écraser son contenu mais ajouter des nouvelles lignes.
+	Tester cette fonction à plusieurs reprises pour créer plusieurs lignes.\\
+
+	\indic la fonction \begin{texttt}os.path.isfile(nom\_fichier)\end{texttt} permet de tester l'existence d'un fichier.
+
+	\quessques Modifier la fonction \begin{texttt}voir\_polynome\end{texttt} de l'exercice 4 pour qu'elle renvoie une liste avec les coordonnées des racines trouvées.
+
+	\ssques Créer une fonction \begin{texttt}sauver\_res(nom\_fichier\_config, nom\_fichier\_res)\end{texttt} qui combine les fonctions \begin{texttt}voir\_polynome()\end{texttt} et \begin{texttt}save\_time()\end{texttt} pour sauvegarder dans un fichier résultat les coordonnées des racines trouvées, à partir du fichier de configuration, ainsi que la date d'exécution de la fonction.
+
+
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}

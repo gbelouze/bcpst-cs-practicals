@@ -1,0 +1,50 @@
+%! TEX root = ../main.tex
+
+\titre{Matrices}
+
+\exo
+Quelques manipulations de matrices.
+
+\ques Créer deux matrices 3x3 \verb!test1! et \verb!test2!.
+
+\quessques Ecrire une fonction \verb!somme_matrices(A,B)! qui vérifie si les matrices A et B sont de format compatible, le cas échéant en renvoie la somme A+B, et sinon affiche un message d'erreur. \\
+
+\NIB{Bonus pour les rapides :} et si, plus généralement, on veut faire une combinaison linéaire des matrices A et B, de la forme $a*A + b*B$, avec $a,b \in \mathds{R} $ ?
+
+\ssques Testez votre fonction sur vos deux matrices test.
+
+\quessques Ecrire une fonction \verb!produit_matriciel(A,B)! qui vérifie si les matrices A et B sont de format compatible, le cas échéant en renvoie le produit matriciel A*B, et sinon affiche un message d'erreur.
+
+\ssques Testez votre fonction sur vos deux matrices test. Puis testez-la sur deux autres matrices de formats différents, pour vous assurer du format de la matrice renvoyée.
+
+\quessques Ecrire une fonction \verb!transposee(A)! qui renvoie la transposée de A. \\
+\NIB{Rappel (ou découverte) :} la transposée d'une matrice $A_{ij}$ est la matrice $A^T = A_{ji}$, c'est-à-dire qu'on inverse les lignes et les colonnes.
+
+\ssques Testez votre fonction avec les matrices test dont vous disposez.
+
+\exo
+Manipulation de tableaux avec \verb!numpy!. \\
+Commencez par importer \verb!numpy! avec \verb!import numpy as np!. \\
+
+\commentaire{On va découvrir un nouveau type de variable : les arrays. Ce sont des tableaux au sens strict du terme, pas juste des listes de listes. Quel en est l'intérêt ? On peut faire bien plus de calculs avec les arrays, et notamment beaucoup de fonctions existent déjà. Notamment l'équivalent de ce que vous venez de coder.. \\
+	On ne vous demandera pas de connaître les différentes et nombreuses fonctions dont dispose \verb!numpy!, mais cela peut être utile d'avoir un aperçu de ce qui existe, notamment pour faire des graphiques facilement plus tard, en TP ou par exemple pour vos TIPE. Retenez que si vous avez besoin de quelque chose pour faire des calcus avec \verb!numpy!, demandez à internet si ça existe et en général la réponse sera oui.}
+
+\ques \textit{Création d'arrays}
+
+\ssques Créez une nouvelle variable \verb!test1_array! en transformant \verb!test1! en array. Pour cela, rien de plus simple, il suffit d'utiliser la fonction \verb!np.array!. \\
+\NIB{Rappel :} N'oubliez pas la fonction \verb!help!, qui vous donne accès à la documentation de fonctions !
+
+\ssques Pour créer des tableaux de manière "automatisée", \verb!numpy! dispose de certaines fonctions pratiques. Elles seront particulièrement utile pour faire des graphes. La première qu'on va voir est \verb!np.arange!, qui fonctionne comme \verb!range! : même fonctionnement avec un point de départ, de fin (exclu), un pas. En utilisant cette fonction, créez une liste (array 1D) d'entiers de 1 à 10, une liste des nombres pairs jusqu'à 20 (inclus), et inventez vos propres exemples.
+
+\ssques Une deuxième fonction pratique pour créer des listes est \verb!np.linspace!, qui permet d'avoir des points régulièrement espacés dans un intervalle donné. Regardez ce que renvoie \verb!np.linspace(0,1,10)!, faites d'autres tests.
+
+\newpage
+\ques \textit{Manipulation d'arrays}
+
+\ssques Essayez de multiplier \verb!test1! par un entier, puis par un nombre réel non entier. Essayez ensuite avec \verb!test1_array!, que comprenez-vous ?
+
+\ssques De même, essayez d'additionner un scalaire à \verb!test1!, puis à \verb!test1_array!, que comprenez-vous ?
+
+\ssques Que renvoie \verb!test1 + test2! ? et si on fait la même chose, mais avec deux arrays, que se passe-t-il ? Plus pratique que devoir coder une fonction qui fait ça manuellement, non ?
+
+\ssques A l'aide de \verb!np.dot!, faites le produit matriciel de \verb!test1! et \verb!test2!. Attention, cette fonction ne marche qu'avec des arrays. Eh oui, on a codé une fonction qui existait déjà et en mieux.. comme d'habitude finalement !

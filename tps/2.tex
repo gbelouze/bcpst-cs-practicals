@@ -1,0 +1,352 @@
+%! TEX root = ../main.tex
+
+\titre{Les types python}
+
+\commentaire{D'une manière générale, vous n'avez pas le droit d'utiliser de fonction préprogrammée de Python qui résoudrait directement le problème (comme la fonction \texttt{max()} pour la question \ref{maximum}, par exemple). Il s'agit ici de faire des boucles, des onditions, éventuellement d'utiliser les {\em listes par compréhension} (si vous les maîtrisez). \\
+
+Pour chaque question, commencez par vous demandez quels sont les paramètres de la fonction demandée (et si elle en a !), et ce qu'elle doit renvoyer (et si elle doit renvoyer quelque chose !).\\
+
+A l'écrit, la plupart du temps on vous imposera un nom de fonction, en vous indiquant au passage le nom des paramètres - c'est beaucoup plus simple à corriger, et cela évite des erreurs inutiles pour le candidats, livrés à eux-même devant leur copie. A l'oral vous n'aurez pas forcément cette aide.}
+
+
+\commentaire{Ce TP vous invite à de nombreuses reprises à consulter le cours de Python. Quand vous tombez sur une telle injonction, si vous maîtrisez déjà le paragraphe demandé, vous pouvez simplement le relire en diagonale pour vérifier et passer à la suite.}
+
+\commentaire{\NIB{Attention !} Vous devez toujours commencer par expliquer en français votre idée avant de l'implémenter. N'oubliez pas de commenter (notamment à quoi servent les variables), utilisez des noms explicites pour vos variables, et mettez des espaces un peu partout pour rendre lisible votre prose (en particulier pour compter les parenthèses\dots)}
+
+\exo
+
+\begin{enonce}
+[Les booléens]
+\ques Que fait la fonction suivante ?
+
+\begin{verbatim}
+def mafonc(n) :
+    return (n % 2) == 0
+\end{verbatim}    
+
+\ques Une fois définie, que produisent les commandes suivante :
+\begin{verbatim}
+>>> mafonc(3)
+>>> mafonc(2)
+>>> type(mafonc(3))
+\end{verbatim}
+\commentaire{Avec-vous compris les mots-clés \texttt{True} et \texttt{False} ? Leur type ? L'intérêt des variables de ce type et le genre d'opérations qu'on peut faire avec ?}
+
+\ques Soit $f : x\lmt \begin{syst}
+{rl}
+0&\si x\in [0,1]\cup[2,5[\\
+1 &\si x\in ]1,2[\\
+2&\sinon
+\end{syst}$.
+
+Faire une fonction \texttt{foncDeux(x)}, qui prend un réel $x$ et qui renvoie $f(x)$.
+
+\ques Faire une fonction \texttt{foncTrois(x)}, qui prend un réel $x$ et qui renvoie \texttt{True} si $x\in [0,1]\cup[2,5[$ et \texttt{False} sinon.
+
+\ques Que produit la commande suivante :
+\begin{verbatim}
+>>> True + True + False +True
+\end{verbatim}
+et celle-ci :
+\begin{verbatim}
+>>> True * True * False * True
+\end{verbatim}
+
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+
+\exo
+
+\begin{enonce}
+[Autour des chaînes de caractères]
+
+
+
+\ques Prendre le poly de Python, et vérifier (en faisant les exercices si nécessaire) que vous maîtrisez les paragraphes 4.3.1 et 4.3.2. L'opérateur $+$ est-il commutatif pour les chaînes de caractères ?
+
+\ques Faites un programme qui demande à l'utilisateur :
+\begin{itemize}
+\item \guill{entrez votre nom} (et qui stocke le nom dans une variable)
+\item \guill{{\em{(nom entré précédemment)}, entrez un nombre}} (et qui stocke le nombre dans une variable)
+\end{itemize}
+et enfin qui affiche :
+
+\cita
+{\em (le nom de l'utilisateur)}, le carré de votre nombre est : {\em (suivi de la valeur effective de $x^2$)}
+\atic
+
+
+\ques Prendre le poly de Python, et vérifier (en faisant les exercices si nécessaire) que vous maîtrisez les paragraphes 4.4.1, 4.4.2 et 4.4.3
+
+\ques Faire une fonction \texttt{frequence(machaine, carac)}  qui renvoie la fréquence du caractère \texttt{carac} dans la chaine \texttt{machaine}.
+
+\ques  Faire une fonction  \texttt{remplace\_TOUS\_car(chaine, carac, remplacant)} qui renvoie une copie de la chaine de caract\`{e}res \texttt{chaine} où  toute occurence du  caract\`{e}re \texttt{carac} est remplacée par le caractère \texttt{remplacant}.
+
+
+\ques  Faire une fonction  \texttt{remplace\_UN\_car(chaine, carac, remplacant)} qui renvoie une copie de la chaine de caract\`{e}res \texttt{chaine} où  la premi\`{e}re occurence du  caract\`{e}re \texttt{carac} est remplacée par le caractère \texttt{remplacant}.
+
+
+
+\ques  A l'aide d'une boucle, faire une fonction \texttt{es\_tu\_la(chaine, mot)} qui renvoie \texttt{True} si la chaine \texttt{mot}  est présente dans la chaine de caract\`{e}res \texttt{chaine}.
+
+\commentaire{La commande \texttt{in} permet de faire ça en une ligne (et plus vite). Si vous en avez besoin dans un programme long, vous pouvez l'utiliser, mais dans une question où c'est le BUT comme ici, il faut refaire ça à la main.}
+
+\ques Faire une fonction \texttt{estunpalindrome(machaine)} qui renvoie \texttt{True} si la chaîne \texttt{machaine} est un palindrome et \texttt{False} sinon.
+
+\commentaire{Un palindrome est une chaîne de caractères qui peut être lue dans les deux sens sans changer.}
+
+\ques (après avoir lu le paragraphe 3.9) Même question, mais la différence entre majuscules et minuscules ne doit pas compter.
+
+
+\exo
+
+\begin{enonce}
+[A la maison, travail plus long, et nécessitant de savoir lire un fichier texte]
+
+Le but est de pouvoir   déterminer si un texte (de taille suffisante),  donné sous format texte, est en allemand ou en français.
+\\
+
+Je ne vous donne pas la structure, seulement des propositions d'étapes,  vous allez devoir  réfléchir  à votre stratégie en amont, et peut-être expérimenter. Lisez donc tout l'énoncé pour vous faire une idée.\\
+
+
+\nipuce  Trouver sur internet un ou des livre(s) en français en fichier textes (par exemple : \href{http://abu.cnam.fr/} {http://abu.cnam.fr/}).\\
+
+\nipuce  Idem en Allemand.\\
+
+\nipuce Déterminer la fréquence de chaque lettre de l'alphabet dans les corpus précédents.\\
+
+\nipuce Déterminer la fréquence de chaque bigramme (deux lettres qui se suivent) de l'alphabet dans les corpus précédents.\\
+
+\nipuce  Alors ?
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+
+\exo
+
+\begin{enonce}
+[Autour des listes]
+
+\ques Prendre le poly de Python, et vérifier (en faisant les exercices si nécessaire) que vous maîtrisez les paragraphes 4.5.1 et 4.5.2, puis le paragraphe 3.9.
+
+\ques Considérons le script suivant. 
+\begin{verbatim}
+import matplotlib.pyplot as plt
+from math import  sin exp   # A quoi servent ces deux premières lignes
+
+def fonk(x) :
+    return sin(x)*exp(x)
+
+def fonction_mystere_1(a,b,n) :
+    '''
+    Que fait cette fonction ?
+    Que représentent ses paramètres ?
+    Que renvoie-t-elle ?
+    '''
+    reponse = [a]
+    p = (b-a)/n # A quoi sert cette variable ?
+    for k in range(n+1) :
+        reponse.append(a+k*p)
+    return reponse
+
+def fonction_mystere_2( l, f) :
+    '''
+    Que fait cette fonction ?
+    Que représentent ses paramètres ?
+    Que renvoie-t-elle ?
+    '''
+    reponse = []
+    for element in l :
+        reponse.append(f(element))
+    return reponse
+
+a , b = -1,  10
+# A quoi servent a et b ?  Ce 'a' est-il le même que celui de la fonction_mystere_1() ?
+
+Nb = 1000 # A quoi sert cette variable ?
+
+x = fonction_mystere_1(a,b,Nb)
+y = fonction_mystere_2(x, fonk)
+
+plt.figure("ceci n'est pas un graphe") 
+plt.plot(x,y)
+plt.show()
+\end{verbatim}
+\ssques Que fait-il ? (en une ligne)
+\ssques Répondre aux questions posées en commentaire (ce seraient les commentaires à aire dans le code)
+
+\ssques Pourquoi avoir défini à part la fonction \texttt{fonk(x)} plutôt que la mettre directement où on en a besoin ?
+%\ssques A quoi servent  les fonctions \texttt{fonction\_mystere\_1} et \texttt{fonction\_mystere\_2} ?
+
+\ssques (optionnelle ! question à faire après avoir compris le paragraphe 4.5.8 du cours de Python, qui est optionnel au programme)
+Redéfinir les deux fonctions précédentes à l'aide de la syntaxe \guill{en compréhension}.
+
+\ques Considérons la suite définie par $u_0=2$ et $\forall n\in\N, u_{n+1}=\sqrt{1+u_n^2}$.
+
+\ssques Faire une fonction \texttt{unTerme(n)} qui renvoie le $n°$ terme de la suite.
+
+\ssques Faire une fonction \texttt{listeDeTermes(n)} qui renvoie la liste $[u_0,u_1,\dots,u_n]$.
+
+\ssques En utilisant le module matplotlib, faire une fonction \texttt{traceTermes(n)} qui trace les termes $[u_0,\dots u_n]$
+
+\ssques Faire un fichier python \texttt{suites\_recurrentes.py} contenant des variantes des fonctions précédentes permettant de faire les opérations considérées en tapant simplement dans le fichier le premier terme $u_0$ et  la fonction de récurrence (\cad la fonction $f$ telle que $u_{n+1}=f(u_n)$).
+
+\ques \label{maximum}Faire une fonction \texttt{maximum(maliste)} qui renvoie le maximum de la  liste \texttt{maliste}, supposée composée de nombres.
+
+
+
+
+\ques  Faire une fonction \texttt{estendouble(maliste, objet)} qui v\'{e}rifie si l'objet \texttt{objet} est pr\'{e}sent (au moins) en double dans la liste \texttt{maliste} (renvoie \texttt{True} dans ce cas, et \texttt{False} sinon.)
+
+\ques  Faire une fonction \texttt{yadesdoubles(maliste)} qui v\'{e}rifie si la liste \texttt{maliste} contient au moins un élément en double (renvoie \texttt{True} dans ce cas, et \texttt{False} sinon.).
+
+
+%\ques  Faire une fonction qui d\'{e}termine si une liste est un palindrome ou non
+
+
+
+%\ques  Faire une fonction d'arguments $L$ et $elt$ qui d\'{e}termine dans la liste d'\'{e}l\'{e}ments $ L$ la position du plus long encha\^{\i}nement de l'\'{e}l\'{e}ment $elt$.
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+\exo
+
+\begin{enonce}
+[Caractère \guill{en place} (ou pas) d'une fonction prenant une liste en paramètre]
+
+\commentbox{Avant de vous faire travailler, commençons par expliquer le concept d'algorthme \guill{en place}.}
+
+
+  Un algorithme (cas typique un algorithme de tri de listes) est dit \guill{en place} lorsqu'il ne renvoie pas de résultat, mais modifie  la liste donnée en paramètre.
+\\
+
+
+
+\nipuce Avant de donner des exemples, il faut bien comprendre que ceci n'a de sens que pour les paramètres de type \texttt{list} ! En effet, c'est le seul type de variable {\em mutable} qui soit au programme en BCPST, et par conséquent, le seul type de variable qu'on puisse modifier au sein d'une fonction. Exemple :
+
+
+\begin{verbatim}
+>>> ma_chaine = "bou"
+>>> ma_liste = [6,7,8]
+>>> ma_chaine[0] = "Z"
+
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+
+>>> ma_liste[0] = 1
+>>> ma_liste
+[1, 7, 8]
+
+\end{verbatim}
+
+
+\commentaire{
+Avant les exemples, profitons-en pour rappeler la différence de syntaxe, expliquée  entre autres dans les paragraphe 3.9, 4.3.4 et 4.5.7 du poly de cours,  entre une {\em méthode} et une fonction {\em fonction} (ces deux termes étant à prendre ici au sens de Python).\\
+
+\nipuce une fonction \texttt{ma\_fonction()} s'applique comme une fonction mathématique.
+
+ Syntaxe : \texttt{ma\_fonction(ses\_parametres)}. Exemple : \texttt{len(ma\_liste)}\\
+
+\nipuce une méthode \texttt{ma\_methode()} EST ATTACHEE à un objet par l'opérateur \guill{.}. 
+
+Syntaxe: \texttt{mon\_objet.ma\_methode(parametres\_de\_la\_methode)}. 
+
+Exemple : \texttt{ma\_liste.append(un\_objet)}
+}
+
+
+\nipuce \NIB{Passons à l'exemple des méthodes de tri fournies par Python} : la méthode \texttt{sort()} et la fonction \texttt{sorted()}.\\
+
+
+
+
+\nipuce  \ul{La méthode \texttt{sort()}} : Elle implémente un algorithme de tri \guill{en place} :
+\begin{verbatim}
+>>> maliste = [3,4,1,5]
+
+>>> maliste.sort()
+
+>>> maliste
+[1, 3, 4, 5]
+\end{verbatim}
+
+Comme cet algorithme est \guill{en place}, cette méthode ne \guill{renvoie} rien :
+\begin{verbatim}
+>>> maliste = [3,4,1,5]
+
+>>> a = maliste.sort()
+
+>>> print(a)
+None
+\end{verbatim}
+
+
+
+
+
+
+\nipuce  Par contre, la fonction \texttt{sorted()} n'est pas \guill{en place} : elle ne modifie pas la liste donnée, mais crée et renvoie une nouvelle liste :
+\begin{verbatim}
+>>> maliste = [3,4,1,5]
+>>> a = sorted(maliste)
+>>> a
+[1, 3, 4, 5]
+>>> maliste
+[3, 4, 1, 5]
+\end{verbatim}
+
+
+\commentaire{Je ne parle pas du caractère \guill{en place} comme d'un but à atteindre mais simplement pour une raison pratique : si vous utilisez un algorithme, il faut ben savoir s'il produit une nouvelle liste ou s'il modifie celle qu'on lui donne !}\\
+
+Allez, à vous maintenant :
+
+\ques Avez-vous compris ce qui précède ?
+
+\ques  Lire le paragraphe 4.5.3  et le paragraphe 4.5.6 du cours de Python (en faisant bien par le dernier exercice).
+
+
+
+
+\end{enonce}
+
+\begin{correction}
+
+\end{correction}
+
+
+\exo
+
+\begin{enonce}
+[Approfondissons les itérables : chaînes de caractères, listes, mais aussi \guill{tuples} et \guill{range}]
+
+Il serait temps de maîtriser entièrement les paragraphes 4.4 et 4.5 du poly de cours ! 
+
+
+\end{enonce}
+
+
+\begin{correction}
+
+\end{correction}

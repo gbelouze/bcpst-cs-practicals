@@ -1,0 +1,26 @@
+\documentclass[english, french]{book}
+\input{config.tex}
+\setboolean{fulltp}{true}
+
+\whennotfulltp{\includeonly{tps/10.tex}}
+
+\begin{document}
+\whenfulltp{ \maketitle }
+
+\whenfulltp{ \part{TPs} }
+\include{tps/1.tex}
+\include{tps/2.tex}
+\include{tps/3.tex}
+\include{tps/4.tex}
+\include{tps/5.tex}
+\include{tps/6.tex}
+\include{tps/7.tex}
+\include{tps/8.tex}
+\include{tps/9.tex}
+\include{tps/10.tex}
+
+\whenfulltp{ \part{Devoirs} }
+\include{exams/18-03.tex}
+\include{exams/18-03-correction.tex}
+
+\end{document}
