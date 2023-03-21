@@ -1,0 +1,70 @@
+\exam{Dictionnaires, Tris et Dichotomie}{18-03-2023}
+
+Les barèmes sont indicatifs et pourront être reconsidérés.
+
+\section*{Recherche d'un élément dans une liste triée (7 points)}
+
+\ques Parmi les fonctions suivantes, prenant en argument un élément \texttt{x} et une liste \emph{triée dans l'ordre décroissant} \texttt{L}, donnez sans justification \emph{toutes} celles qui renvoient \texttt{True} lorsque \texttt{x} est dans \texttt{L} et \texttt{False} si \texttt{x} n'est pas dans \texttt{L}.
+
+\begin{multicols}{3}
+    \inputminted{python}{minted/exams/find1.py}
+    \inputminted{python}{minted/exams/find2.py}
+    \columnbreak
+    \inputminted{python}{minted/exams/find3.py}
+    \inputminted{python}{minted/exams/find4.py}
+    \columnbreak
+    \inputminted{python}{minted/exams/find5.py}
+    \inputminted{python}{minted/exams/find6.py}
+    \inputminted{python}{minted/exams/find7.py}
+\end{multicols}
+
+\section*{Décodage d'un texte (21 points)}
+
+Le but de cette section est d'étudier une technique d'attaque du chiffrement de César, dite \guill{attaque par analyse de fréquence}. 
+
+\paragraph*{Rappel sur le chiffrement de César} On considère un texte $ m $ écrit en minuscule avec les 26 lettres de l'alphabet latin et des espaces. Le $ k $-\emph{chiffré} de César de $ m $, que l'on note $ m_k $ est obtenu en changeant chaque lettre de $ m $ par celle $ k $-position plus loin dans l'alphabet (et en recommencant à \texttt{a} lorsqu'on dépasse \texttt{z}).\\
+Par exemple, soit $ u = \texttt{"vive python"}$, le $ 3 $-chiffré de $ u $ est \[
+    u_3 = \texttt{ylyh sbwkrq}
+\]
+Notons que $ k $ peut être négatif, ce qui correspond à décaler dans l'alphabet vers la gauche (et en recommencant à \texttt{z} lorsqu'on dépasse \texttt{a}). Par exemple, le $ -3 $-chiffré de $ u $ est \[
+    u_{-3} = \texttt{sfsb mvqelk}
+\]
+\quessques (1 point) Donner $ v_{-1} $ le $ -1 $-chiffré de $ v = \texttt{bcpst} $.
+\ssques (1 point) Donner $ (v_{-1})_1 $ le $ 1 $-chiffré du message obtenu à la question précédente. Que remarquez vous ?\\
+
+On dispose du dictionnaire 
+\begin{minted}{python}
+    dico_cesar0 = {
+        'a' : 0,
+        'b' : 1,
+        'c' : 2,
+           ...
+        'z' : 25
+    }
+\end{minted}
+et de la chaîne de caractères
+\begin{minted}{python}
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+\end{minted}
+\quessques (2 points) Compléter la fonction \mintinline{python}{dico_cesar(k)} suivante qui prend en argument un entier $ k $ et renvoie un dictionnaire dont les clefs sont les lettres de l'alphabet et les valeurs leur position dans l'alphabet, de 0 à 25, décalée de $ k $ modulo $ 26 $. Par exemple, \mintinline{python}{dico_cesar(0)} doit renvoyer un dictionnaire égal à \mintinline{python}{dico_cesar0}, et \mintinline{python}{dico_cesar(1)} doit renvoyer
+\begin{minted}{python}
+    { 'a' : 1, 'b' : 2, ..., 'y' : 25, 'z' : 0 }
+\end{minted}
+\inputminted{python}{minted/exams/dico_cesar.py}
+\ssques (1 point) À quoi est égal \mintinline{python}{dico_cesar(26)} ?
+\quessques (1 point) Si \texttt{c} est un caratère minuscule (soit \mintinline{python}{'a'}, soit \mintinline{python}{'b'}, ..., soit \mintinline{python}{'z'}), que vaut \mintinline{python}{alphabet[dico_cesar0[c]]} ?
+\ssques (4 point) Compléter la fonction \mintinline{python}{code_cesar(message, k)} suivante qui prend en argument
+\begin{itemize}[label=$ \bullet $]
+    \item une chaîne de caractères \texttt{message} représentant un message $ m $ composée d'espaces et de lettres minuscules
+    \item un entier \texttt{k}
+\end{itemize}
+et renvoie une chaîne de caractères représentant $ m_k $ le $ k $-chiffré de César de $ m $.
+\inputminted{python}{minted/exams/code_cesar.py}
+\ssques (2 point) En déduire et écrire une fonction \mintinline{python}{decode_cesar(message_code, k)} qui prend en argument un entier \texttt{k} et une chaîne de caractères \texttt{message\_code} représentant un message codé $ m_k $, et renvoie le message original $ m $.\\
+
+Si l'on connaît $ k $, il est donc facile de déchiffrer $ m_k $. Le but de l'attaque par analyse de fréquence est de deviner $ k $ à partir de $ m_k $. Supposons que l'on sait que le message $ m $ est écrit en français et est assez long. Alors la lettre \texttt{e}, qui est la lettre la plus fréquente en français, a de bonnes chances d'être présente le plus grand nombre de fois dans $ m $ par rapport à n'importe quelle autre lettre. On va donc trouver $ x $ la lettre la plus fréquente dans $ m_k $ et partir du principe que \texttt{e} a été encodé vers $ x $, en déduire $ k $ et enfin décoder $ m_k $.
+\quessques (4 point) Écrire une fonction \mintinline{python}{caractere_le_plus_frequent(message)} qui prend en argument une chaîne de caratères \texttt{message} composée d'espaces et de lettres minuscules, et renvoie la lettre qui apparaît le plus grand nombre de fois dans \texttt{message}. S'il y a égalité entre plusieurs lettres, on renvoie n'importe quelle lettre parmi celles qui font égalité. Attention, il faut ignorer les espaces !
+\ssques (2 point) Écrire une fonction \mintinline{python}{devine_k(x)} qui prend en argument le caractère vers qui est encodé la lettre \texttt{e} (attention, ce n'est pas forcément la lettre \texttt{x}), et renvoie \texttt{k} le décalage qui a été utilisé dans le code de César. Par exemple, \mintinline{python}{devine_k('e')} renvoie \texttt{0}, \mintinline{python}{devine_k('f')} renvoie \texttt{1} et \mintinline{python}{devine_k('d')} renvoie $ 25 $.
+\quessques (2 point) Déduire des questions précédentes une fonction \mintinline{python}{craque_code_cesar(message_code)} qui prend en argument une chaîne de caratères \texttt{message\_code} représentant un message en français codé par chiffrement de César et renvoie le message décodé par analyse de fréquence.
+\ssques (1 point) La fonction précédente permet-elle de décoder le message codé tout le temps ?
+

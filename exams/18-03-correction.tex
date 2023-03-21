@@ -1,0 +1,39 @@
+\correctionExam{Dictionnaires, Tris et Dichotomie}{18-03-2023}
+
+\section*{Recherche d'un élément dans une liste triée}
+
+\ques Les fonctions correctes sont les fonctions \texttt{find3}, \texttt{find4}, et \texttt{find7}.\\
+
+Justification (non demandée):
+\begin{itemize}[label=$ \bullet $]
+    \item \texttt{find1} fonctionne sur une liste triée dans l'ordre croissant.
+    \item \texttt{find2} regarde si \emph{tous} les éléments de \texttt{L} sont \texttt{x}.
+    \item \texttt{find5} risque de tomber dans une boucle infinie, par exemple avec \mintinline{python}{find5(1, [0])}.
+    \item \texttt{find6} regarde si \emph{le premier} élément de \texttt{L} est \texttt{x}.
+\end{itemize}
+Et oui, \texttt{find7} fonctionne bien car la liste est triée dans l'ordre décroissant, donc on peut s'arrêter dès qu'on trouve un élément plus petit que \texttt{x}.
+
+\section*{Décodage d'un texte}
+
+\quessques $ v_{-1} = \texttt{abors} $
+\ssques $ (v_{-1})_{1} = \texttt{bcpst} $. On remarque que $ (v_{-1})_1 = v $.\\
+Plus généralement, pour tout message $ m $, pour tout $ k \in \Z$, $ (m_k)_{-k} = m$ (non demandé, mais important à remarquer pour la question 4c).
+
+\quessques \inputminted{python}{minted/exams/dico_cesar_correction.py}
+
+\ssques \mintinline{python}{dico_cesar} est $ 26 $-périodique, donc \mintinline{python}{dico_cesar(26)} est égal à \mintinline{python}{dico_cesar(0)}, c'est à dire \mintinline{python}{dico_cesar0}.
+
+\quessques \mintinline{python}{alphabet[dico_cesar0[c]]} est égal à \texttt{c}.
+\ssques \inputminted{python}{minted/exams/code_cesar_correction.py}
+\ssques Pour décoder un message, il suffit de décaler dans l'autre sens.
+\inputminted{python}{minted/exams/decode_cesar_correction.py}
+
+\quessques \inputminted{python}{minted/exams/caractere_le_plus_frequent_correction.py}
+\ssques \inputminted{python}{minted/exams/devine_k_correction.py}
+
+\quessques \inputminted{python}{minted/exams/craque_code_cesar_correction.py}
+\ssques La technique de craquage par analyse de fréquence ne fonctionne que si \texttt{e} est effectivement la lettre la plus fréquente dans le message originel. Par exemple, cela échoue sur le texte suivant car les lettres les plus fréquentes sont \texttt{a} et \texttt{m}
+\begin{verbatim}
+    j aime la bio mais j aime mieux l informatique
+\end{verbatim}
+
