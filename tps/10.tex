@@ -6,19 +6,19 @@
 
 \inputminted{python}{minted/10/cheat_sheet_numpy.py}
 
-\section{Images en noir et blanc}
+\section*{Images en noir et blanc}
 
-\subsection{Qu'est-ce qu'une image}
+\subsection*{Qu'est-ce qu'une image}
 
 \paragraph*{} Une image en noir et blanc en informatique est tout simplement une grille de pixels gris. Un pixel gris contient une unique valeur entre $ 0 $ (noir) et $ 255 $ (blanc) (voir \autoref{fig:grid-of-pixel}). Par exemple, un pixel de valeur $ 50 $ sera gris foncé, et un pixel de valeur $ 200 $ sera gris très clair.
 
 \begin{figure}[h!]
     \begin{center}
         \subfloat[une image grise]{
-            \includegraphics[width=0.45\textwidth]{figures/poivrons_grey.png}
+            \includegraphics[width=0.45\textwidth]{figures/10/poivrons_grey.png}
         }
         \subfloat[zoom sur le carré rouge]{
-            \includegraphics[width=0.45\textwidth]{figures/poivrons_window_grey.png}
+            \includegraphics[width=0.45\textwidth]{figures/10/poivrons_window_grey.png}
         }
     \end{center}
     \caption{Une image est une grille de pixels}
@@ -29,13 +29,13 @@ Une image est donc naturellement représentée par une matrice $ M $ d'entiers e
 
 \begin{figure}[h!]
     \begin{center}
-        \includegraphics[width=0.65\textwidth]{figures/image_grise.png}
+        \includegraphics[width=0.65\textwidth]{figures/10/image_grise.png}
     \end{center}
     \caption{ Convention image}
     \label{fig:convention-image}
 \end{figure}
 
-\subsection{Importer, affichage, manipuler, sauver}
+\subsection*{Importer, affichage, manipuler, sauver}
 
 \paragraph*{Modules utiles} On utilise le module \texttt{PIL} pour ouvrir, sauvegarder et afficher des images. On utile \texttt{numpy} pour les manipuler.
 
@@ -78,27 +78,27 @@ Puis on écrit en début de fichier
 
 \ques Vérifiez que vous arrivez à exécuter les étapes ci-dessus pour finalement produire une version grise de l'image \texttt{poivrons.png}.
 
-\subsection{Manipulation basique d'image}
+\subsection*{Manipulation basique d'image}
 
 \ques Créez les images \autoref{fig:basic-manipulation}
 
 \begin{figure}[!h]
     \begin{center}
         \subfloat[Image mirroir]{
-            \includegraphics[width=0.3\textwidth]{figures/mirror.png}
+            \includegraphics[width=0.3\textwidth]{figures/10/miroir.png}
         }
         \subfloat[Image en négatif]{
-            \includegraphics[width=0.3\textwidth]{figures/negatif.png}
+            \includegraphics[width=0.3\textwidth]{figures/10/negatif.png}
         }
         \subfloat[Moitié gauche]{
-            \includegraphics[width=0.15\textwidth]{figures/left_half.png}
+            \includegraphics[width=0.15\textwidth]{figures/10/moitie_gauche.png}
         }
     \end{center}
     \caption{Manipulations basiques d'images}
     \label{fig:basic-manipulation}
 \end{figure}
 
-\subsection{Jeu sur la luminosité}
+\subsection*{Jeu sur la luminosité}
 
 Le but de cette question est d'éclaircir une image. Pour éclaircir une image, il faut globalement augmenter la valeur des pixels. Mais attention, on ne peut pas juste ajouter une constante car la valeur des pixels ne doit pas dépasser 255. À la place, il faut trouver une fonction \[
     eclair:
@@ -113,7 +113,7 @@ telle que $ eclair(x) \geq x $.
 
 \begin{figure}[h!]
     \begin{center}
-        \includegraphics[width=0.4\textwidth]{figures/eclair.png}
+        \includegraphics[width=0.4\textwidth]{figures/10/eclair_func.png}
     \end{center}
     \caption{Fonction d'éclaircissement}
     \label{fig:eclair-func}
@@ -131,11 +131,11 @@ telle que $ eclair(x) \geq x $.
     \begin{center}
         \subfloat[Image éclaircie]{
             \label{fig:img-eclaircie}
-            \includegraphics[width=0.4\textwidth]{figures/eclairci.png}
+            \includegraphics[width=0.4\textwidth]{figures/10/eclairci.png}
         }
         \subfloat[Image assombrie]{
             \label{fig:img-assombrie}
-            \includegraphics[width=0.4\textwidth]{figures/noirci.png}
+            \includegraphics[width=0.4\textwidth]{figures/10/noirci.png}
         }
     \end{center}
     \caption{Changement de luminosité}
@@ -143,18 +143,37 @@ telle que $ eclair(x) \geq x $.
 
 \ssques Trouver une transformation pour obtenir une image cette fois-ci assombrie, comme \autoref{fig:img-assombrie}.
 
+\subsection*{Jeu sur les contrastes}
+
+Une image est très contrastée lorsque les zones sombres sont très sombres et les zones claires très claires, c'est-à-dire que l'ensemble des valeurs des pixels a une grande variance. À l'inverse, une image est peu contrastée si elle est globalement grise, c'est-à-dire que l'ensemble des valeurs des pixels a une faible variance. 
+
+
+\quessques Trouver deux fonctions dont le graphe ressemble à ceux \autoref{fig:contraste-funcs}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{figures/10/contraste_func.png}
+        \includegraphics[width=0.4\textwidth]{figures/10/decontraste_func.png}
+    \end{center}
+    \caption{Fonctions de contrastes}
+    \label{fig:contraste-funcs}
+\end{figure}
+
+\ssques Recréer les images \autoref{fig:contraste-imgs}
+
 \begin{figure}[h!]
     \begin{center}
         \subfloat[Image contrastée]{
             \label{fig:img-contrast}
-            \includegraphics[width=0.4\textwidth]{figures/contrasted.png}
+            \includegraphics[width=0.4\textwidth]{figures/10/contraste.png}
         }
         \subfloat[Image peu contrastée]{
             \label{fig:img-low-contrast}
-            \includegraphics[width=0.4\textwidth]{figures/less_contrasted.png}
+            \includegraphics[width=0.4\textwidth]{figures/10/decontraste.png}
         }
     \end{center}
     \caption{Changement de contrastes}
+    \label{fig:contraste-imgs}
 \end{figure}
 
 
