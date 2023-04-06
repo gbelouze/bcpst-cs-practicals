@@ -1,0 +1,158 @@
+\section{Aide-mémoire}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|ll|}
+		\hline
+		\mintinline{sql}{SELECT}                       & sélection des colonnes                              \\
+		\mintinline{sql}{SELECT DISTINCT}              & sélection sans doublon                              \\
+		\mintinline{sql}{FROM table}                   & nom d'une table                                     \\
+		\mintinline{sql}{WHERE condition}              & imposer une condition                               \\
+		\mintinline{sql}{GROUP BY expression}          & grouper les résultats                               \\
+		\mintinline{sql}{HAVING condition}             & condition sur un groupe                             \\
+		\mintinline{sql}{ORDER BY expression ASC/DESC} & trier les résultats par ordre croissant décroissant \\
+		                                               &                                                     \\
+		\mintinline{sql}{LIMIT n}                      & limiter à $ n $ enregistrements                     \\
+		\mintinline{sql}{OFFSET n}                     & débuter à partir de $ n $ enregistrements           \\
+		                                               &                                                     \\
+		\mintinline{sql}{UNION | INTERSECT | EXCEPT}   & Opérations ensemblistes sur les requêtes            \\
+		\hline
+	\end{tabular}
+	\caption{Syntaxe de base}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|ll|}
+		\hline
+		\mintinline{sql}{COUNT()} & nombre d'enregistrements      \\
+		\mintinline{sql}{MAX()}   & valeur maximale d'un attribut \\
+		\mintinline{sql}{MIN()}   & valeur minimale d'un attribut \\
+		\mintinline{sql}{SUM()}   & somme d'un attribut           \\
+		\mintinline{sql}{AVG()}   & moyenne d'un attribut         \\
+		\hline
+	\end{tabular}
+	\caption{Fonctions d'agrégation}
+	\label{tab:agregation-func}
+\end{table}
+
+
+Structure d'un \mintinline{sql}{JOIN}:
+
+\begin{minted}{sql}
+    SELECT t1.name1, t2.name2
+        FROM table1 AS t1
+            JOIN table2 As t2
+            ON t1.col1 = t2.col2
+        WHERE condition
+\end{minted}
+
+Ou même d'un \mintinline{sql}{JOIN} multiple
+\begin{minted}{sql}
+    SELECT t1.name1, t2.name2, t3.name3
+        FROM table1 AS t1
+            JOIN table2 AS t2 ON t1.col1 = t2.col2
+            JOIN table3 AS t3 ON ...
+            JOIN table4 AS t4 ON ...
+        WHERE condition
+\end{minted}
+
+Structure d'une agrégation:
+
+\begin{minted}{sql}
+    SELECT name
+        FROM table
+        GROUP BY column
+        HAVING condition
+\end{minted}
+
+Lors d'une agrégation, on peut faire intervenir les fonctions d'agrégations \ref{tab:agregation-func} pour réaliser des calculs au sein de chaque groupe.
+
+
+\section{Exercices}
+
+On dispose des tables décrites \autoref{fig:mondiale}. On marque par $ \star $ les colonnes qui forment la clef primaire de la table.
+\begin{figure}[h!]
+	\centering
+	\subfloat[Table \texttt{country}]{
+		\begin{tabular}{|cccccc|}
+			\hline
+			\texttt{Name} & \texttt{Code}$ \star $ & \texttt{Capital} & \texttt{Province} & \texttt{Area}                        & \texttt{Population} \\
+			              &                        &                  &                   & Surface du pays en $ \textrm{km}^2 $ &                     \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{encompasses}]{
+		\begin{tabular}{|ccc|}
+			\hline
+			\texttt{Country}$ \star $                 & \texttt{Continent}$ \star $ & \texttt{Percentage}                                 \\
+			Clef étrangère pour \texttt{country.Code} &                             & Pourcentage de la surface du pays dans le continent \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{city}]{
+		\begin{tabular}{|cccccc|}
+			\hline
+			\texttt{Name}$ \star $ & \texttt{Country}$ \star $                 & \texttt{Province} & \texttt{Population} & \texttt{Longitude} & \texttt{Latitude} \\
+			                       & Clef étrangère pour \texttt{country.Code} &                   &                     &                    &                   \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{spoken}]{
+		\begin{tabular}{|ccc|}
+			\hline
+			\texttt{Country}$ \star $                 & \texttt{Language}$ \star $ & \texttt{Percentage}                                      \\
+			Clef étrangère pour \texttt{country.Code} &                            & Pourcentage de la population du pays qui parle la langue \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{economy}]{
+		\begin{tabular}{|ccc|}
+			\hline
+			\texttt{Country}$ \star $                 & \texttt{GDP}                       & \texttt{Agriculture}                        \\
+			Clef étrangère pour \texttt{country.Code} & Le PIB en million de dollars       & La part de l'agriculture dans le PIB, en \% \\
+			\hline
+			\texttt{Service}                          & \texttt{Industry}                  & \texttt{Inflation}                          \\
+			La part des services dans le PIB          & La part de l'industrie dans le PIB & Le taux d'inflation                         \\
+			\hline
+			\texttt{Unemployment}                     &                                    &                                             \\
+			Le taux de chômage                        &                                    &                                             \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Structure de la base de données \textsc{Mondial}}
+	\label{fig:mondiale}
+\end{figure}
+
+
+\begin{enonce}[Requêtes de base]
+	Rédiger une requête SQL pour obtenir
+	\ssques La liste des pays dont la population excède 60M habitants
+	\ssques La même liste triée par ordre alphabétique
+	\ssques La liste des pays et de leurs populations respectives, triée par ordre croissant de population
+	\ssques Le nom des dix pays ayant la plus petite superficie
+	\ssques Le nom des dix suivants
+\end{enonce}
+
+\begin{enonce}[Jointures]
+	Rédiger une requête SQL pour obtenir
+	\ssques Le nom des pays qui sont à cheval sur plusieurs continents
+	\ssques Les pays du continent américain qui comptent moins de 10 habitants par $ \textrm{km}^2 $
+	\ssques Les capitales européennes situées à une latitude supérieure à $ 60^{\circ} $
+\end{enonce}
+
+\begin{enonce}[Fonctions d'agrégation]
+	\ssques Donner la liste ordonnée des dix langues parlées dans le plus de pays différents.
+	\ssques Quelles sont les langues parlées dans exactement 6 pays ? Et de quel pays s'agit-il ?
+	\ssques Quelles sont les langues parlées par moins de 30 000 personnes dans le monde ?
+	\ssques Quelles sont les 5 langues les plus parlées en Afrique ? Préciser pour chacune d'elle le nombre de personnes qui la parlent.
+\end{enonce}
+
+\begin{enonce}[Sous-requêtes]
+	\ssques Déterminer les pays majoritairement agricoles dont le taux de chômage est inférieur à la moyenne mondiale.
+	\ssques Déterminer pour chaque continent le pays au taux d'inflation le plus faible parmi les pays majoritairement industriels.
+\end{enonce}
