@@ -33,12 +33,11 @@
 \renewcommand{\thequesCtr}{{\bf \arabic{quesCtr}}}
 \renewcommand{\thessQuesCtr}{\thequesCtr{\bf.\alph{ssQuesCtr}}}
 
-\newcommand{\exo}{\refstepcounter{exoCtr}}
-
 \newenvironment{enonce}[1][]{
 	\bigskip
+    \refstepcounter{exoCtr}
 
-	\noindent {{\bf Exercice \theexoCtr} ~~~} {\em #1}
+    \noindent {{\bf Exercice \arabic{exoCtr}} ~~~} {\em #1}
 
 	\smallskip
 	\setcounter{quesCtr}{0}

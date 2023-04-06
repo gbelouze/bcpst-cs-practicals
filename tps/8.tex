@@ -9,7 +9,6 @@ Il existe déjà des fonctions optimisées pour trier des listes. On va les pré
 
 %  Un algorithme (cas typique un algorithme de tri de listes) est dit \guill{en place} lorsqu'il ne renvoie pas de résultat, mais modifie  la liste donnée en paramètre.
 
-\exo
 \textit{Les fonctions et méthodes de tri déjà existantes dans python}\\
 
 \nipuce \ul{La méthode \texttt{sort()}} : Elle implémente un algorithme de tri \guill{en place}\\
@@ -50,7 +49,6 @@ Comme cet algorithme est \guill{en place}, cette méthode ne \guill{renvoie} rie
 \ques Faites des tests par vous-mêmes, en faisant attention à si vous créez une nouvelle liste ou modifiez l'existante !
 
 \newpage
-\exo
 \textit{Tri à bulles}\\
 C'est l'algorithme de tri le plus simple :
 \begin{enumerate}
@@ -87,7 +85,6 @@ Cet algorithme est-il en place ?
 \NIB{Astuce :} vous pouvez placer des \texttt{print} stratégiques pour visualiser ce que fait l'algorithme étape par étape. Par exemple, regardez quels élément sont déplacés, que devient la liste au fur et à mesure.
 \ssques Modifier la fonction pour que le tri se fasse dans l'ordre décroissant.
 
-\exo
 \textit{Tri par insertion} \\
 Le principe : on constitue (imaginairement) 2 tas : \\
 \begin{enumerate}
@@ -126,7 +123,6 @@ En pseudo-code, l'algorithme de Tri par insertion s'écrit :
 \ques Ecrire en Python une fonction \texttt{tri\_Insertion(liste)} prenant en paramètre une liste \texttt{liste}, et qui trie \texttt{liste} dans le sens croissant par un tri par insertion.
 \NIB{Bonus :} Modifier l'algorithme pour que le tri se fasse dans l'ordre décroissant.
 
-\exo
 \textit{Tri par sélection}
 
 Pour un tableau de $N$ éléments, il consiste à :
@@ -140,7 +136,6 @@ Pour un tableau de $N$ éléments, il consiste à :
 \ques Ecrire une fonction \texttt{indiceMax(liste,i)} prenant en paramètre une liste numérique \texttt{T} et un entier \texttt{i} et qui retourne l'indice du plus grand élément de \texttt{liste} d'indice au plus \texttt{i}.
 \ques L'utiliser pour écrire une fonction \texttt{tri\_selection()} qui applique l'algorithme de tri par sélection.
 
-\exo
 \textit{Tri comptage}
 
 Lorsque on est en présence d'une liste, où la valeur des éléments est connue a priori, et en petit nombre, l'ordonner peut s'exécuter plus rapidement par un tri comptage. Le principe est le suivant :\\
