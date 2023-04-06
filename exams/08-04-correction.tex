@@ -1,0 +1,95 @@
+\correctionExam{Manipulation d'images, requêtes SQL}{18-03-2023}
+
+\section*{Requêtes SQL}
+\ques Les espaces, l'indentation, les retours à la ligne, le choix de majuscule/minuscule n'importent pas.
+\ssques \mintinline{sql}{SELECT Title FROM publication;}
+\ssques \begin{minted}{sql}
+    SELECT Title, Year
+        FROM publication
+        ORDER BY Year ASC
+        LIMIT 5;
+\end{minted}
+\ssques \begin{minted}{sql}
+    SELECT Count(*)
+        FROM publication
+        WHERE Year > 1980;
+\end{minted}
+
+\ssques \begin{minted}{sql}
+    SELECT p.Title
+        FROM publication as p JOIN author as a ON a.Article = p.DOI
+        WHERE a.Name = "Curie" AND a.FirstName = "Marie";
+\end{minted}
+
+\ssques \begin{minted}{sql}
+    SELECT a.Name, p.Title
+        FROM publication as p JOIN author as a ON a.Article = p.DOI
+        WHERE a.Rank = 1 AND p.Year > 2000 AND p.Field = "Biology";
+\end{minted}
+
+\ssques \begin{minted}{sql}
+    SELECT a1.Name
+        FROM author as a1 JOIN author as a2 ON a1.DOI = a2.DOI
+        WHERE (a1.Name != "Turing" OR a1.FirstName != "Alan")
+            AND a2.Name = "Turing" AND a2.FirstName = "Alan";
+\end{minted}
+
+\section*{Manipulation d'images}
+
+\ques
+\ssques $ M^{\leftrightarrow} $ a la même dimension que $ M $, donc $ m \times n $
+\ssques $ M^{\leftrightarrow}_{i,j} = M_{i, n-j} $
+\ssques \begin{minted}{python}
+    def  reflexion_horizontale(img):
+        h, w = np.shape(img)
+        ret = np.zeros((h, w))
+        for i in range(h):
+            for j in range(w):
+                ret[i, j] = img[i, w-j]
+        return ret
+
+    # ou encore
+    def  reflexion_horizontale(img):
+        return img[:, ::-1]
+\end{minted}
+
+\ques
+\ssques $ M^T $ a dimension $ n \times m $.
+\ssques $ M^t_{i,j} = M_{j, i} $
+\ssques \begin{minted}{python}
+    def transpose(img):
+        h, w = np.shape(img)
+        ret = np.zeros((w, h))
+        for i in range(w):
+            for j in range(h):
+                ret[i, j] = img[j, i]
+    return ret
+
+    # ou encore
+    def transpose(img):
+        return img.T
+\end{minted}
+
+\ques
+\ssques $ M^{\updownarrow} $ a la même dimension que $ M $, donc $ m \times n $
+\ssques $ M^{\updownarrow}_{i, j} = M_{m-i, j} $
+\ssques On montre l'égalité coefficient par coefficient :
+\begin{align*}
+    (M^T)^{\leftrightarrow}_{i,j} &= M^T_{i, m-j} \quad \textrm{car $ M^T $ est de dimension $ n \times m $} \\
+                                  &= M_{m-j, i} \\
+    (M^{\updownarrow})^T_{i,j} &=  M^{\updownarrow}_{j,i} \\
+                               &= M_{m-j, i}
+\end{align*}
+\ssques Il suffit de prendre la transposée de l'égalité prouvée à la question précédente.
+
+\ques 
+
+\begin{minted}{python}
+    def reflexion_verticale(img):
+        return transpose(reflexion_horizontale(transpose(img)))
+
+    # pas la solution attendue, mais on peut aussi écrire
+    def reflexion_verticale(img):
+        return img[::-1, :]
+\end{minted}
+
