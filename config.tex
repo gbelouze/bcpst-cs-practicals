@@ -4,23 +4,24 @@
 \usepackage{tp}
 \bcpstUn
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{enumitem}
 \usepackage{amsmath}
-\usepackage{amsthm}
 \usepackage{amssymb}
-\usepackage{dsfont}
-\usepackage{listings}
-\usepackage{color}
+\usepackage{amsthm}
+\usepackage{array,multicol,multirow} % utility for tables
 \usepackage{colortbl}
-\usepackage{multicol}
+\usepackage{color}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\usepackage{upgreek}
-\usepackage{pgf,tikz}
-\usepackage{mathrsfs}
-\usepackage{subfig}
 \usepackage{ifthen}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{pgf,tikz}
+\usepackage{subfig}
+\usepackage{upgreek}
 
 \usepackage[outputdir=.build]{minted}
 \usemintedstyle{autumn}
@@ -58,26 +59,28 @@
 \pdfadjustspacing=1
 
 \hypersetup{
-% Uncomment the line below to remove all links (to references, figures, tables, etc), useful for b/w printouts
-%draft,
-colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
-% Uncomment the line below if you want to have black links (e.g. for printing black and white)
-%colorlinks=false, linktocpage=false, pdfborder={0 0 0}, pdfstartpage=3, pdfstartview=FitV,
-breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%
-plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
-hypertexnames=true, pdfhighlight=/O,%nesting=true,%frenchlinks,%
-urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen, %pagecolor=RoyalBlue,%
-    %urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,%
-%------------------------------------------------
-% PDF file meta-information
-pdftitle={\myTitle},
-pdfauthor={\myName}, 
-pdfsubject={},
-pdfkeywords={},
-pdfcreator={pdfLaTeX},
-pdfproducer={LaTeX with hyperref}
-%------------------------------------------------
+	% Uncomment the line below to remove all links (to references, figures, tables, etc), useful for b/w printouts
+	%draft,
+	colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+	% Uncomment the line below if you want to have black links (e.g. for printing black and white)
+	%colorlinks=false, linktocpage=false, pdfborder={0 0 0}, pdfstartpage=3, pdfstartview=FitV,
+	breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%
+	plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
+	hypertexnames=true, pdfhighlight=/O,%nesting=true,%frenchlinks,%
+	urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen, %pagecolor=RoyalBlue,%
+	%urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,%
+	%------------------------------------------------
+	% PDF file meta-information
+	pdftitle={\myTitle},
+	pdfauthor={\myName},
+	pdfsubject={},
+	pdfkeywords={},
+	pdfcreator={pdfLaTeX},
+	pdfproducer={LaTeX with hyperref}
+	%------------------------------------------------
 }
+
+\newcommand{\subfigureautorefname}{Figure}
 
 
 % Generate only a singletp

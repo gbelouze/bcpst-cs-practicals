@@ -1,11 +1,11 @@
 \documentclass[english, french]{book}
 \input{config.tex}
-\setboolean{fulltp}{true}
+\setboolean{fulltp}{false}
 
-\whennotfulltp{\includeonly{tps/10.tex}}
+\whennotfulltp{\includeonly{exams/08-04.tex}}
 
 \begin{document}
-\whenfulltp{ \maketitle }
+\whenfulltp{ \thispagestyle{empty}\maketitle\thispagestyle{empty} }
 
 \whenfulltp{ \part{TPs} }
 \include{tps/1.tex}
@@ -18,9 +18,14 @@
 \include{tps/8.tex}
 \include{tps/9.tex}
 \include{tps/10.tex}
+\include{tps/11.tex}
+\include{tps/12.tex}
+\include{tps/aide-memoire-sql.tex}
 
 \whenfulltp{ \part{Devoirs} }
 \include{exams/18-03.tex}
 \include{exams/18-03-correction.tex}
+\include{exams/08-04.tex}
+\include{exams/08-04-correction.tex}
 
 \end{document}
