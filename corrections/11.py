@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from PIL import Image
 import numpy as np
 from pathlib import Path
 
-figure_dir = Path(__file__).parent.parent / 'figures'
+figure_dir = Path(__file__).parent.parent / 'figures' / '11'
 
 
 def load_as_gray_array(name):
@@ -25,28 +27,29 @@ def save_rgb_array_as_img(array, name):
     img.save(figure_dir / "{}.png".format(name), format="PNG")
 
 
-def blur(array, neighbour_size=1):
+def blur(array, ns=1):
+    """
+        Blurs an image by averaging each pixel with its neighbours.
+        ns is the neighbourhood size: pixels (i1, j1) and (i2, j2)
+        are neighbours if max(|i1-i2|, |j1-j2|) ≤ ns
+    """
     blurred = np.zeros(array.shape)
-    voisinage = [(dy, dx) for dy in range(-neighbour_size, neighbour_size+1)
-                 for dx in range(-neighbour_size, neighbour_size+1)]
     h, w = array.shape
     for i in range(h):
         for j in range(w):
-            for di, dj in voisinage:
-                if i+di < 0:
-                    di = - 1 - di
-                if i+di >= h:
-                    di = 1 - di
-                if j+dj < 0:
-                    dj = - 1 - dj
-                if j+dj >= h:
-                    dj = 1 - dj
-                blurred[i, j] += array[i+di, j+dj]
-    return np.uint8(blurred / len(voisinage))
+            count_neighbours = 0
+            sum_neighbours = 0
+            for di in range(-ns, ns+1):
+                for dj in range(-ns, ns+1):
+                    if 0 <= i + di < h and 0 <= j + dj < w:
+                        sum_neighbours += array[i+di, j+dj]
+                        count_neighbours += 1
+            blurred[i, j] += sum_neighbours / count_neighbours
+    return np.uint8(blurred)
 
 
-def edge(array, neighbour_size=1):
-    ret = array.astype(np.float64) - blur(array, neighbour_size=neighbour_size)
+def edge(array, ns=1):
+    ret = array.astype(np.float64) - blur(array, ns=ns)
     ret[ret < 0] = 0
     ret[ret > 255] = 255
     return np.uint8(255 - ret)
@@ -96,9 +99,9 @@ def main():
     poivrons = load_as_gray_array(figure_dir / "poivrons.png")
 
     save_gray_array_as_img(blur(poivrons), "poivrons-blurry")
-    save_gray_array_as_img(blur(poivrons, neighbour_size=4), "poivrons-very-blurry")
+    save_gray_array_as_img(blur(poivrons, ns=4), "poivrons-very-blurry")
     save_gray_array_as_img(edge(poivrons), "fine-edge-poivrons")
-    save_gray_array_as_img(edge(poivrons, neighbour_size=4), "coarse-edge-poivrons")
+    save_gray_array_as_img(edge(poivrons, ns=4), "coarse-edge-poivrons")
 
     save_rgb_array_as_img(red(), "red")
     save_rgb_array_as_img(green(), "green")

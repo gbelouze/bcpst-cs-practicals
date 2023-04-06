@@ -4,7 +4,7 @@ from pathlib import Path
 import importlib
 lf = importlib.import_module("10_light_func")
 
-figure_dir = Path(__file__).parent.parent / 'figures'
+figure_dir = Path(__file__).parent.parent / 'figures' / '10'
 
 
 def load_as_gray_array(name):

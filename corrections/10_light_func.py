@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import plotting
 from pathlib import Path
 
-figure_dir = Path(__file__).parent.parent / "figures"
+figure_dir = Path(__file__).parent.parent / "figures" / '10'
 
 
 def lighten(p):
