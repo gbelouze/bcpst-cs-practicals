@@ -1,5 +1,4 @@
 .build
-main.pdf
 .DS_Store
 __pycache__/
 media/
