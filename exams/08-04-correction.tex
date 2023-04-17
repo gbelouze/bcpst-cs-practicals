@@ -45,7 +45,7 @@
         ret = np.zeros((h, w))
         for i in range(h):
             for j in range(w):
-                ret[i, j] = img[i, w-j]
+                ret[i, j] = img[i, w-1-j]
         return ret
 
     # ou encore
