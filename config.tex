@@ -85,6 +85,5 @@
 
 
 % Generate only a singletp
-\newboolean{fulltp}
-\newcommand{\whenfulltp}[1]{\ifthenelse{\boolean{fulltp}}{#1}{}}
-\newcommand{\whennotfulltp}[1]{\ifthenelse{\boolean{fulltp}}{}{#1}}
+\newcommand{\whenfulltp}[1]{\ifthenelse{\isundefined{\tp}}{#1}{}}
+\newcommand{\whennotfulltp}[1]{\ifthenelse{\isundefined{\tp}}{}{#1}}
