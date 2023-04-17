@@ -85,7 +85,7 @@ Comme mentionné avant, le language SQL permet d'interagir avec le système de b
 Il pourra être utile de tester les requêtes réellement sur la base de données \textsc{Mondial}. Pour cela, suivre les instructions suivantes :
 \begin{enumerate}
 	\item aller sur la page \href{https://sqliteonline.com/}{https://sqliteonline.com/}.
-	\item cliquer sur \texttt{Import} dans la barre d'outils du haut et importer le fichier de base de données que vous pouvez télécharger à l'adresse \href{https://gabriel.belouze/tps/data/bdd-mondial.sql}{https://gabriel.belouze/tps/data/bdd-mondial.sql}, qui crée le sous-ensemble de \textsc{Mondial} avec lequelle on va travailler.
+	\item cliquer sur \texttt{Import} dans la barre d'outils du haut et importer le fichier de base de données que vous pouvez télécharger à l'adresse \href{https://gabriel.belouze.com/tps/data/bdd-mondial.sql}{https://gabriel.belouze.com/tps/data/bdd-mondial.sql}, qui crée le sous-ensemble de \textsc{Mondial} avec lequelle on va travailler.
 	\item  cliquer sur OK. Vous devriez voir apparaître dans la barre de gauche les tables \texttt{Country}, \texttt{City}, \texttt{Economy}, \texttt{Encompasses}, \texttt{Spoken}.
 \end{enumerate}
 
@@ -131,6 +131,12 @@ Mais évidemment, une bonne indentation clarifiera la lecture et relecture de vo
 
 \begin{minted}{sql}
     SELECT * FROM Country;
+\end{minted}
+
+\paragraph*{} On peut supprimer les doublons avec le mot clef \mintinline{sql}{DISTINCT}. Par exemple, on obtient tous les continents avec la requête 
+
+\begin{minted}{sql}
+    SELECT DISTINCT continent FROM encompasses;
 \end{minted}
 
 \paragraph*{Conditions} La requête suivante répond à la question : quels sont les pays de plus de 100 000 000 habitants ?
