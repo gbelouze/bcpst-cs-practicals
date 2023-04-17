@@ -1,8 +1,8 @@
 \documentclass[english, french]{book}
 \input{config.tex}
-\setboolean{fulltp}{false}
 
-\whennotfulltp{\includeonly{exams/08-04.tex}}
+\newcommand{\tp}{13} % comment me
+\whennotfulltp{\includeonly{tps/\tp.tex}}
 
 \begin{document}
 \whenfulltp{ \thispagestyle{empty}\maketitle\thispagestyle{empty} }
@@ -20,7 +20,8 @@
 \include{tps/10.tex}
 \include{tps/11.tex}
 \include{tps/12.tex}
-\include{tps/aide-memoire-sql.tex}
+\include{tps/13.tex}
+% \include{tps/aide-memoire-sql.tex}
 
 \whenfulltp{ \part{Devoirs} }
 \include{exams/18-03.tex}

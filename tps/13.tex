@@ -1,0 +1,180 @@
+%! TEX root = ../main.tex
+
+\titre{Requêtes SQL avancées}
+
+
+Dans la suite, on dispose des tables décrites \autoref{fig:mondiale}. On marque par $ \star $ les colonnes qui forment la clef primaire de la table.
+\begin{figure}[h!]
+	\centering
+	\subfloat[Table \texttt{country}]{
+		\begin{tabular}{|cccccc|}
+			\hline
+			\texttt{Name} & \texttt{Code}$ \star $ & \texttt{Capital} & \texttt{Province} & \texttt{Area}                        & \texttt{Population} \\
+			              &                        &                  &                   & Surface du pays en $ \textrm{km}^2 $ &                     \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{encompasses}]{
+		\begin{tabular}{|ccc|}
+			\hline
+			\texttt{Country}$ \star $                 & \texttt{Continent}$ \star $ & \texttt{Percentage}                                 \\
+			Clef étrangère pour \texttt{country.Code} &                             & Pourcentage de la surface du pays dans le continent \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{city}]{
+		\begin{tabular}{|cccccc|}
+			\hline
+			\texttt{Name}$ \star $ & \texttt{Country}$ \star $                 & \texttt{Province} & \texttt{Population} & \texttt{Longitude} & \texttt{Latitude} \\
+			                       & Clef étrangère pour \texttt{country.Code} &                   &                     &                    &                   \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{spoken}]{
+		\begin{tabular}{|ccc|}
+			\hline
+			\texttt{Country}$ \star $                 & \texttt{Language}$ \star $ & \texttt{Percentage}                                      \\
+			Clef étrangère pour \texttt{country.Code} &                            & Pourcentage de la population du pays qui parle la langue \\
+			\hline
+		\end{tabular}
+	}%
+	\qquad
+	\subfloat[Table \texttt{economy}]{
+		\begin{tabular}{|ccc|}
+			\hline
+			\texttt{Country}$ \star $                 & \texttt{GDP}                       & \texttt{Agriculture}                        \\
+			Clef étrangère pour \texttt{country.Code} & Le PIB en million de dollars       & La part de l'agriculture dans le PIB, en \% \\
+			\hline
+			\texttt{Service}                          & \texttt{Industry}                  & \texttt{Inflation}                          \\
+			La part des services dans le PIB          & La part de l'industrie dans le PIB & Le taux d'inflation                         \\
+			\hline
+			\texttt{Unemployment}                     &                                    &                                             \\
+			Le taux de chômage                        &                                    &                                             \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Structure de la base de données \textsc{Mondial}}
+	\label{fig:mondiale}
+\end{figure}
+
+\section{Agrégations}
+
+SQL permet de regrouper les résultats d'une requête grâce au mot clef \mintinline{sql}{GROUP BY}. Par exemple, on peut regrouper par continent dans la table \textsc{encompasses} en écrivant \mintinline{sql}{GROUP BY Continent}. Ensuite, les fonctions d'agrégation vues au TP précédent permettent de faire des calculs \textit{au sein chaque groupe}. Voici par exemple comment obtenir le nombre de pays de chaque continent 
+
+\begin{minted}{sql}
+    SELECT continent, COUNT(*)
+        FROM encompasses
+        GROUP BY continent;
+\end{minted}
+
+Ou encore, avec un exemple plus compliqué, voici comment obtenir la surface totale de chaque continent 
+
+\begin{minted}{sql}
+    SELECT e.continent, SUM(c.area * e.percentage)
+        FROM encompasses as e JOIN country as c ON c.code = e.country
+        GROUP BY e.continent;
+\end{minted}
+
+Attention, une fois qu'on regroupe selon une certaine colonne, on ne peut addresser les autres colonnes que par l'intermédiaire des fonctions d'aggrégation. Ainsi la requête suivante \textit{ne veut rien dire et n'est pas correcte} 
+
+\begin{minted}{sql}
+    SELECT e.continent, c.name -- NON on ne peut pas sélectionner directement c.name
+        FROM encompasses as e JOIN country as c ON c.code = e.country
+        GROUP BY e.continent;
+\end{minted}
+
+Ensuite, il est possible de filtrer les groupes avec le mot clef \mintinline{sql}{HAVING}. Par exemple, on peut ne sélectionner que les continents d'une surface plus grande que 10 000 000 $ \textrm{km}^2 $ avec 
+
+\begin{minted}{sql}
+    SELECT e.continent
+        FROM encompasses as e JOIN country as c ON c.code = e.country
+        GROUP BY e.continent
+        HAVING sum(c.area * e.percentage) > 10000000;
+\end{minted}
+
+Notez la différence entre \mintinline{sql}{WHERE} et \mintinline{sql}{HAVING} : le premier filtre \textit{les lignes} avant de former les groupes, et le second filtre \textit{les groupes} après les avoir formés. La forme générale d'une requête est donc 
+
+\begin{minted}{sql}
+    SELECT column
+        FROM table
+        WHERE ligne_condition
+        GROUP BY column
+        HAVING groupe_condition
+\end{minted}
+
+\section{Sous-requêtes}
+
+Le résultat d'une requête est lui-même une table qui peut être elle-même imbriquée dans une nouvelle requête. Par exemple, on peut récupérer la surface moyenne des pays avec la requête 
+
+\begin{minted}{sql}
+    SELECT avg(area) FROM country;
+\end{minted}
+
+En réutilisant la requête précédente on peut ainsi obtenir les pays dont la surface est plus grande que la moyenne : 
+
+\begin{minted}{sql}
+    SELECT name
+        FROM country
+        WHERE area > (SELECT avg(area) FROM country);
+\end{minted}
+
+Les requêtes imbriquées peuvent aussi être utilisées dans la clause \mintinline{sql}{FROM table} à la place de \mintinline{sql}{table}, mais dans cas il faut parfois donner un nom à la table et ses colonnes avec \mintinline{sql}{AS}. Par exemple, la requête suivante compte le nombre de langues parlées dans chaque pays 
+
+\begin{minted}{sql}
+    SELECT count(*) FROM spoken GROUP BY country;
+\end{minted}
+
+On réutilise cette requête pour obtenir le plus grand nombre de langues parlées dans un seul pays. Notez qu'on donne un nom à la colonne \mintinline{sql}{count(*)} pour pouvoir s'y référer dans le reste de la requête.
+
+\begin{minted}{sql}
+    SELECT MAX(n_language)
+        FROM (SELECT count(*) as n_language FROM spoken GROUP BY country) as count_table;
+\end{minted}
+
+Le mot clef \mintinline{sql}{IN} peut être utilisé pour tester l'appartenance à une table (la table étant, en général, le résultat d'une requête imbriquée). Par exemple, on peut s'inspirer des requêtes ci-dessus pour obtenir le nombre de langues parlées dans les pays \textit{dont la surface est inférieure à la moyenne mondiale} 
+
+\begin{minted}{sql}
+    SELECT country, count(*)
+        FROM spoken
+        WHERE country IN (
+            SELECT code
+                FROM country
+                WHERE area < (SELECT avg(area) FROM country)
+        )
+        GROUP BY country;
+\end{minted}
+
+Vous avez maintenant toutes les clefs pour finir les exercices suivants (les deux premiers sont des rappels du TP précédent). Si vous y arrivez, félicitations vous maîtrisez l'ensemble du programme de SQL de BCPST.
+
+\begin{enonce}[Requêtes de base]
+	Rédiger une requête SQL pour obtenir
+	\ssques La liste des pays dont la population excède 60M habitants
+	\ssques La même liste triée par ordre alphabétique
+	\ssques La liste des pays et de leurs populations respectives, triée par ordre croissant de population
+	\ssques Le nom des dix pays ayant la plus petite superficie
+	\ssques Le nom des dix suivants
+\end{enonce}
+
+\begin{enonce}[Jointures]
+	Rédiger une requête SQL pour obtenir
+	\ssques Le nom des pays qui sont à cheval sur plusieurs continents
+	\ssques Les pays du continent américain qui comptent moins de 10 habitants par $ \textrm{km}^2 $
+	\ssques Les capitales européennes situées à une latitude supérieure à $ 60^{\circ} $
+\end{enonce}
+
+\begin{enonce}[Fonctions d'agrégation]
+	\ssques Donner la liste ordonnée des dix langues parlées dans le plus de pays différents.
+	\ssques Quelles sont les langues parlées dans exactement 6 pays ? Et de quel pays s'agit-il ?
+	\ssques Quelles sont les langues parlées par moins de 30 000 personnes dans le monde ?
+	\ssques Quelles sont les 5 langues les plus parlées en Afrique ? Préciser pour chacune d'elle le nombre de personnes qui la parlent.
+\end{enonce}
+
+\begin{enonce}[Sous-requêtes]
+	\ssques Déterminer les pays majoritairement agricoles dont le taux de chômage est inférieur à la moyenne mondiale.
+	\ssques Déterminer pour chaque continent le pays au taux d'inflation le plus faible parmi les pays majoritairement industriels.
+    \ssques Déterminer les pays dans lesquels on parle le plus de langues.
+    \ssques Quel est le continent le plus riche, en terme de PIB ?
+\end{enonce}
