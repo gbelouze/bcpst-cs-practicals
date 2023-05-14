@@ -1,8 +1,11 @@
 \documentclass[english, french]{book}
 \input{config.tex}
 
-\newcommand{\tp}{13} % comment me
-\whennotfulltp{\includeonly{tps/\tp.tex}}
+\newcommand{\tp}{14} % comment me
+\whennotfulltp{
+    \includeonly{tps/\tp.tex}
+    \setcounter{tpCtr}{\tp-1}
+}
 
 \begin{document}
 \whenfulltp{ \thispagestyle{empty}\maketitle\thispagestyle{empty} }
@@ -21,7 +24,7 @@
 \include{tps/11.tex}
 \include{tps/12.tex}
 \include{tps/13.tex}
-% \include{tps/aide-memoire-sql.tex}
+\include{tps/14.tex}
 
 \whenfulltp{ \part{Devoirs} }
 \include{exams/18-03.tex}
