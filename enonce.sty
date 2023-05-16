@@ -132,6 +132,27 @@
 	\noindent \hrulefill
 }
 
+\newcommand {\correctionTP}[1]{
+	\setcounter{exoCtr}{0}
+	\setcounter{quesCtr}{0}
+	\setcounter{ssQuesCtr}{0}
+	\stepcounter{chapter}
+
+	\fancyhead[R]{}
+    \fancyhead[L]{Corrigé du TP \arabic{tpCtr}}
+	\fancyfoot[C]{}
+	\fancyfoot[R]{}
+
+    \NI\leftcentersright{\NI\classe}{{\bf\Large Corrigé du TP n°\arabic{tpCtr}}}{2022-2023}
+	\vspace{-2mm}
+
+	\NI\leftcentersright{\NI\lycee}{{\bf \large #1}}{Informatique}
+
+	\vspace{-3mm}
+
+	\noindent \hrulefill
+}
+
 \newcommand {\correctionExam}[2]{
 	\setcounter{exoCtr}{0}
 	\setcounter{quesCtr}{0}

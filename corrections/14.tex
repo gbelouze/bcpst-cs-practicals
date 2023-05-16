@@ -1,0 +1,147 @@
+\correctionTP{Intégration numérique}
+
+\section{Méthode du rectangle}
+
+\subsection{Méthode de base}
+\quessques $ \hat{I}(u, v) = (u-v) \cdot f(v) $ pour la méthode des rectangles avec l'extrêmité droite.
+\ssques On montre que la méthode des rectangles est d'ordre $ 0 $ pour l'extrêmité gauche (c'est également le cas pour l'extrêmité droite, et la preuve est similaire). 
+
+Soit $ f \in \P_0[X] $ un polynôme de degré $ \leq 0 $. Il existe $ c \in \R $ tel que $ \forall x $, $ f(x) = c $. On calcule alors \[
+    I_{u, v}(f) = \int_{u}^{v} c \; dt = c \cdot (u-v)
+\]
+D'autre part \[
+    \hat{I}_{u, v}(f) = f(u) \cdot (u-v) = c \cdot (u-v)
+\]
+Et ainsi $ I_{u, v}(f) $ et $ \hat{I}_{u, v}(f) $ coïncident, ce que montre que la méthode des rectangles est d'ordre au moins $ 0 $.
+
+Reste à montrer qu'elle n'est pas d'ordre $ 1 $. Un contre-exemple suffit, par exemple $ f : x \mapsto x $, pour laquelle on a 
+\begin{align*}
+    I_{0, 1}(f) &= \frac{1}{2}\\
+    \hat{I}_{0, 1}(f) &= 0
+\end{align*}
+
+ce qui conclut.
+
+\quessques 
+\begin{minted}{python}
+    def rectangle(f, u, v):
+        return (v-u) * f(u)
+\end{minted}
+
+
+\subsection{Méthode du rectangle composite}
+
+\quessques 
+
+\begin{minted}{python}
+    def rectangle_composite(f, a, b, n):
+        x = np.linspace(a, b, n)
+
+        tot = 0
+        for u, v in zip(x[:-1], x[1:]):
+            tot += rectangle(f, u, v)
+
+        return tot
+\end{minted}
+
+\section{Méthode du point milieu}
+\subsection{Méthode de base}
+
+\quessques On montre que la méthode du point milieu est d'ordre $ 1 $.
+
+Soit donc $ f \in \P_1[X] $, soit $ f(x) = ax + b $ pour un certain $ a, b \in \R $. On montre que $ I_{u, v}(f) $ et $ \hat{I}_{u, v}(f) $ coïncident :
+\begin{align*}
+    I_{u, v}(f) &= \int_{u}^{v} ax + b \; dx\\
+                &= b \cdot (v-u) + a \frac{v^2 - u^2}{2}\\
+    \hat{I}_{u, v}(f) &= (v-u) \cdot (a \frac{u+v}{u} + b)\\
+                      &= b \cdot (v-u) + a \frac{v^2-u^2}{2}
+\end{align*}
+
+Reste à trouver un contre-exemple pour $ f $ un polynôme de degré $ 2 $. Par exemple $ f(x) = x^2 $, $ u=-1 $ et $ v=1 $.
+
+\ssques 
+
+\begin{minted}{python}
+    def point_milieu(f, u, v):
+        return (v-u) * f((u+v)/2)
+\end{minted}
+
+\subsection{Méthode du point milieu composite}
+
+\quessques 
+
+\begin{minted}{python}
+    def point_milieu_composite(f, a, b, n):
+        x = np.linspace(a, b, n)
+
+        tot = 0
+        for u, v in zip(x[:-1], x[1:]):
+            tot += point_milieu(f, u, v)
+
+        return tot
+\end{minted}
+
+
+\section{Méthode du trapèze}
+\subsection{Méthode de base}
+La méthode du trapèze choisit de considérer que $ f $ n'est non plus constante sur l'intervalle $ [u, v] $ mais affine. Ainsi, avec cette méthode, on approxime $ I_{u,v}(f) $ par $ I_{u,v}(\hat{f}) $ où $ \hat{f} $ est l'approximation affine de $ f $ sur $ [u, v] $, c'est-à-dire que \[
+    \hat{f} : x \mapsto f(u) + (x-u) \frac{f(v)-f(u)}{v-u}
+\]
+
+\quessques Il s'agit de calculer l'aire sous le segment qui joint $ (u, f(u)) $ à $ (v, f(v)) $. Géométriquement, on peut voir assez facilement que cette aire est $ (v-u) \cdot \frac{f(u) + f(v)}{2} $. On le vérifie par le calcul :
+\begin{align*}
+    \hat{I}_{u, v}(f) &= I_{u, v}(\hat{f}) \\
+                      &= \int_{u}^{v} f(u) + (x-u) \frac{f(v) - f(u)}{v-u}\; dx\\
+                      &= (v-u) \cdot f(u) + \frac{f(v)-f(u)}{v-u}\frac{(v-u)^2}{2}\\
+                      &= (v-u) \cdot \left( f(u) + \frac{v-u}{2} \frac{f(v) - f(u)}{v-u}\right)\\
+                      &= (v-u) \cdot \left( f(u) + \frac{f(v) - f(u)}{2}\right)\\
+                      &= (v-u) \cdot \frac{f(u) + f(v)}{2} 
+\end{align*}
+\ssques On montre que la méthode du trapèze est d'ordre $ 1 $, comme la méthode du point milieu.
+
+Soit donc $ f \in \P_1[X] $, soit $ f(x) = ax + b $ pour un certain $ a, b \in \R $. On montre que $ I_{u, v}(f) $ et $ \hat{I}_{u, v}(f) $ coïncident :
+\begin{align*}
+    I_{u, v}(f) &= \int_{u}^{v} ax + b \; dx\\
+                &= b \cdot (v-u) + a \frac{v^2 - u^2}{2}\\
+                &= (v-u) \cdot \left( a \frac{u+v}{2} + b\right)\\
+    \hat{I}_{u, v}(f) &= (v-u) \cdot \frac{au+b + av+b}{2}\\
+                &= (v-u) \cdot \left( a \frac{u+v}{2} + b\right)\\
+\end{align*}
+
+Reste à trouver un contre-exemple pour $ f $ un polynôme de degré $ 2 $. Par exemple $ f(x) = x^2 $, $ u=-1 $ et $ v=1 $.
+
+\ssques 
+\begin{minted}{python}
+    def trapeze(f, u, v):
+        return (v-u) * (f(u) + f(v))/2
+\end{minted}
+
+\subsection{Méthode composite du trapèze}
+
+\quessques 
+\begin{minted}{python}
+    def trapeze_composite(f, a, b, n):
+        x = np.linspace(a, b, n)
+
+        tot = 0
+        for u, v in zip(x[:-1], x[1:]):
+            tot += trapeze(f, u, v)
+
+        return tot
+\end{minted} 
+
+\section{Bornes sur les erreurs d'approximation}
+
+\ques Par exemple pour la méthode des rectangles composite on écrit 
+\begin{align*}
+    |E_{a, b}(f)| &\leq \sum_{k=0}^{n-1} |E_{u_k, u_{k+1}}(f)|\\
+                  &\leq n \cdot M_1 \frac{(\frac{b-a}{n})^2}{2}\\
+                  &\leq M_1 \frac{(b-a)^2}{2n}
+\end{align*}
+Cela fonctionne pareil pour les autres méthodes, et on trouve finalement
+\begin{align*}
+    |E_{a,b}(f)| &\leq M_1 \frac{(v-u)^2}{2n} \quad &&\textrm{pour la méthode du rectangle}\\
+    |E_{a,b}(f)| &\leq M_2 \frac{(v-u)^3}{24n^2} \quad &&\textrm{pour la méthode du point milieu}\\
+    |E_{a,b}(f)| &\leq M_2 \frac{(v-u)^3}{12n^2} \quad &&\textrm{pour la méthode du trapèze}\\
+    |E_{a,b}(f)| &\leq M_4 \frac{(v-u)^5}{2880n^4} \quad &&\textrm{pour la méthode de Simpson}\\
+\end{align*}

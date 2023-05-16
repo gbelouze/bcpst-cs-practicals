@@ -16,13 +16,15 @@ Les méthodes que l'on considère se décomposent en deux étapes:
     C'est la généralisation dite \textit{composite} de la méthode de base.
 \end{enumerate}
 
-Les méthodes de base auxquelles nous allons nous intéresser sont dites des \textit{de quadrature}, c'est-à-dire qu'elles conduisent à approcher l'intégrale par une somme pondérée finie de valeurs de $ f $ évaluée en différents points. Autrement dit, les méthodes de base calculent une approximation de la forme \[
-    \hat{I}_{u, v}(f) = \sum_{k=0}^{p} \alpha_i f(x_i)
-\]
-où les poids $ \alpha_1, \ldots, \alpha_p $ sont des réels indépendants de $ f $, et les $ x_i $ sont des réels de l'intervalle $ [a, b] $.
+Les méthodes de base auxquelles nous allons nous intéresser sont dites des \textit{de quadrature}, c'est-à-dire qu'elles conduisent à approcher l'intégrale par une somme pondérée finie de valeurs de $ f $ évaluée en différents points. Autrement dit, les méthodes de base calculent une approximation de la forme 
+\begin{equation}
+    \label{eq:quadrature}
+    \hat{I}_{u, v}(f) = (v-u) \cdot \sum_{k=0}^{p} \alpha_i f(x_i)
+\end{equation}
+où les poids $ \alpha_1, \ldots, \alpha_p $ sont des réels indépendants de $ f $, et les $ x_i $ sont des réels de l'intervalle $ [u, v] $.
 
-L'erreur d'approximation est la différence entre $ I_{a, b}(f) $ et l'approximation de la méthode de base $ \hat{I}_{a, b}(f) $, soit \[
-    E_{a, b}(f) =  I_{a, b}(f) -  \hat{I}_{a, b}(f) 
+L'erreur d'approximation est la différence entre $ I_{u, v}(f) $ et l'approximation de la méthode de base $ \hat{I}_{u, v}(f) $, soit \[
+    E_{u, v}(f) =  I_{u, v}(f) -  \hat{I}_{u, v}(f) 
 \]
 
 L'erreur d'approximation composite est l'erreur pour l'approximation de la généralisation composite de la méthode de base, soit \[
@@ -62,7 +64,7 @@ On se donne ici la formule pour calculer le $ k $-ième point de la subdivision 
 La méthode du rectangle est la plus simple : elle consiste à approcher la fonction par une unique valeur qu'elle prend (en général à une des extrêmités de l'intervalle). Ainsi, si l'on choisit l'extrêmité gauche, l'approximation s'écrit \[
     \hat{I}_{u, v}(f) = (v-u) \cdot f(u)
 \]
-Avec la terminologie vue plus haut, cela revient à prendre $ p=0 $, $ \alpha_0=v-u $ et $ x_0=u $
+Avec la terminologie vue plus haut, cela revient à prendre $ p=0 $, $ \alpha_0=1 $ et $ x_0=u $
 
 \quessques Que devient la formule pour $ \hat{I}(u, v) $ si l'on choisit plutôt l'extrêmité droite ?
 \ssques Quel est l'ordre de la méthode du rectangle si l'on choisit l'extrêmité gauche ? l'extrêmité droite ?
@@ -235,7 +237,7 @@ La méthode du trapèze choisit de considérer que $ f $ n'est non plus constant
     \hat{f} : x \mapsto f(u) + (x-u) \frac{f(v)-f(u)}{v-u}
 \]
 
-\quessques Calculer $ \hat{I}_{u,v}(f) = I_{u, v}(\hat{f}) $.
+\quessques Calculer $ \hat{I}_{u,v}(f) = I_{u, v}(\hat{f}) $. L'écrire sous la forme de \autoref{eq:quadrature}
 \ssques Quel est l'ordre de la méthode du trapèze ?
 \ssques Écrire une fonction \texttt{trapeze(f, u, v)}. La tester comme précédemment.
 
@@ -302,14 +304,14 @@ La méthode du trapèze choisit de considérer que $ f $ n'est non plus constant
     \end{tikzpicture}
 
     \caption{Méthode composite du point milieu}
-    \label{fig:point-milieu-composite-method}
+    \label{fig:trapeze-composite-method}
 \end{figure}
 
 
 \section{Généralisation}
 
 Les méthodes du rectangle et du point milieu considérent que $ f $ est un polynôme de degré $ 0 $ entre les bornes. La méthode du trapèze considère que $ f $ est un polynôme de degré $ 1 $. Il est naturel de continuer ainsi pour des degrés supérieurs. La méthode suivante est celle de \textsc{Simpson}, qui approxime donc $ f $ par son interpolée de \textsc{Lagrange} en $ u $, $ \frac{u+v}{2} $ et $ v $. On peut alors montrer que cette interpolation conduit à l'approximation de l'intégrale \[
-    \hat{I}_{u, v}(f) = \alpha_0 f(u) + \alpha_1 f(\frac{u+v}{2}) + \alpha_2 f(v)
+    \hat{I}_{u, v}(f) = (v-u) \cdot \left(\alpha_0 f(u) + \alpha_1 f(\frac{u+v}{2}) + \alpha_2 f(v)\right)
 \]
 avec $ \alpha_0=\alpha_2=\frac{1}{6} $ et $ \alpha_1=\frac{4}{6} $. On pourrait s'attendre à ce que la méthode de Simpson soit d'ordre $ 2 $, mais elle est en fait d'ordre $ 3 $, ce qui la rend encore meilleure.
 
