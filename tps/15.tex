@@ -1,0 +1,243 @@
+%! TEX root = ../main.tex
+
+\titre{Graphes}
+
+\section{ Qu'est-ce qu'un graphe en informatique ?}
+
+
+En informatique, les graphes sont une structure de données \textit{omniprésentes}, qui permettent de modéliser beaucoup (beaucoup) de situations intéressantes du monde réel. Réseau de communication, réseau routier, relations d'un réseau social, réseau de transport, structures moléculaires... Derrière beaucoup d'objets du quotidien (Google Maps, Twitter, Internet) se cache la théorie des graphes.
+
+\subsection*{Définition}
+
+Voici quelques graphes
+
+\begin{figure}[h!]
+    \centering
+    \subfloat[Un graphe non orienté $ G_1 $]{
+        \label{fig:non-oriented}
+        \begin{tikzpicture}[thick]
+            % Vertices
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (0) at (0,0)  {0};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (1) at (2,0)  {1};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (2) at (3,1)  {2};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (3) at (3,-1) {3};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (4) at (4,0)  {4};
+
+            % Edges
+            \draw (0) to (1);
+            \draw (1) to (2);
+            \draw (1) to (3);
+            \draw (2) to (4);
+            \draw (3) to (4);
+            \draw (2) to (3);
+            \draw (4) edge [loop, out=45, in=315, looseness=8] (4);
+        \end{tikzpicture}
+    }
+    \qquad\qquad
+    \subfloat[Un graphe orienté $ G_2 $]{
+        \label{fig:oriented}
+        \begin{tikzpicture}[->,>=stealth,thick]
+
+            % Nodes
+            \foreach \i in {0,...,4}
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (\i) at ({72*(\i-1)+18}:1.5cm) {\i};
+
+            % Edges
+            \foreach \i [evaluate=\i as \nexti using {int(Mod(\i+1, 5))}] in {0,...,4}
+            \draw (\i) -- (\nexti);
+
+        \end{tikzpicture}
+    }
+    \caption{Premiers exemples de graphes}
+    \label{fig:first-graphs}
+\end{figure}
+
+Ce qu'on appelle \textit{graphe} en informatique est simplement un ensemble fini de \textit{noeuds}, ou sommets, souvent noté $ V $ (pour \textit{vertex} en anglais), reliés entre eux par un ensemble fini d'arêtes, souvent noté $ E $ ( pour \textit{edge} en anglais). On représente une arête par un couple de noeuds $ (v_1, v_2) $ où $ v_1, v_2 \in V $, correspondant donc aux deux noeuds que relie l'arête. Si les arêtes ont un sens, comme des flèches, alors l'ordre de $ v_1 $ et $ v_2 $ dans le couple $ (v_1, v_2)  $ a une importance, on parle alors de \textit{graphe orienté} (voir \autoref{fig:non-oriented} Si les arêtes n'ont pas de sens, l'ordre n'importe pas et on parle de \textit{graphe non orienté} (voir \autoref{fig:oriented}). Notez que $ v_1 $ et $ v_2 $ ne sont pas nécessairement distincts.
+
+Lorsque deux sommets sont reliés par une arête, on dit qu'ils sont \textit{adjacents}, ou \textit{voisins}.
+
+\ques Écrire les ensembles $ V $ et $ E $ décrivant chacun des deux graphes représentés \autoref{fig:first-graphs}
+
+\paragraph{} Ainsi, un graphe $ G $ est simplement la donnée d'un couple $ (V, E) $, $ V $ étant un ensemble fini, et $ E \subseteq V \times V $. Ce modèle est très simple mais peut s'adapter à beaucoup de situations constituées d'objets et de relations entre ces objets (ami.e sur Facebook, ligne de métro entre des stations, etc). En mathématiques, on étudie les graphes comme objets en soi, en informatique on tente d'écrire des algorithmes capables d'extraire efficacement des informations d'un graphe. Ce TP introduit quelques uns de ces algorithmes.
+
+\subsection*{Représentation d'un graphe}
+
+La structure de graphe n'est pas directement implémentable par une structure \texttt{Python} vue jusqu'ici. Ce n'est pas vraiment une liste, ni un dictionnaire par exemple. Pour un graphe à $ n $ sommets, on prendra systématiquement la convention que l'ensemble des sommets est $ \{0, \ldots, n-1\} $, et la difficulté est de représenter les arêtes. Il existe deux conventions:
+\begin{enumerate}
+    \item représentation par la \textit{matrice d'adjacence}, qui est la matrice $ M \in \MnR $ telle que \[
+        \begin{cases}
+            M_{i, j} = 1 \quad &\textrm{s'il existe une arête de $ v_i $ vers $ v_j $, autrement dit $ (v_i, v_j) \in E $}\\
+            M_{i, j} = 0 &\textrm{sinon}
+        \end{cases}
+    \]
+    \item représentation par \textit{listes d'adjacence}, pour laquelle on donne, pour chaque sommet, la liste de ses voisins, c'est à dire qu'on représente $ G $ par une liste de liste :
+
+    \begin{minted}{python}
+        G = [
+          [...], # liste des voisins du sommet 1
+          [...], # liste des voisins du sommet 2
+           ...
+          [...], # liste des voisins du sommet n
+        ]
+    \end{minted}
+\end{enumerate}
+Notez qu'à partir de chacune de ces reprétentations on peut retrouver $ n $ le nombre de sommets. Il n'y donc pas besoin d'autre chose pour représenter $ G $ que de sa matrice d'adjacence, ou sa liste d'adjacence.
+
+\quessques Écrire en \texttt{Python} les deux représentations de $ G_1 $ et $ G_2 $ (voir \autoref{fig:first-graphs}).
+\ssques Écrire deux fonctions \texttt{liste\_to\_matrice(l)} et \texttt{matrice\_to\_liste(M)} qui convertissent entre les deux conventions de représentation d'un graphe. Vérifier qu'on obtient les bons résultats avec les exemples écrits à la main à la question précédente.
+
+\ques Comment se traduit sur la matrice d'adjacence le fait qu'un graphe soit non orienté ?
+
+\section{Premiers algorithmes}
+
+\subsection*{Ajout et suppression de noeuds et d'arêtes }
+
+On choisit de travailler ici avec des matrices d'adjacence et des graphes non orientés.
+
+\quessques Écrire deux fonctions \texttt{ajoute\_noeud(M)} et \texttt{supprime\_noeud(M, v)} qui renvoie un nouveau graphe avec, respectivement, le noeud $ n $ ajouté et le noeud $ v $ supprimé.
+\ssques Écrire deux fonctions \texttt{ajoute\_arete(M, v1, v2)} et \texttt{supprime\_arete(M, v1, v2)}. Tester les fonctions sur le graphe $ G_1 $.
+
+\subsection*{Parcours de graphe}
+
+\paragraph{Connexité} On parle de \textit{chemin dans le graphe $ G $} lorsqu'on considère une suite de sommets de $ G $ $ v_1, \ldots, v_p $ telle que deux éléments successifs sont reliés par une arête, autrement dit $ (v_i, v_{i+1}) \in E $ pour tout $ i $. La détection de chemins dans un graphe, en particulier de plus court chemin, forme tout un pan de la théorie des graphes. Un graphe non orienté est \textit{connexe} si de tout sommet $ v $ il existe un chemin à tout autre sommet $ w $. Moins formellement, un graphe est connexe s'il n'est pas en plusieurs morceaux, voir \autoref{fig:graph-connectivity}.
+
+\begin{figure}[h!]
+    \centering
+    \subfloat[Un graphe connexe]{
+        \begin{tikzpicture}[thick]
+            % Vertices
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (0) at (0,1)   {0};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (1) at (0,-1)  {1};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (2) at (1.5,0) {2};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (3) at (3,1)   {3};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (4) at (3,-1)  {4};
+
+            % Edges
+            \draw (0) to (1);
+            \draw (3) to (4);
+
+            \draw (2) to (0);
+            \draw (2) to (1);
+            \draw (2) to (3);
+            \draw (2) to (4);
+        \end{tikzpicture}
+    }
+    \qquad\qquad\qquad
+    \subfloat[Un graphe non connexe]{
+        \begin{tikzpicture}[thick]
+            % Vertices
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (0) at (0,1)   {0};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (1) at (0,-1)  {1};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (2) at (1.5,0) {2};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (3) at (3,1)   {3};
+            \node[circle, draw, fill=lightblue, minimum size=1cm] (4) at (3,-1)  {4};
+
+            % Edges
+            \draw (0) to (1);
+            \draw (3) to (4);
+
+            \draw (2) to (0);
+            \draw (2) to (1);
+        \end{tikzpicture}
+    }
+    \caption{Connexité d'un graphe}
+    \label{fig:graph-connectivity}
+\end{figure}
+
+\paragraph{}Le graphe des amis Facebook est-il connexe ? Autrement dit, tout le monde est-il l'ami.e d'ami.e (...) d'ami.e de n'importe qui ? Le but de cette question est d'écrire une fonction \texttt{est\_connexe(M)} qui prend en argument une matrice d'adjacence \texttt{M} et renvoie \texttt{True} si et seulement si le graphe que représente \texttt{M} est connexe. Pour cela, l'idée est de partir d'un sommet arbitraire, par exemple le sommet $ 0 $, et de visiter ses voisins, les voisins de ses voisins, les voisins de ses voisins de ses voisins, etc. Si à la fin on a visité tous les noeuds, c'est que le graphe est connexe, sinon le graphe n'est pas connexe. Il faut donc parcourir \textit{récursivement} les voisins des sommets visités.\\
+
+\commentaire{
+    \paragraph{Rappel sur la récursivité} Une fonction Python $ f $ a le droit de \textit{faire appel à elle-même}. L'exemple classique est la fonction \texttt{factoriel(n)} qui peut s'écrire
+}
+    \begin{minted}{python}
+        def factoriel(n):
+            if n == 0:
+                return 1
+            else:
+                return n * factoriel(n-1)
+    \end{minted}
+\commentaire{
+    en utilisant le fait que $ n! = n \cdot (n-1)! $. 
+
+    De manière générale, lorsque l'on écrit une fonction récursive, il y a une partie qui assure la \textit{terminaison}, c'est-à-dire qui s'assure que la fonction va finir par arêter de s'appeler elle-même, et une partie qui "fait le travail". Ici, le test \mintinline{python}{if n == 0} est là pour assurer la terminaison. Implicitement, on suppose que l'utilisateur.ice n'utilise \texttt{factoriel} qu'avec des entiers \mintinline{python}{n >= 0}. Que se passe-t-il si on appel \mintinline{python}{factoriel(-1)} ? \mintinline{python}{factoriel(1.5)} ?
+}
+
+    Ici, on va écrire une fonction \texttt{parcours(v, M, dejaVus)} qui parcourt tous le graphe et va s'appeler récursivement sur les voisins des sommets visités. \texttt{v} est le noeud en train d'être visité, \texttt{M} est la matrice d'adjacence du graphe, et \texttt{dejaVus} est un tableau de booléens de taille \texttt{n}, qui indique quel sommet a déjà été visité. Ainsi, le graphe est connexe si et seulement si à la fin de la fonction, tous les éléments de \texttt{dejaVus} sont \mintinline{python}{True}.
+
+    Attention, si le graphe contient un \textit{cycle}, c'est-à-dire un chemin qui part et arrive au même noeud, il y a un risque que la fonction fasse des appels récursifs infinis. Par exemple s'il y a une arête $ (0, 1) $ et une arête $ (1, 0) $, appeler aveuglément la fonction \texttt{parcours} sur tous les voisins conduit au comportement suivant
+\begin{enumerate}
+    \item je visite $ 0 $
+    \item je visite $ 1 $ car c'est un voisin de $ 0 $
+    \item je visite $ 0 $ car c'est un voisin de $ 1 $
+    \item je visite $ 1 $ car c'est un voisin de $ 0 $
+    \item je visite $ 0 $ car c'est un voisin de $ 1 $
+    \item etc
+\end{enumerate}
+
+Il faut donc être prudent sur la condition de terminaison !
+
+\quessques Écrire la fonction \mintinline{python}{parcours(v, M, dejaVus)}.
+\ssques En déduire la fonction \mintinline{python}{est_connexe(M)}.
+\ssques La tester sur les graphes \autoref{fig:graph-connectivity}.
+
+\subsection*{Parcours de graphe, version non récursive}
+
+On peut également écrire la fonction \mintinline{python}{parcours(v, M)} sans récursivité. Cette fois-ci, au lieu d'appeler récursivement la fonction sur les voisins, on va garder dans une variable \mintinline{python}{aVisiter} les sommets qu'il faut encore visiter (car ce sont les voisins de sommets déjà visités). La pseudo code de la fonction ressemble donc à celui-ci:
+
+\begin{algorithm}
+    \DontPrintSemicolon
+    \Fn{Parcours(v, M)}{
+        $ \textrm{àVisiter} \leftarrow \{ v \} $\;
+        $ \textrm{déjàVus} \leftarrow \{v\} $\;
+        \While{$ \textrm{àVisiter} \neq \emptyset $}{
+            prendre $ u \in \textrm{àVisiter} $\;
+            \For{ $ w $ voisin de $ u $}{
+                \If{ $ w \notin \textrm{déjàVus} $}{
+                    rajouter $ w $ à àVisiter\;
+                    rajouter $ w $ à déjàVus\;
+                }
+            }
+        }
+    }
+\end{algorithm}
+
+Le pseudo-code laisse le choix sur la façon de choisir $ u $ dans àVisiter. En fait, selon la façon qu'on choisit, on effectue soit un \textit{parcours en profondeur}, soit un \textit{parcours en largeur}.
+
+\ques En utilisant le pseudo-code précédent, écrire une fonction \mintinline{python}{parcoursEnProfondeur(v, M)}. Lorsque l'on choisit $ u $ dans àVisiter, on prend le sommet qui a été ajouté le plus récemment. On dit que àVisiter à une structure de \textit{pile} (penser à une pile d'assiette), car elle vérifie la propriété LIFO \textit{Last In First Out}.
+
+\ques Écrire cette fois une fonction \mintinline{python}{parcoursEnLargeur(v, M)}, pour laquelle on choisit $ u $ dans àVisiter comme celui qui y a été ajouté en premier. On dit alors que àVisiter à une structure de file (penser à une file d'attente), car elle vérifie la propriéte FIFO \textit{First In First Out}. 
+
+\ques Tester les fonctions sur le graphe \autoref{fig:graph-walk} en partant du sommet $ 0 $. Ajouter un \mintinline{python}{print(w)} au moment où vous ajoutez \texttt{w} à déjàVus. Comprenez vous pourquoi on parle de parcours en \textit{profondeur} et en \textit{largeur} ?
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}[thick]
+        % Vertices
+        \node[circle, draw, fill=lightblue, minimum size=1cm] (0) at (0,0)   {0};
+
+        \foreach \i in {1,...,4}
+        \node[circle, draw, fill=lightblue, minimum size=1cm] (\i) at ({90*(\i-1)+45}:1.5cm) {\i};
+
+        \foreach \i in {5,...,12}
+        \node[circle, draw, fill=lightblue, minimum size=1cm] (\i) at ({45*(\i-5)+22.5}:3cm) {\i};
+
+        % Edges
+        \foreach \i in {1,...,4}
+        \draw (0) to (\i);
+
+        \draw (1) to (5);
+        \draw (1) to (6);
+        \draw (2) to (7);
+        \draw (2) to (8);
+        \draw (3) to (9);
+        \draw (3) to (10);
+        \draw (4) to (11);
+        \draw (4) to (12);
+    \end{tikzpicture}
+    \caption{Un graphe en flocon de neige}
+    \label{fig:graph-walk}
+\end{figure}
+
+
+
+\ques La version récursive de l'algorithme effectuait-elle un parours en largeur ou un parcours en profondeur ?
