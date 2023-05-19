@@ -1,0 +1,150 @@
+\correctionExam{Intégration numérique}{27-05-2023}
+
+\section*{Méthode de Simpson}
+
+\ques On regarde $ f: x \mapsto x^4 $, $ a=-1 $, $ b=1 $. On a alors 
+\begin{align*}
+    I_{a, b}(f) &= \frac{2}{5}\\
+    I^{(\textrm{Simpson})}_{a, b}(f) &= \frac{1}{6}\\
+                                     &\neq I_{a, b}(f)
+\end{align*}
+
+\ques Soit $ f : x \mapsto ux^2 + vx + w $. On calcule 
+\begin{align*}
+    I^{(\textrm{Simpson})}_{a, b}(f) &= \frac{b-a}{6} \left( u(b^2 + a^2 + (b+a)^2) + v(b + a + 2(b+a)) + 6w \right)\\
+    I_{a, b}(f) &= u \frac{b^3 - a^3}{3} + v \frac{b^2-a^2}{2} + w(b-a)\\
+                &= (b-a) \left( \frac{u}{3}(b^2 - ab + a^2) + \frac{v}{2}(b+a) + w \right)\\
+                &= \frac{b-a}{6} \left( u(b^2 + b^2 - 2ab + a^2 + a^2) + v(3b+3a) + 6w \right)\\
+                &= I^{(\textrm{Simpson})}_{a, b}(f)
+\end{align*}
+ce qui conclut.
+
+\quessques On calcule à nouveau 
+\begin{align*}
+    I^{(\textrm{Simpson})}_{a, b}(P_{a,b}) &= \frac{b-a}{6}((\frac{a+b}{2})^3 + (-\frac{a+b}{2})^3) \\
+                                           &= 0\\
+    I_{a, b}(f) &= \int_{a}^{b} (t - \frac{a+b}{2})dt\\
+                &= \int_{-\frac{a+b}{2}}^{\frac{a+b}{2}} t^3dt \\
+                &= 0\\
+\end{align*}
+
+\ssques Il s'agit simplement d'une division euclidienne polynomiale de $ P $ par $ P_{a,b} $.
+
+\ques On remarque que la méthode de Simpson est linéaire, i.e. \[
+    I^{(\textrm{Simpson})}_{a, b}(\alpha f + g) = \alpha  I^{(\textrm{Simpson})}_{a, b}(f) +  I^{(\textrm{Simpson})}_{a, b}(g)
+\]
+Ainsi soit $ P \in \P_3[X] $, $ a, b \in \R $. On écrit $ P = \alpha P_{a, b} + Q $ grâce à la question précédente. On a alors 
+\begin{align*}
+    I^{(\textrm{Simpson})}_{a, b}(P) &= \alpha  I^{(\textrm{Simpson})}_{a, b}(P_{a,b}) + I^{(\textrm{Simpson})}_{a, b}(Q) \\
+                                     &= \alpha I_{a, b}(P_{a, b}) + I^{(\textrm{Simpson})}_{a, b}(Q) \quad \textrm{grâce à la question 3.a}\\
+                                     &= \alpha I_{a, b}(P_{a, b}) + I_{a, b}(Q) \quad \textrm{grâce à la question 2}\\
+                                     &= I_{a, b}(P) \quad \textrm{par linéarité de l'intégrale}\\
+\end{align*}
+ce qui conclut.
+
+\ques \begin{minted}{python}
+    def simpson(f, a, b):
+    return (b-a)/2 * (f(a) + f(b) + f((a+b)/2))
+\end{minted}
+
+\ques \begin{minted}{python}
+    def simpson_composite(f, a, b, n):
+        x = np.linspace(a, b, n)
+        tot = 0
+        for k in range(n-1):
+            tot += simpson(f, x[k], x[k+1])
+        return tot
+\end{minted}
+
+\ques La méthode des rectangles est d'ordre $ 0 $. Il faut lui préférer la méthode de Simpson: l'erreur de la généralisation composite de la méthode des rectangles décroit en $ O(\frac{1}{n}) $ tandis que celle de la généralisation composite de la méthode de Simpson décroit en $ O(\frac{1}{n^4}) $. Remarquez qu'on ne demande pas de se souvenir de la puissance de décroissance exacte, il est suffisant de mentionner qu'expérimentalement, l'erreur de Simpson décroit plus rapidement avec $ n $ que celle des rectangles.
+
+
+\section*{Gymnastique Python}
+
+\quessques \begin{minted}{python}
+    def trouve_minimum(L):
+        mini = L[0]
+        for x in L:
+            if x < mini:
+                mini = x
+        return mini
+\end{minted}
+
+\ssques \begin{minted}{python}
+    def trouve_indice_du_minimum(L):
+        mini, argmini = L[0], 0
+        for i, x in enumerate(L):
+            if x < mini:
+                mini = x
+                argmini = i
+        return argmini
+\end{minted}
+
+Si on ne connait pas la fonction \mintinline{python}{enumerate}, on peut également écrire
+\begin{minted}{python}
+    def trouve_indice_du_minimum(L):
+        mini, argmini = L[0], 0
+        for i range(len(L)):
+            x = L[i]
+            if x < mini:
+                mini = x
+                argmini = i
+        return argmini
+\end{minted}
+
+\quessques \begin{minted}{python}
+    def zeros(n):
+        return [0 for _ in range(n)]
+        # ou encore
+        return [0] * n
+\end{minted}
+
+La solution suivante, bien que correcte, est à prohiber car moins efficace et trop verbeuse
+\begin{minted}{python}
+    def zeros(n):
+        L = []
+        for _ in range(n):
+            L.append(0)
+        return L
+\end{minted}
+
+
+\ssques \begin{minted}{python}
+    def zeros2(n, p):
+        return [zeros(p) for _ in range(n)]
+\end{minted}
+
+La solution suivante est acceptable, mais il faut apprendre à utiliser les fonctions écrites dans les questions précédentes, surtout quand l'exercice commence par \textit{En déduire}.
+\begin{minted}{python}
+    def zeros2(n, p):
+        return [[0 for _ in range(p)] for _ in range(n)]
+\end{minted}
+
+La solution suivante est, bien que techniquement correcte, subtilement dangereuse et à proscrire. 
+
+\begin{minted}{python}
+    def zeros2(n, p):
+        L = zeros(p)
+        return [L for _ in range(n)]
+\end{minted}
+
+Pour s'en convaincre, essayer le code suivant 
+
+\begin{minted}{python}
+    L = zeros2(3, 4)
+    L[0][0] = 1
+    print(L)
+\end{minted}
+
+\ques \mintinline{python}{L.append(a)}
+
+\quessques \mintinline{python}{True}
+\ssques \mintinline{python}{False}
+\ssques \mintinline{python}{True}
+
+\quessques \mintinline{python}{[1]}
+\ssques \mintinline{python}{"cpst"}
+\ssques \begin{minted}{python}
+    2
+    4
+\end{minted}
