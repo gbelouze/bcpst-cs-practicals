@@ -1,0 +1,105 @@
+%! TEX root = ../main.tex
+
+\titre{Petits exercices Python}
+
+Le but de ce TP est de se remettre à jour sur toutes les bases de Python.
+
+\section{Les listes}
+
+\subsection{Définition par compréhension}
+
+Imaginons qu'on veut créer une liste \texttt{L} à partir d'un \textit{itérable} (par exemple \mintinline{python}{range(10, 20)}, ou bien une autre liste), avec éventuellement des conditions de filtrage. La structure générale pour cela est 
+
+\begin{minted}{python}
+    L = []
+    for x in iterable:
+        if condition_sur_x:
+            L.append(fonction_de_x)
+\end{minted}
+
+C'est tout de suite plus clair avec un exemple. Créons la liste \mintinline{python}{[1, 9, 25, 49, 81]}, c'est-à-dire des $ n^2 $ lorsque $ n $ est impair, pour $ n $ entre $ 1 $ et $ 9 $. Cela s'écrit 
+
+\begin{minted}{python}
+    L = []
+    for n in range(1, 10):
+        if n % 2 == 1:
+            L.append(n ** 2)
+\end{minted}
+
+La définition par compréhension permet d'écrire ce bloc de code en une seule ligne 
+
+\begin{minted}{python}
+    L = [fonction_de_x for x in iterable if condition_sur_x]
+\end{minted}
+
+Ou pour notre exemple 
+
+\begin{minted}{python}
+    L = [n**2 for n in range(1, 10) if n % 2 == 1]
+\end{minted}
+
+Ce n'est pas difficile de se souvenir de la syntaxe, cela suit la language naturel: "donne moi les $ n^2 $ pour $ n \in \{1, \ldots, 9\} $, mais seulement si $ n $ est impair".
+
+\quessques Créer en une ligne la liste \texttt{L} des entiers divisibles par $ 2 $ ou $ 3 $ de l'intervalle $ \{0, 100\} $.
+\ssques Créer avec le plus petit code possible la liste \texttt{T}
+
+\begin{minted}{python}
+    [
+        [0, 10, 20, ..., 100],
+        [1, 11, 21, ..., 91],
+        [2, 12, 22, ..., 92],
+        ...,
+        [9, 19, 29, ..., 99]
+    ]
+\end{minted}
+
+\subsection{Les slices}
+
+Il existe en Python une syntaxe pour obtenir les éléments à certains indices d'une liste. Ce sont les \textit{slices}. On rappelle la signification de \mintinline{python}{range(a,b,c)} et ses variantes
+\begin{itemize}
+    \item \mintinline{python}{range(a,b,c)} produit les entiers $ a, a+c, a+2c, \ldots $ jusqu'à $ b $ exclus. Par exemple, \mintinline{python}{range(11, 23, 4)} produit les entiers $ 11, 15, 19 $, c'est-à-dire qu'on part de $ 11 $, on avance de $ 4 $ en $ 4 $, et si on atteint ou dépasse $ 23 $ on s'arrête avant.
+    \item \mintinline{python}{range(a,b)} produit les entiers $ a, a+1, \ldots, b-1 $. Autrement dit, si on omet $ c $, Python considère que $ c=1 $.
+    \item \mintinline{python}{range(b)} produit les entiers $ 0, 1, \ldots, b-1 $. Autrement dit, si on omet $ a $, Python considère que $ a=0 $.
+\end{itemize}
+À noter que $ c $ peut être négatif.
+
+De même, si \texttt{L} est une liste (ou plus généralement un \textit{itérable}), on peut écrire \mintinline{python}{L[a:b:c]} pour accéder à certains éléments de \texttt{L}. Plus précisément
+\begin{itemize}
+    \item \mintinline{python}{L[a:b]} produit la liste des éléments d'indice $ a, a+1, \ldots, b-1 $
+    \item \mintinline{python}{L[:b]} produit la liste des éléments d'indice $ 0, 1, \ldots, b-1 $. Autrement dit, si on omet $ a $, Python part du début de la liste.
+    \item \mintinline{python}{L[a:]} produit la liste des éléments d'indice $ a, a+1, \ldots, len(L)-1 $. Autrement dit, si on omet $ b $, Python va jusqu'au bout de la liste.
+    \item \mintinline{python}{L[a:b:c]} produit la liste des éléments d'indice $ a, a+c, a+2c, \ldots $ jusqu'à $ b $ exclus. Par exemple, \mintinline{python}{L[11:23:4]} produit la liste des éléments de \texttt{L} d'indice $ 11, 15, 19 $, c'est-à-dire qu'on part de l'indice $ 11 $, on avance de $ 4 $ en $ 4 $, et si on atteint ou dépasse $ 23 $ on s'arrête avant.
+\end{itemize}
+À noter que là encore, $ c $ peut être négatif. Si $ c $ est négatif, la valeur par défaut de $ a $ et $ b $ est inversée (c'est-à-dire que si on omet $ a $, Python considère que c'est la fin de la liste, et si on omet $ b $ Python considère que c'est le début de la liste).
+
+\quessques Que fait \mintinline{python}{L[::]} ?
+\ssques Que fait \mintinline{python}{L[::-1]} ?
+\ssques Que vaut \mintinline{python}{[1, 3, 5, 7][1:2]} ?
+\ssques À partir de \mintinline{python}{T} défini à l'exercice précédent, créer la liste 
+
+\begin{minted}{python}
+    [
+        [1, 11, 21, ..., 91],
+        [3, 13, 23, ..., 93],
+        ...,
+        [9, 19, 29, ..., 99]
+    ]
+\end{minted}
+
+Les syntaxes les plus importantes à retenir sont celles sans $ c $, c'est-à-dire \mintinline{python}{L[:b]}, \mintinline{python}{L[a:]} et \mintinline{python}{L[a:b]}.
+
+
+\paragraph{} Le slicing n'est pas spécifique aux listes, on peut utiliser la même syntaxe pour, par exemple, les chaînes de caractères.
+\quessques Écrire en deux lignes une fonction \mintinline{python}{prefixe(p, s)} qui renvoie \mintinline{python}{True} si la chaîne de caratères \texttt{p} est un préfixe de la chaîne de caractères \texttt{s}, (c'est-à-dire que \texttt{s} "commence par" \texttt{p}), \mintinline{python}{False} sinon.
+\ssques Écrire en deux lignes une fonction \mintinline{python}{suffixe(p, s)} qui renvoie \mintinline{python}{True} si la chaîne de caratères \texttt{p} est un suffixe de la chaîne de caractères \texttt{s}, (c'est-à-dire que \texttt{s} "finit par" \texttt{p}), \mintinline{python}{False} sinon.
+\ssques Le \textit{bord} d'une chaîne de caractères \texttt{s} est la plus grande chaîne de caractères à la fois préfixe et suffixe de \texttt{s}, mais qui n'est pas \texttt{s} elle-même. Éventuellement, le bord peut être la chaîne de caractères vide \mintinline{python}{""}. Écrire une fonction \mintinline{python}{bord(s)} qui trouve le bord de \texttt{s}.
+
+\section{Les booléens}
+
+Les valeurs booléennes en Python sont \mintinline{python}{True} et \mintinline{python}{False}. On peut les composer avec les opérateurs \mintinline{python}{and}, \mintinline{python}{or} et \mintinline{python}{not}. De même que la multiplication a priorité sur l'addition, \mintinline{python}{and} a priorité sur \mintinline{python}{or}.
+
+\quessques Que vaut \mintinline{python}{True and False} ?
+\ssques Que vaut \mintinline{python}{True and False or True and False or True and False} ?
+\ssques Que vaut \mintinline{python}{True and (False or True) and (False or True)} ?
+\ssques Écrire en deux lignes une fonction \mintinline{python}{xor(b1, b2)} qui est le "ou exclusif", c'est-à-dire qui renvoie \mintinline{python}{True} si \mintinline{python}{b1} est vrai ou \mintinline{python}{b2} est vrai, mais pas les deux à la fois.
+\ssques Écrire en deux lignes une fonction \mintinline{python}{nand(b1, b2)} qui est le "tout sauf tout le monde", qui renvoie \mintinline{python}{False} si à la foin \mintinline{python}{b1} et \mintinline{python}{b2} sont vrais, et \mintinline{python}{True} sinon.
