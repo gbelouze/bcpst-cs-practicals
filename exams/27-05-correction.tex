@@ -5,7 +5,7 @@
 \ques On regarde $ f: x \mapsto x^4 $, $ a=-1 $, $ b=1 $. On a alors 
 \begin{align*}
     I_{a, b}(f) &= \frac{2}{5}\\
-    I^{(\textrm{Simpson})}_{a, b}(f) &= \frac{1}{6}\\
+    I^{(\textrm{Simpson})}_{a, b}(f) &= \frac{2}{3}\\
                                      &\neq I_{a, b}(f)
 \end{align*}
 
@@ -19,7 +19,7 @@
 \end{align*}
 ce qui conclut.
 
-\quessques On calcule à nouveau 
+\ques On calcule à nouveau 
 \begin{align*}
     I^{(\textrm{Simpson})}_{a, b}(P_{a,b}) &= \frac{b-a}{6}((\frac{a+b}{2})^3 + (-\frac{a+b}{2})^3) \\
                                            &= 0\\
@@ -28,12 +28,10 @@ ce qui conclut.
                 &= 0\\
 \end{align*}
 
-\ssques Il s'agit simplement d'une division euclidienne polynomiale de $ P $ par $ P_{a,b} $.
-
 \ques On remarque que la méthode de Simpson est linéaire, i.e. \[
     I^{(\textrm{Simpson})}_{a, b}(\alpha f + g) = \alpha  I^{(\textrm{Simpson})}_{a, b}(f) +  I^{(\textrm{Simpson})}_{a, b}(g)
 \]
-Ainsi soit $ P \in \P_3[X] $, $ a, b \in \R $. On écrit $ P = \alpha P_{a, b} + Q $ grâce à la question précédente. On a alors 
+Ainsi soit $ P \in \R_3[X] $, $ a, b \in \R $. On écrit $ P = \alpha P_{a, b} + Q $ grâce à la question précédente. On a alors 
 \begin{align*}
     I^{(\textrm{Simpson})}_{a, b}(P) &= \alpha  I^{(\textrm{Simpson})}_{a, b}(P_{a,b}) + I^{(\textrm{Simpson})}_{a, b}(Q) \\
                                      &= \alpha I_{a, b}(P_{a, b}) + I^{(\textrm{Simpson})}_{a, b}(Q) \quad \textrm{grâce à la question 3.a}\\
@@ -42,12 +40,12 @@ Ainsi soit $ P \in \P_3[X] $, $ a, b \in \R $. On écrit $ P = \alpha P_{a, b} +
 \end{align*}
 ce qui conclut.
 
-\ques \begin{minted}{python}
+\quessques \begin{minted}{python}
     def simpson(f, a, b):
     return (b-a)/2 * (f(a) + f(b) + f((a+b)/2))
 \end{minted}
 
-\ques \begin{minted}{python}
+\ssques \begin{minted}{python}
     def simpson_composite(f, a, b, n):
         x = np.linspace(a, b, n)
         tot = 0
@@ -84,7 +82,7 @@ Si on ne connait pas la fonction \mintinline{python}{enumerate}, on peut égalem
 \begin{minted}{python}
     def trouve_indice_du_minimum(L):
         mini, argmini = L[0], 0
-        for i range(len(L)):
+        for i in range(len(L)):
             x = L[i]
             if x < mini:
                 mini = x
@@ -92,57 +90,44 @@ Si on ne connait pas la fonction \mintinline{python}{enumerate}, on peut égalem
         return argmini
 \end{minted}
 
-\quessques \begin{minted}{python}
-    def zeros(n):
-        return [0 for _ in range(n)]
-        # ou encore
-        return [0] * n
-\end{minted}
-
-La solution suivante, bien que correcte, est à prohiber car moins efficace et trop verbeuse
-\begin{minted}{python}
-    def zeros(n):
-        L = []
-        for _ in range(n):
-            L.append(0)
-        return L
-\end{minted}
-
-
-\ssques \begin{minted}{python}
-    def zeros2(n, p):
-        return [zeros(p) for _ in range(n)]
-\end{minted}
-
-La solution suivante est acceptable, mais il faut apprendre à utiliser les fonctions écrites dans les questions précédentes, surtout quand l'exercice commence par \textit{En déduire}.
-\begin{minted}{python}
-    def zeros2(n, p):
-        return [[0 for _ in range(p)] for _ in range(n)]
-\end{minted}
-
-La solution suivante est, bien que techniquement correcte, subtilement dangereuse et à proscrire. 
+\ques 
 
 \begin{minted}{python}
-    def zeros2(n, p):
-        L = zeros(p)
-        return [L for _ in range(n)]
+    def sous_liste_pair(L):
+        ret = []
+        for x in L:
+            if x%2 == 0:
+                ret.append(x)
+        return ret
 \end{minted}
 
-Pour s'en convaincre, essayer le code suivant 
+\ques 
 
 \begin{minted}{python}
-    L = zeros2(3, 4)
-    L[0][0] = 1
-    print(L)
+    def applati(L):
+        ret = []
+        for sous_liste in L:
+            for x in sous_liste:
+                ret.append(x)
+        return ret
+\end{minted}
+ou encore 
+
+\begin{minted}{python}
+    def applati(L):
+        ret = []
+        for x in L:
+            ret += x
+        return ret
 \end{minted}
 
 \ques \mintinline{python}{L.append(a)}
 
 \quessques \mintinline{python}{True}
-\ssques \mintinline{python}{False}
 \ssques \mintinline{python}{True}
+\ssques \mintinline{python}{False}
 
-\quessques \mintinline{python}{[1]}
+\quessques \mintinline{python}{[3]}
 \ssques \mintinline{python}{"cpst"}
 \ssques \begin{minted}{python}
     2

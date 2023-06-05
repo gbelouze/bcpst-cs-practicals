@@ -2,7 +2,7 @@
 
 Les barèmes sont indicatifs et pourront être reconsidérés.
 
-\section*{Méthode de Simpson (24 points)}
+\section*{Méthode de Simpson (26 points)}
 
 Soit $ f : \R \rightarrow \R $ une fonction continue. La méthode de Simpson est une méthode pour numériquement calculer $ I^{(\textrm{Simpson})}_{a, b}(f) $ une approximation de $ \int_{a}^{b} f(t)dt $, avec la formule \[
     I^{(\textrm{Simpson})}_{a, b}(f) = \frac{b-a}{6} (f(a) + f(b) + 4 f(\frac{a+b}{2}))
@@ -12,8 +12,9 @@ On rappelle qu'une méthode d'intégration numérique est d'ordre $ k $ si elle 
 
 \ques (3 points) Montrer que la méthode de Simpson n'est pas d'ordre $ 4 $.
 \ques (5 points) Montrer que la méthode de Simpson est d'ordre au moins $ 2 $.
-\quessques (2 points) Montrer que la méthode de Simpson donne un résultat exact pour la fonction $ P_{a,b} : x \mapsto (x - \frac{a+b}{2})^3 $.
-\ssques  (3 points) Soit $ P \in \P_3[X] $ un polynôme de degré au plus $ 3 $. Montrer qu'il existe $ \alpha \in \R, Q \in \P_2[X] $ tel que \[
+\ques (2 points) Montrer que la méthode de Simpson donne un résultat exact pour la fonction $ P_{a,b} : x \mapsto (x - \frac{a+b}{2})^3 $.
+
+On admet le résultat suivant: pour tout $ P \in \R_3[X] $ polynôme de degré au plus $ 3 $, il existe $ \alpha \in \R, Q \in \R_2[X] $ tel que \[
     P = \alpha P_{a, b} + Q
 \]
 \ques (5 points) En utilisant la linéarité de l'intégrale, déduire des questions précédentes que la méthode de Simpson est d'ordre $ 3 $.
@@ -29,21 +30,22 @@ On rappelle que la fonction \mintinline{python}{np.linspace(a, b, n)} fournit un
 \ques (3 points) Rappeler l'ordre de la méthode des rectangles. En général, faut-il préférer la méthode des rectangles ou la méthode de Simpson ? Expliquer la différence entre les deux méthodes que l'on observe expérimentalement qui justifie cette préférence.
 
 
-\section*{Gymnastique Python (18 points)}
+\section*{Gymnastique Python (19 points)}
 
 Les exercices de cette section sont indépendants, et testent votre maîtrise générale de Python.
 
 \quessques (3 points) Écrire une fonction \mintinline{python}{trouve_minimum(L)} qui prend en argument une liste non vide d'entiers \texttt{L} et renvoie le plus petit élément de \texttt{L}. On se refusera d'utiliser la fonction Python \mintinline{python}{min}.
-\ssques (3 points) Modifier la fonction pour obtenir \mintinline{python}{trouve_indice_du_minimum(L)} que renvoie \textit{l'indice} du plus petit élément de \texttt{l}. S'il y a plusieurs indices où \texttt{L} atteint son minimum, vous êtes libres de choisir quel indice est renvoyé.
+\ssques (3 points) Modifier la fonction pour obtenir \mintinline{python}{trouve_indice_du_minimum(L)} que renvoie \textit{l'indice} du plus petit élément de \texttt{L}. S'il y a plusieurs indices où \texttt{L} atteint son minimum, vous êtes libres de choisir quel indice est renvoyé.
 
-\quessques (3 points) Écrire une fonction \mintinline{python}{zeros(n)} qui prend en argument un entier \texttt{n} et renvoie une liste à \texttt{n} coefficients, tous nuls. Ainsi, \mintinline{python}{zeros(3)} renvoie la liste \mintinline{python}{[0, 0, 0]}.
-\ssques (3 points) En déduire une fonction \mintinline{python}{zeros2(n, p)} qui prend en arguments deux entiers \texttt{n} et \texttt{p} et renvoie une liste de \texttt{n} listes, contenant chacune \texttt{p} coefficients, tous nuls. Ainsi, \mintinline{python}{zeros2(3, 4)} devra renvoyer la liste \mintinline{python}{[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]}.
+\ques (3 points) Écrire une fonction \mintinline{python}{sous_liste_pair(L)} qui prend en argument une liste d'entiers \texttt{L} et renvoie la liste composée des entiers pairs de \texttt{L}. Par exemple, \mintinline{python}{sous_liste_pair([1, 3, 2, 8, 5, 5, 6])} devra renvoyer \mintinline{python}{[2, 8, 6]}.
+
+\ques (3 points) Écrire une fonction \mintinline{python}{applati(L)} qui prend en argument une liste de listes \texttt{L} et renvoie la liste qui met bout à bout les sous-listes de \texttt{L}. Par exemple, \mintinline{python}{applati([[1, 2, 3], [2, 3, 4], [3, 4, 5]])} devra renvoyer \mintinline{python}{[1, 2, 3, 2, 3, 4, 3, 4, 5]}.
 
 \ques (1 point) À partir d'une liste \texttt{L} et d'un élément \texttt{a}, comment obtenir la liste où l'on a ajouté \texttt{a} à la fin de \texttt{L}.
 
 \quessques (1 point) Que vaut \mintinline{python}{True or False} ?
-\ssques (1 point) Que vaut \mintinline{python}{False or False and True} ?
-\ssques (1 point) Que vaut \mintinline{python}{(False or False) and True} ?
+\ssques (1 point) Que vaut \mintinline{python}{True or True and False} ?
+\ssques (1 point) Que vaut \mintinline{python}{(True or True) and False} ?
 
 \quessques (1 point) Qu'affiche le programme suivant ?
 

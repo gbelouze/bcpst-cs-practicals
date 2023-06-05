@@ -52,7 +52,7 @@ Voici quelques graphes
     \label{fig:first-graphs}
 \end{figure}
 
-Ce qu'on appelle \textit{graphe} en informatique est simplement un ensemble fini de \textit{noeuds}, ou sommets, souvent noté $ V $ (pour \textit{vertex} en anglais), reliés entre eux par un ensemble fini d'arêtes, souvent noté $ E $ ( pour \textit{edge} en anglais). On représente une arête par un couple de noeuds $ (v_1, v_2) $ où $ v_1, v_2 \in V $, correspondant donc aux deux noeuds que relie l'arête. Si les arêtes ont un sens, comme des flèches, alors l'ordre de $ v_1 $ et $ v_2 $ dans le couple $ (v_1, v_2)  $ a une importance, on parle alors de \textit{graphe orienté} (voir \autoref{fig:non-oriented} Si les arêtes n'ont pas de sens, l'ordre n'importe pas et on parle de \textit{graphe non orienté} (voir \autoref{fig:oriented}). Notez que $ v_1 $ et $ v_2 $ ne sont pas nécessairement distincts.
+Ce qu'on appelle \textit{graphe} en informatique est simplement un ensemble fini de \textit{noeuds}, ou sommets, souvent noté $ V $ (pour \textit{vertex} en anglais), reliés entre eux par un ensemble fini d'arêtes, souvent noté $ E $ ( pour \textit{edge} en anglais). On représente une arête par un couple de noeuds $ (v_1, v_2) $ où $ v_1, v_2 \in V $, correspondant donc aux deux noeuds que relie l'arête. Si les arêtes ont un sens, comme des flèches, alors l'ordre de $ v_1 $ et $ v_2 $ dans le couple $ (v_1, v_2)  $ a une importance, on parle alors de \textit{graphe orienté} (voir \autoref{fig:oriented} Si les arêtes n'ont pas de sens, l'ordre n'importe pas et on parle de \textit{graphe non orienté} (voir \autoref{fig:non-oriented}). Notez que $ v_1 $ et $ v_2 $ ne sont pas nécessairement distincts.
 
 Lorsque deux sommets sont reliés par une arête, on dit qu'ils sont \textit{adjacents}, ou \textit{voisins}.
 
@@ -161,6 +161,8 @@ On choisit de travailler ici avec des matrices d'adjacence et des graphes non or
 
     De manière générale, lorsque l'on écrit une fonction récursive, il y a une partie qui assure la \textit{terminaison}, c'est-à-dire qui s'assure que la fonction va finir par arêter de s'appeler elle-même, et une partie qui "fait le travail". Ici, le test \mintinline{python}{if n == 0} est là pour assurer la terminaison. Implicitement, on suppose que l'utilisateur.ice n'utilise \texttt{factoriel} qu'avec des entiers \mintinline{python}{n >= 0}. Que se passe-t-il si on appelle \mintinline{python}{factoriel(-1)} ? \mintinline{python}{factoriel(1.5)} ?
 }
+
+\ques Écrire de façon récursive une fonction \mintinline{python}{fibonacci(n)} qui renvoie le $ n $-ième terme de la suite de Fibonacci $ 0, 1, 1, 2, 3, 5, 8, 13, 21, \ldots $.
 
     Ici, on va écrire une fonction \texttt{parcours(v, M, dejaVus)} qui parcourt tous le graphe et va s'appeler récursivement sur les voisins des sommets visités. \texttt{v} est le noeud en train d'être visité, \texttt{M} est la matrice d'adjacence du graphe, et \texttt{dejaVus} est un tableau de booléens de taille \texttt{n}, qui indique quel sommet a déjà été visité. Ainsi, le graphe est connexe si et seulement si à la fin de la fonction, tous les éléments de \texttt{dejaVus} sont \mintinline{python}{True}.
 
